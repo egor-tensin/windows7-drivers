@@ -1,0 +1,5 @@
+/bin/
+*.err
+*.log
+*.wrn
+obj*/
