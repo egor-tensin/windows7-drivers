@@ -1,3 +1,7 @@
+@rem Copyright 2015 Egor Tensin <Egor.Tensin@gmail.com>
+@rem This file is licensed under the terms of the MIT License.
+@rem See LICENSE.txt for details.
+
 @setlocal enabledelayedexpansion
 @echo off
 
