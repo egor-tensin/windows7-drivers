@@ -70,7 +70,7 @@ Then restart your computer and you should be all set!
 ## Debugging
 
 You can debug a driver using WinDbg.
-To enable kernel debugging, you can use the `msconfig` utility (navigate to "Boot" -> "Advanced options..." and check "Debug") or the 'bcdedit' utility:
+To enable kernel debugging, you can use the `msconfig` utility (navigate to "Boot" -> "Advanced options..." and check "Debug") or the `bcdedit` utility:
 
     bcdedit /debug on
     bcdedit /dbgsettings serial debugport:1 baudrate:115200
@@ -78,7 +78,7 @@ To enable kernel debugging, you can use the `msconfig` utility (navigate to "Boo
 Restart your computer for these settings to take effect.
 
 If a driver is loaded on a separate physical machine, you can connect to a physical COM port from another host with WinDbg installed and enable kernel debugging via "File" -> "Kernel Debug...".
-You might need to restart the debuggee a couple of times to enter the kernel debugging mode.
+You might need to restart the debuggee a couple of times in order to enter the kernel debugging mode.
 
 If a driver is running on a virtual machine, the conventional approach is to expose a COM port via a named pipe.
 You can then connect to the pipe from WinDbg installed on the host.
