@@ -14,6 +14,7 @@ echo Certificate name: "%cert_name%"
 echo ========================== END CERT INFO ==========================
 echo.
 echo ======================= ADDING CERTIFICATE ========================
+call check_ddk.bat || goto :add_cert_failure
 echo makecert.exe -$ individual -r -pe -ss "%cert_store%" -n CN="%cert_name%" "%cert_name%.cer"
 makecert.exe -$ individual -r -pe -ss "%cert_store%" -n CN="%cert_name%" "%cert_name%.cer" >nul || goto :add_cert_failure
 echo certmgr.exe /add "%cert_name%.cer" /s /r localMachine root

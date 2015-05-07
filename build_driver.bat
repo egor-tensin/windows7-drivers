@@ -14,7 +14,6 @@ call check_env.bat || exit /b !errorlevel!
 call check_ddk.bat || exit /b !errorlevel!
 
 set driver_src_root=%~f1
-cd "%driver_src_root%"
 
 for /f %%i in ("%driver_src_root%") do (
   set driver_name=%%~ni
@@ -34,7 +33,10 @@ echo ========================= END DRIVER INFO =========================
 echo.
 echo ============================== BUILD ==============================
 set LIBDISTDIR=%lib_dist_dir%
-build.exe /cegwZ
+pushd "%driver_src_root%" && (
+  build.exe /cegwZ
+  popd
+)
 if %errorlevel% equ 0 (
   echo ========================== BUILD SUCCESS ==========================
 ) else (
@@ -43,14 +45,14 @@ if %errorlevel% equ 0 (
 )
 
 if [%_BUILDARCH%] == [x86] (
-  set sys_path=obj%BUILD_ALT_DIR%\i386\%driver_name%.sys
-  set pdb_path=obj%BUILD_ALT_DIR%\i386\%driver_name%.pdb
-  set lib_path=obj%BUILD_ALT_DIR%\i386\%driver_name%.lib
+  set buildarch_directory=i386
 ) else (
-  set sys_path=obj%BUILD_ALT_DIR%\%_BUILDARCH%\%driver_name%.sys
-  set pdb_path=obj%BUILD_ALT_DIR%\%_BUILDARCH%\%driver_name%.pdb
-  set lib_path=obj%BUILD_ALT_DIR%\%_BUILDARCH%\%driver_name%.lib
+  set buildarch_directory=%_BUILDARCH%
 )
+
+set sys_path=%driver_src_root%\obj%BUILD_ALT_DIR%\%buildarch_directory%\%driver_name%.sys
+set pdb_path=%driver_src_root%\obj%BUILD_ALT_DIR%\%buildarch_directory%\%driver_name%.pdb
+set lib_path=%driver_src_root%\obj%BUILD_ALT_DIR%\%buildarch_directory%\%driver_name%.lib
 
 echo.
 call "%root%\sign.bat" "%sys_path%" || exit /b !errorlevel!

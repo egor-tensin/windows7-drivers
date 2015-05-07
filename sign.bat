@@ -21,6 +21,7 @@ echo Certificate name: "%cert_name%"
 echo ========================== END CERT INFO ==========================
 echo.
 echo ============================= SIGNING =============================
+call check_ddk.bat || goto :signing_failure
 echo signtool.exe sign /s "%cert_store%" /n "%cert_name%" "%sys_path%"
 signtool.exe sign /s "%cert_store%" /n "%cert_name%" "%sys_path%" >nul || goto :signing_failure
 echo signtool.exe verify /pa "%sys_path%"
