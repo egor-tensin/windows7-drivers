@@ -15,7 +15,10 @@ if not exist %root%\sign.bat (
   exit /b 1
 )
 
-where build.exe >nul || goto :build_not_found
+where build.exe >nul 2>&1 || goto :build_not_found
+where signtool.exe >nul 2>&1 || goto :signtool_not_found
+where makecert.exe >nul 2>&1 || goto :makecert_not_found
+where certmgr.exe >nul 2>&1 || goto :certmgr_not_found
 exit /b 0
 
 :ddk_not_set
@@ -24,4 +27,16 @@ exit /b 1
 
 :build_not_found
 echo Error: build.exe not found ^(perhaps you forgot to set up the WinDDK environment^)
+exit /b 1
+
+:signtool_not_found
+echo Error: signtool.exe not found ^(perhaps you forgot to set up the WinDDK environment^)
+exit /b 1
+
+:makecert_not_found
+echo Error: makecert.exe not found ^(perhaps you forgot to set up the WinDDK environment^)
+exit /b 1
+
+:certmgr_not_found
+echo Error: certmgr.exe not found ^(perhaps you forgot to set up the WinDDK environment^)
 exit /b 1
