@@ -42,6 +42,48 @@ Cleaning after a driver build includes deleting log and object files in the driv
 To clean after every driver in the "src" directory, call `clean_drivers.bat`.
 To clean after a particular driver, pass the path to the driver source directory to `clean_driver.bat`.
 
+## Installation
+
+To install a driver as a service, you can use the `sc` utility.
+For example, to install a driver "C:\test.sys" as a "test" service, run
+
+    sc create test type= kernel binPath= C:\test.sys
+
+You can then load/unload the driver using the `sc` to start/stop the corresponding service.
+
+    sc start test
+    sc stop test
+
+To uninstall a driver, delete the corresponding service using `sc`.
+
+    sc delete test
+
+Please note, that on the 64-bit version of Windows 7 loading 32-bit drivers is not allowed.
+
+You may also need to explicitly enable loading self-signed drivers on 64-bit versions of Windows.
+One way is to use the `bcdedit` utility:
+
+    bcdedit /set testsigning on
+
+Then restart your computer and you should be all set!
+
+## Debugging
+
+You can debug a driver using WinDbg.
+To enable kernel debugging, you can use the `msconfig` utility (navigate to "Boot" -> "Advanced options..." and check "Debug") or the 'bcdedit' utility:
+
+    bcdedit /debug on
+    bcdedit /dbgsettings serial debugport:1 baudrate:115200
+
+Restart your computer for these settings to take effect.
+
+If a driver is loaded on a separate physical machine, you can connect to a physical COM port from another host with WinDbg installed and enable kernel debugging via "File" -> "Kernel Debug...".
+You might need to restart the debuggee a couple of times to enter the kernel debugging mode.
+
+If a driver is running on a virtual machine, the conventional approach is to expose a COM port via a named pipe.
+You can then connect to the pipe from WinDbg installed on the host.
+Refer to your virtualization software's documentation for more details.
+
 ## Licensing
 
 This project, including all of the files and their contents, is licensed under the terms of the MIT License.
