@@ -26,7 +26,7 @@ Then navigate to the root directory and call `setenv.bat`:
 
 ### Code signing
 
-Driver binaries are signed using the self-verified certificate "Test Certificate" in "Test Certificate Store".
+Driver binaries are signed using the self-signed certificate "Test Certificate" in "Test Certificate Store".
 You can create this certificate using `add_cert.bat` (but first make sure you've set up the development environment).
 To verify it's there, you can use the `certmgr.msc` utility.
 
