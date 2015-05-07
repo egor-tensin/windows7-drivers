@@ -11,7 +11,7 @@ if [%BUILD_ALT_DIR%] == [] goto :ddk_not_set
 if [%_BUILDARCH%] == [] goto :ddk_not_set
 
 if not exist %root%\sign.bat (
-  echo Error: %solution_root%\sign.bat is missing ^(don^'t know how to sign drivers^)
+  echo Error: %root%\sign.bat is missing ^(don^'t know how to sign drivers^)
   exit /b 1
 )
 
