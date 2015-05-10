@@ -20,6 +20,9 @@ namespace libservice
     class Service
     {
     public:
+        static bool does_exist(const ServiceManager&,
+                               const std::string& name);
+
         static Service open(const ServiceManager&,
                             const std::string& name);
         static Service install(const ServiceManager&,

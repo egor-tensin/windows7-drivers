@@ -95,6 +95,31 @@ namespace libservice
                 throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
         }
+
+        bool does_service_exist(const ServiceManager& mgr,
+                                const std::string& name)
+        {
+            const auto raw = OpenService(static_cast<SC_HANDLE>(mgr),
+                                         name.c_str(),
+                                         SERVICE_QUERY_STATUS);
+
+            if (NULL != raw)
+            {
+                ServiceHandle handle(raw);
+                return true;
+            }
+
+            const auto ec = GetLastError();
+
+            switch (ec)
+            {
+                case ERROR_SERVICE_DOES_NOT_EXIST:
+                    return false;
+
+                default:
+                    throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+            }
+        }
         
         SERVICE_STATUS_PROCESS query_service_status(const ServiceHandle& handle)
         {
@@ -172,6 +197,12 @@ namespace libservice
                              const std::string& bin_path)
     {
         return Service(install_service(mgr, name, bin_path));
+    }
+
+    bool Service::does_exist(const ServiceManager& mgr,
+                                     const std::string& name)
+    {
+        return does_service_exist(mgr, name);
     }
 
     void Service::start() const
