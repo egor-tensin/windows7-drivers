@@ -8,7 +8,7 @@
 
 #include "libnt_path_converter/device.hpp"
 
-#include "libservice/interface.hpp"
+#include "libservice/all.hpp"
 
 #include <Windows.h>
 

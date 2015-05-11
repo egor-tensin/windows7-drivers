@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "libservice/interface.hpp"
+#include "libservice/all.hpp"
 
 #include <string>
 

@@ -6,7 +6,7 @@
  *            See LICENSE.txt for details.
  */
 
-#include "libservice/interface.hpp"
+#include "libservice/all.hpp"
 
 #include <exception>
 #include <iostream>
