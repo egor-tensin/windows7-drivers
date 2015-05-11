@@ -9,6 +9,8 @@
 #pragma once
 
 #include "common.hpp"
+#include "device.hpp"
+#include "handle.hpp"
 #include "service.hpp"
 #include "service_handle.hpp"
 #include "service_manager.hpp"
