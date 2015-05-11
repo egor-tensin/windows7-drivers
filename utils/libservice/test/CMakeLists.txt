@@ -1,5 +1,4 @@
-project(libservice_test)
-
-project(libservice_test_windows_error)
-add_executable(${PROJECT_NAME} windows_error.cpp)
-target_link_libraries(${PROJECT_NAME} libservice)
+add_executable(libservice_test_windows_error windows_error.cpp)
+target_link_libraries(libservice_test_windows_error libservice)
+set_target_properties(libservice_test_windows_error PROPERTIES
+                      OUTPUT_NAME windows_error)
