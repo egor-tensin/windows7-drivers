@@ -12,3 +12,5 @@ target_link_libraries(stop_service libservice)
 
 add_executable(uninstall_service uninstall_service.cpp)
 target_link_libraries(uninstall_service libservice)
+
+add_subdirectory(libnt_path_converter)

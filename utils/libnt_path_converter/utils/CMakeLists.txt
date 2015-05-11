@@ -1,0 +1,2 @@
+add_executable(convert_nt_path convert_nt_path.cpp)
+target_link_libraries(convert_nt_path libnt_path_converter)
