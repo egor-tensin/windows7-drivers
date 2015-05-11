@@ -8,8 +8,8 @@
 
 #include "libnt_path_converter/all.hpp"
 
-#include <iostream>
 #include <exception>
+#include <iostream>
 
 int wmain(int argc, wchar_t* argv[])
 {
