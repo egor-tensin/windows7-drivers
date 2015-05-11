@@ -6,3 +6,4 @@ add_library(${PROJECT_NAME} ${${PROJECT_NAME}_sources}
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 add_subdirectory(test)
+add_subdirectory(utils)
