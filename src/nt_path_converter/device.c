@@ -35,20 +35,27 @@ static NTSTATUS handle_convert_nt_path(void *in_buf,
     UNICODE_STRING uUnresolved, uResolved;
     NTSTATUS status = STATUS_SUCCESS;
 
+    DbgPrint("nt_path_converter: unresolved path: %ws\n", (WCHAR *) in_buf);
+    DbgPrint("nt_path_converter: unresolved size: %lu\n", in_buf_size);
+
     RtlInitUnicodeString(&uUnresolved, (WCHAR *) in_buf);
     status = nt2dos(&uResolved, &uUnresolved);
 
     if (!NT_SUCCESS(status))
         return status;
 
-    *nbwritten = uResolved.Length;
+    *nbwritten = uResolved.Length + sizeof(WCHAR);
 
-    if (out_buf_size < uResolved.Length)
+    DbgPrint("nt_path_converter: resolved path: %wZ\n", &uResolved);
+    DbgPrint("nt_path_converter: resolved size: %Iu\n", *nbwritten);
+
+    if (out_buf_size < *nbwritten)
     {
         status = STATUS_BUFFER_OVERFLOW;
         goto FREE_RESOLVED;
     }
 
+    RtlFillMemory(out_buf, *nbwritten, L'\0');
     RtlCopyMemory(out_buf, uResolved.Buffer, uResolved.Length);
 
 FREE_RESOLVED:
