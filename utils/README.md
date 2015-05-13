@@ -5,7 +5,7 @@ Usage examples of some of the drivers in this repository are also included.
 
 * [libservice](https://github.com/egor-tensin/windows_drivers/tree/master/utils/libservice) &mdash; a simple service management library.
   Also includes means of communicating with a driver via virtual devices.
-* [libnt_path_converter](https://github.com/egor-tensin/windows_drivers/tree/master/utils/libnt_path_converter) &mdash; [nt_path_converter](https://github.com/egor-tensin/windows_drivers/src/nt_path_converter) usage examples.
+* [libnt_path_converter](https://github.com/egor-tensin/windows_drivers/tree/master/utils/libnt_path_converter) &mdash; [nt_path_converter](https://github.com/egor-tensin/windows_drivers/tree/master/src/nt_path_converter) usage examples.
 
 ## Building
 
