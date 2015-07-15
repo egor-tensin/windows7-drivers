@@ -1,0 +1,2 @@
+add_executable(exchange_ints exchange_ints.cpp)
+target_link_libraries(exchange_ints libtest)

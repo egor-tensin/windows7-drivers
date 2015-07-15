@@ -8,6 +8,7 @@ Usage examples of some of the drivers in this repository are also included.
   Also includes means of communicating with a driver via virtual devices.
 * [libnt_path_converter](libnt_path_converter) &mdash;
   [nt_path_converter](../src/nt_path_converter) usage examples.
+* [libtest](libtest) &mdash; [test](../src/test) usage examples.
 
 ## Building
 
