@@ -20,25 +20,28 @@ static NTSTATUS device_open(DEVICE_OBJECT *device_object, IRP *irp)
     return status;
 }
 
-typedef NTSTATUS (*ioctl_handler)(void *, unsigned long,
-                                  void *, unsigned long,
-                                  ULONG_PTR *);
+typedef NTSTATUS (*ioctl_handler)(
+    void *, unsigned long,
+    void *, unsigned long,
+    ULONG_PTR *);
 
-static NTSTATUS handle_say_hello(void *in_buf,
-                                 unsigned long in_buf_size,
-                                 void *out_buf,
-                                 unsigned long out_buf_size,
-                                 ULONG_PTR *nbwritten)
+static NTSTATUS handle_say_hello(
+    void *in_buf,
+    unsigned long in_buf_size,
+    void *out_buf,
+    unsigned long out_buf_size,
+    ULONG_PTR *nbwritten)
 {
     DbgPrint("Hello, world!\n");
     return STATUS_SUCCESS;
 }
 
-static NTSTATUS handle_exchange_ints(void *in_buf,
-                                     unsigned long in_buf_size,
-                                     void *out_buf,
-                                     unsigned long out_buf_size,
-                                     ULONG_PTR *nbwritten)
+static NTSTATUS handle_exchange_ints(
+    void *in_buf,
+    unsigned long in_buf_size,
+    void *out_buf,
+    unsigned long out_buf_size,
+    ULONG_PTR *nbwritten)
 {
     unsigned int read;
     unsigned int written = 0xdeadbeef;
@@ -82,17 +85,20 @@ static NTSTATUS device_ioctl(DEVICE_OBJECT *device_object, IRP *irp)
         case SAY_HELLO:
             handler = handle_say_hello;
             break;
+
         case EXCHANGE_INTS:
             handler = handle_exchange_ints;
             break;
+
         default:
             status = irp->IoStatus.Status = STATUS_NOT_SUPPORTED;
             goto complete_request;
     }
 
-    status = irp->IoStatus.Status = handler(in_buf, in_buf_size,
-                                            out_buf, out_buf_size,
-                                            &irp->IoStatus.Information);
+    status = irp->IoStatus.Status = handler(
+        in_buf, in_buf_size,
+        out_buf, out_buf_size,
+        &irp->IoStatus.Information);
 
 complete_request:
     IoCompleteRequest(irp, IO_NO_INCREMENT);
@@ -104,18 +110,20 @@ typedef struct
 {
     const wchar_t *path;
     const wchar_t *symlink;
-} device_info;
+}
+DeviceInfo;
 
 typedef struct
 {
     DEVICE_OBJECT *object;
     UNICODE_STRING path;
     UNICODE_STRING symlink;
-} device;
+}
+Device;
 
 #define NUMOF_DEVICES 2
 
-static device_info devices_info[NUMOF_DEVICES] =
+static DeviceInfo devices_info[NUMOF_DEVICES] =
 {
     {
         L"\\Device\\test_device1",
@@ -127,7 +135,7 @@ static device_info devices_info[NUMOF_DEVICES] =
     },
 };
 
-static device devices[NUMOF_DEVICES];
+static Device devices[NUMOF_DEVICES];
 
 static void destroy_device(int i)
 {
@@ -153,13 +161,14 @@ static NTSTATUS set_up_device(DRIVER_OBJECT *driver_object, int i)
     RtlInitUnicodeString(&devices[i].path, devices_info[i].path);
     RtlInitUnicodeString(&devices[i].symlink, devices_info[i].symlink);
 
-    status = IoCreateDevice(driver_object,
-                            0,
-                            &devices[i].path,
-                            FILE_DEVICE_UNKNOWN,
-                            FILE_DEVICE_SECURE_OPEN,
-                            FALSE,
-                            &devices[i].object);
+    status = IoCreateDevice(
+        driver_object,
+        0,
+        &devices[i].path,
+        FILE_DEVICE_UNKNOWN,
+        FILE_DEVICE_SECURE_OPEN,
+        FALSE,
+        &devices[i].object);
 
     if (!NT_SUCCESS(status))
         return status;
@@ -167,8 +176,8 @@ static NTSTATUS set_up_device(DRIVER_OBJECT *driver_object, int i)
     devices[i].object->Flags |= DO_BUFFERED_IO;
     devices[i].object->Flags &= ~DO_DEVICE_INITIALIZING;
 
-    if (!NT_SUCCESS(status = IoCreateSymbolicLink(&devices[i].symlink,
-                                                  &devices[i].path)))
+    if (!NT_SUCCESS(status = IoCreateSymbolicLink(
+            &devices[i].symlink, &devices[i].path)))
         goto delete_device;
 
     return status;

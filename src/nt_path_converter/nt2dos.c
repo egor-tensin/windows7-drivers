@@ -18,14 +18,20 @@ static NTSTATUS get_object_name_info(
     NTSTATUS status = STATUS_SUCCESS;
 
     status = ObQueryNameString(object, NULL, 0, &nbneeded);
+
     if (status != STATUS_INFO_LENGTH_MISMATCH)
         return status;
+
     *object_name_info = ExAllocatePoolWithTag(PagedPool, nbneeded, '1l');
+
     if (*object_name_info == NULL)
         return STATUS_INSUFFICIENT_RESOURCES;
+
     status = ObQueryNameString(object, *object_name_info, nbneeded, &nbneeded);
+
     if (!NT_SUCCESS(status))
         goto free_object_name_info;
+
     return status;
 
 free_object_name_info:
@@ -46,36 +52,42 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
     USHORT u_resolved_size;
     NTSTATUS status = STATUS_SUCCESS;
 
-    InitializeObjectAttributes(&file_attrs,
-                               u_unresolved,
-                               OBJ_CASE_INSENSITIVE | OBJ_OPENIF,
-                               NULL,
-                               NULL);
+    InitializeObjectAttributes(
+        &file_attrs,
+        u_unresolved,
+        OBJ_CASE_INSENSITIVE | OBJ_OPENIF,
+        NULL,
+        NULL);
 
-    status = ZwCreateFile(&file,
-                          FILE_READ_ATTRIBUTES,
-                          &file_attrs,
-                          &io_status_block,
-                          NULL,
-                          FILE_ATTRIBUTE_NORMAL,
-                          FILE_SHARE_READ | FILE_SHARE_WRITE,
-                          FILE_OPEN,
-                          FILE_SYNCHRONOUS_IO_NONALERT,
-                          NULL, 0);
+    status = ZwCreateFile(
+        &file,
+        FILE_READ_ATTRIBUTES,
+        &file_attrs,
+        &io_status_block,
+        NULL,
+        FILE_ATTRIBUTE_NORMAL,
+        FILE_SHARE_READ | FILE_SHARE_WRITE,
+        FILE_OPEN,
+        FILE_SYNCHRONOUS_IO_NONALERT,
+        NULL,
+        0);
 
     if (!NT_SUCCESS(status))
         return status;
 
-    status = ObReferenceObjectByHandle(file,
-                                       FILE_READ_ATTRIBUTES,
-                                       *IoFileObjectType,
-                                       KernelMode,
-                                       &file_object,
-                                       NULL);
+    status = ObReferenceObjectByHandle(
+        file,
+        FILE_READ_ATTRIBUTES,
+        *IoFileObjectType,
+        KernelMode,
+        &file_object,
+        NULL);
+
     if (!NT_SUCCESS(status))
         goto close_file;
 
     status = get_object_name_info(file_object, &file_name_info);
+
     if (!NT_SUCCESS(status))
         goto close_file;
 
@@ -83,15 +95,15 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
     {
         u_resolved->Buffer = ExAllocatePoolWithTag(
             PagedPool, file_name_info->Name.Length, '1l');
+
         if (u_resolved->Buffer == NULL)
         {
             status = STATUS_INSUFFICIENT_RESOURCES;
             goto free_file_name_info;
         }
 
-        RtlInitEmptyUnicodeString(u_resolved,
-                                  u_resolved->Buffer,
-                                  file_name_info->Name.Length);
+        RtlInitEmptyUnicodeString(
+            u_resolved, u_resolved->Buffer, file_name_info->Name.Length);
         RtlCopyUnicodeString(u_resolved, &file_name_info->Name);
         goto free_file_name_info;
     }
@@ -103,15 +115,14 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
         goto free_file_name_info;
 
     status = IoVolumeDeviceToDosName(volume_object, &u_dos_name);
+
     if (!NT_SUCCESS(status))
         goto free_volume_name_info;
 
-    u_resolved_size = file_name_info->Name.Length
-        - volume_name_info->Name.Length
-        + u_dos_name.Length;
+    u_resolved_size = file_name_info->Name.Length - volume_name_info->Name.Length + u_dos_name.Length;
 
-    u_resolved->Buffer = ExAllocatePoolWithTag(
-        PagedPool, u_resolved_size, '1l');
+    u_resolved->Buffer = ExAllocatePoolWithTag(PagedPool, u_resolved_size, '1l');
+
     if (u_resolved->Buffer == NULL)
     {
         status = STATUS_INSUFFICIENT_RESOURCES;
@@ -121,10 +132,8 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
     RtlInitEmptyUnicodeString(u_resolved, u_resolved->Buffer, u_resolved_size);
 
     RtlCopyUnicodeString(u_resolved, &u_dos_name);
-    file_name_info->Name.Buffer +=
-        volume_name_info->Name.Length / sizeof(wchar_t);
-    file_name_info->Name.Length -=
-        volume_name_info->Name.Length;
+    file_name_info->Name.Buffer += volume_name_info->Name.Length / sizeof(wchar_t);
+    file_name_info->Name.Length -= volume_name_info->Name.Length;
     RtlUnicodeStringCat(u_resolved, &file_name_info->Name);
 
 free_dos_name:
