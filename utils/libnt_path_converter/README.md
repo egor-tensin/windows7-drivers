@@ -20,7 +20,7 @@ The NT namespace can be explored using the
 [WinObj](https://technet.microsoft.com/en-us/library/bb896657.aspx) utility.
 Usage example (assuming nt_path_converter is already loaded):
 
-    >convert_nt_path.exe \Device\HarddiskVolume2\Windows
+    > convert_nt_path.exe \Device\HarddiskVolume2\Windows
     C:\Windows
 
 ## Building

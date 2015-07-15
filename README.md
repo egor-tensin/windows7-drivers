@@ -56,18 +56,18 @@ For example, to install a driver "C:\test.sys" as a "test" service, run
 
     sc create test type= kernel binPath= C:\test.sys
 
-You can then load/unload the driver using the `sc` to start/stop the
-corresponding service.
+You can then load/unload the driver by using the `net` utility to start/stop
+the corresponding service.
 
-    sc start test
-    sc stop test
+    net start test
+    net stop test
 
 To uninstall a driver, delete the corresponding service using `sc`.
 
     sc delete test
 
-Please note, that on the 64-bit version of Windows 7 loading 32-bit drivers is
-not allowed.
+Please note, that **64-bit versions of Windows 7 disallow loading 32-bit
+drivers**!
 
 You may also need to explicitly enable loading self-signed drivers on 64-bit
 versions of Windows.

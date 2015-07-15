@@ -31,7 +31,7 @@ The same as
 Starts a service (loading the corresponding driver).
 The same as
 
-    sc start NAME
+    net start NAME
 
 except that `start_service.exe` waits until the service is actually loaded.
 
@@ -42,7 +42,7 @@ except that `start_service.exe` waits until the service is actually loaded.
 Stops the service `NAME` (unloading the corresponding driver).
 The same as
 
-    sc stop NAME
+    net stop NAME
 
 except that `stop_service.exe` waits until the service is actually stopped.
 
