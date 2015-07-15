@@ -6,10 +6,10 @@
 
 ### libnt_path_converter.lib
 
-Wraps nt_path_converter's virtual device interface using
+Wraps `nt_path_converter`'s virtual device interface using
 [libservice](../libservice).
-Include the headers by `#include`ing `include/libnt_path_converter/all.hpp`,
-which includes all of the other header files.
+Include the headers by `#include`ing `libnt_path_converter/all.hpp`, which
+includes all the other header files.
 
 ### convert_nt_path.exe
 

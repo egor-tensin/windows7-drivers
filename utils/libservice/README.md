@@ -6,8 +6,8 @@ Simple service management library and utilities.
 
 ### libservice.lib
 
-Clients may include the headers by `#include`ing `include/libservice/all.hpp`,
-which includes all of the other header files.
+Include the headers by `#include`ing `libservice/all.hpp`, which includes all
+the other header files.
 
 For service management usage examples, see the utilities descriptions below.
 
