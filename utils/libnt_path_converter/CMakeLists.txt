@@ -1,9 +1,10 @@
 project(libnt_path_converter)
-file(GLOB ${PROJECT_NAME}_sources "src/*.cpp")
-file(GLOB_RECURSE ${PROJECT_NAME}_headers "include/*.hpp")
-add_library(${PROJECT_NAME} ${${PROJECT_NAME}_sources}
-                            ${${PROJECT_NAME}_headers})
-target_link_libraries(${PROJECT_NAME} libservice)
-target_include_directories(${PROJECT_NAME} PUBLIC include/)
+file(GLOB libnt_path_converter_sources "src/*.cpp")
+file(GLOB_RECURSE libnt_path_converter_headers "include/*.hpp")
+add_library(libnt_path_converter
+    ${libnt_path_converter_sources}
+    ${libnt_path_converter_headers})
+target_link_libraries(libnt_path_converter libservice)
+target_include_directories(libnt_path_converter PUBLIC include/)
 
 add_subdirectory(utils)

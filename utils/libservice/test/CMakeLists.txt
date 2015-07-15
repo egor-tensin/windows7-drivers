@@ -1,4 +1,4 @@
 add_executable(libservice_test_windows_error windows_error.cpp)
 target_link_libraries(libservice_test_windows_error libservice)
 set_target_properties(libservice_test_windows_error PROPERTIES
-                      OUTPUT_NAME windows_error)
+    OUTPUT_NAME windows_error)
