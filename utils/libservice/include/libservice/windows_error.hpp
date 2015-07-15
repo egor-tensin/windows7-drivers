@@ -16,22 +16,19 @@
 
 namespace libservice
 {
-    class WinErrorCategory : public std::error_category
-                           , public Singleton<WinErrorCategory>
+    class WindowsErrorCategory
+        : public std::error_category
+        , public Singleton<WindowsErrorCategory>
     {
     public:
-        const char* name() const LIBSERVICE_NOEXCEPT { return "windows"; }
+        const char* name() const LIBSERVICE_NOEXCEPT { return "Windows"; }
 
         std::string message(int) const;
 
     private:
-        friend class Singleton<WinErrorCategory>;
+        friend class Singleton<WindowsErrorCategory>;
     };
 }
 
-#define LIBSERVICE_ERROR_PREFIX "Error in function '" \
-                                LIBSERVICE_FUNCTION_NAME \
-                                "' at file '" \
-                                LIBSERVICE_FILE_PATH \
-                                "', line " \
-                                LIBSERVICE_LINE_NUMBER_STRING
+#define LIBSERVICE_ERROR_PREFIX \
+    "Error in function '" LIBSERVICE_FUNCTION_NAME "' at file '" LIBSERVICE_FILE_PATH "', line " LIBSERVICE_LINE_NUMBER_STRING

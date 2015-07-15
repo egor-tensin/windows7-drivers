@@ -36,20 +36,20 @@ namespace libservice
         void swap(ServiceManager& other) LIBSERVICE_NOEXCEPT
         {
             using std::swap;
-            swap(m_handle, other.m_handle);
+            swap(handle, other.handle);
         }
 
-        explicit operator SC_HANDLE() const
+        operator SC_HANDLE() const
         {
-            return static_cast<SC_HANDLE>(m_handle);
+            return handle;
         }
 
     private:
-        explicit ServiceManager(ServiceHandle h)
-            : m_handle(std::move(h))
+        ServiceManager(ServiceHandle handle)
+            : handle(std::move(handle))
         { }
 
-        ServiceHandle m_handle;
+        ServiceHandle handle;
 
         ServiceManager(const ServiceManager&) = delete;
     };

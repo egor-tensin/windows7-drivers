@@ -6,10 +6,7 @@
  *            See LICENSE.txt for details.
  */
 
-#include "libservice/common.hpp"
-#include "libservice/service_handle.hpp"
-#include "libservice/service_manager.hpp"
-#include "libservice/windows_error.hpp"
+#include "libservice/all.hpp"
 
 #include <Windows.h>
 
@@ -25,10 +22,11 @@ namespace libservice
         if (NULL == raw)
         {
             const auto ec = GetLastError();
-            throw std::system_error(ec, WinErrorCategory::get());
+            throw std::system_error(
+                ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
         }
 
-        return ServiceManager(ServiceHandle(raw));
+        return ServiceHandle(raw);
     }
 
     void swap(ServiceManager& a, ServiceManager& b) LIBSERVICE_NOEXCEPT

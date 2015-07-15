@@ -12,17 +12,21 @@
 
 #include <exception>
 #include <iostream>
+#include <system_error>
 
 int main()
 {
     try
     {
-        throw std::system_error(ERROR_FILE_NOT_FOUND, libservice::WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+        throw std::system_error(
+            ERROR_FILE_NOT_FOUND,
+            libservice::WindowsErrorCategory::get(),
+            LIBSERVICE_ERROR_PREFIX);
     }
     catch (const std::exception& e)
     {
         std::cerr << e.what() << "\n";
-        return -1;
+        return 1;
     }
     return 0;
 }

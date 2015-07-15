@@ -6,12 +6,11 @@
  *            See LICENSE.txt for details.
  */
 
-#include "libservice/common.hpp"
-#include "libservice/device.hpp"
-#include "libservice/handle.hpp"
-#include "libservice/windows_error.hpp"
+#include "libservice/all.hpp"
 
 #include <Windows.h>
+
+#include <cstddef>
 
 #include <string>
 #include <system_error>
@@ -23,18 +22,20 @@ namespace libservice
     {
         Handle open_device(const std::string& path)
         {
-            const auto raw = CreateFileA(path.c_str(),
-                                         GENERIC_READ | GENERIC_WRITE,
-                                         0,
-                                         NULL,
-                                         OPEN_EXISTING,
-                                         FILE_ATTRIBUTE_NORMAL,
-                                         NULL);
+            const auto raw = CreateFileA(
+                path.c_str(),
+                GENERIC_READ | GENERIC_WRITE,
+                0,
+                NULL,
+                OPEN_EXISTING,
+                FILE_ATTRIBUTE_NORMAL,
+                NULL);
 
             if (INVALID_HANDLE_VALUE == raw)
             {
                 const auto ec = GetLastError();
-                throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw std::system_error(
+                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
 
             return Handle(raw);
@@ -46,15 +47,15 @@ namespace libservice
         return Device(open_device(path));
     }
 
-    DWORD Device::get_required_output_size(
-        DWORD code,
+    std::size_t Device::get_required_output_size(
+        Code code,
         const void* in_buf,
-        DWORD in_buf_size) const
+        std::size_t in_buf_size) const
     {
         DWORD nbreq;
 
-        DWORD ret = DeviceIoControl(
-            static_cast<HANDLE>(m_handle),
+        std::size_t nbwritten = DeviceIoControl(
+            handle,
             code,
             const_cast<void*>(in_buf),
             in_buf_size,
@@ -63,7 +64,7 @@ namespace libservice
             &nbreq,
             NULL);
 
-        if (0 == ret)
+        if (0 == nbwritten)
         {
             const auto ec = GetLastError();
 
@@ -73,24 +74,25 @@ namespace libservice
                     return nbreq;
 
                 default:
-                    throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                    throw std::system_error(
+                        ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
         }
 
-        return ret;
+        return nbwritten;
     }
 
-    DWORD Device::send_control_code(
-        DWORD code,
+    std::size_t Device::send_control_code(
+        Code code,
         const void* in_buf,
-        DWORD in_buf_size,
+        std::size_t in_buf_size,
         void* out_buf,
-        DWORD out_buf_size) const
+        std::size_t out_buf_size) const
     {
         DWORD nbreq;
 
-        DWORD ret = DeviceIoControl(
-            static_cast<HANDLE>(m_handle),
+        std::size_t nbwritten = DeviceIoControl(
+            handle,
             code,
             const_cast<void*>(in_buf),
             in_buf_size,
@@ -99,13 +101,14 @@ namespace libservice
             &nbreq,
             NULL);
 
-        if (0 == ret)
+        if (0 == nbwritten)
         {
             const auto ec = GetLastError();
-            throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+            throw std::system_error(
+                ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
         }
 
-        return ret;
+        return nbwritten;
     }
 
     void swap(Device& a, Device& b) LIBSERVICE_NOEXCEPT

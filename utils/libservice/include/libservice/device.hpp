@@ -13,6 +13,8 @@
 
 #include <Windows.h>
 
+#include <cstddef>
+
 #include <string>
 #include <utility>
 
@@ -21,6 +23,8 @@ namespace libservice
     class Device
     {
     public:
+        typedef DWORD Code;
+
         static Device open(const std::string& path);
 
         Device(Device&& other) LIBSERVICE_NOEXCEPT
@@ -37,35 +41,38 @@ namespace libservice
         void swap(Device& other) LIBSERVICE_NOEXCEPT
         {
             using std::swap;
-            swap(m_handle, other.m_handle);
+            swap(handle, other.handle);
         }
 
-        DWORD get_required_output_size(DWORD code,
-                                       const void* in_buf,
-                                       DWORD in_buf_size) const;
+        std::size_t get_required_output_size(
+            Code code,
+            const void* in_buf,
+            std::size_t in_buf_size) const;
 
-        DWORD send_control_code(DWORD code,
-                                const void* in_buf,
-                                DWORD in_buf_size,
-                                void* out_buf,
-                                DWORD out_buf_size) const;
+        std::size_t send_control_code(
+            Code code,
+            const void* in_buf,
+            std::size_t in_buf_size,
+            void* out_buf,
+            std::size_t out_buf_size) const;
 
     private:
-        explicit Device(Handle h)
-            : m_handle(std::move(h))
+        Device(Handle handle)
+            : handle(std::move(handle))
         { }
 
-        Handle m_handle;
+        Handle handle;
 
         Device(const Device&) = delete;
     };
 
-    void swap(libservice::Device&, libservice::Device&) LIBSERVICE_NOEXCEPT;
+    void swap(Device&, Device&) LIBSERVICE_NOEXCEPT;
 }
 
 namespace std
 {
     template <>
     void swap<libservice::Device>(
-        libservice::Device&, libservice::Device&) LIBSERVICE_NOEXCEPT;
+        libservice::Device&,
+        libservice::Device&) LIBSERVICE_NOEXCEPT;
 }

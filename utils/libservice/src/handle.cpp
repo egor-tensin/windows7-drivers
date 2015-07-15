@@ -6,8 +6,9 @@
  *            See LICENSE.txt for details.
  */
 
-#include "libservice/common.hpp"
-#include "libservice/handle.hpp"
+#include "libservice/all.hpp"
+
+#include <utility>
 
 namespace libservice
 {

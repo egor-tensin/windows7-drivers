@@ -20,14 +20,18 @@ namespace libservice
     class Service
     {
     public:
-        static bool does_exist(const ServiceManager&,
-                               const std::string& name);
+        static bool exists(
+            const ServiceManager&,
+            const std::string& name);
 
-        static Service open(const ServiceManager&,
-                            const std::string& name);
-        static Service install(const ServiceManager&,
-                               const std::string& name,
-                               const std::string& bin_path);
+        static Service open(
+            const ServiceManager&,
+            const std::string& name);
+
+        static Service install(
+            const ServiceManager&,
+            const std::string& name,
+            const std::string& bin_path);
 
         void start() const;
         void stop() const;
@@ -47,15 +51,15 @@ namespace libservice
         void swap(Service& other) LIBSERVICE_NOEXCEPT
         {
             using std::swap;
-            swap(m_handle, other.m_handle);
+            swap(handle, other.handle);
         }
 
     private:
-        explicit Service(ServiceHandle h)
-            : m_handle(std::move(h))
+        Service(ServiceHandle handle)
+            : handle(std::move(handle))
         { }
 
-        ServiceHandle m_handle;
+        ServiceHandle handle;
 
         Service(const Service&) = delete;
     };

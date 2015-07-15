@@ -23,8 +23,8 @@ namespace libservice
     public:
         Handle() = default;
 
-        explicit Handle(HANDLE raw)
-            : m_impl(raw)
+        Handle(HANDLE raw)
+            : impl(raw)
         { }
 
         Handle(Handle&& other) LIBSERVICE_NOEXCEPT
@@ -38,20 +38,20 @@ namespace libservice
             return *this;
         }
 
-        explicit operator bool() const
+        operator bool() const
         {
-            return static_cast<bool>(m_impl);
+            return static_cast<bool>(impl);
         }
 
-        explicit operator HANDLE() const
+        operator HANDLE() const
         {
-            return m_impl.get();
+            return impl.get();
         }
 
         void swap(Handle& other) LIBSERVICE_NOEXCEPT
         {
             using std::swap;
-            swap(m_impl, other.m_impl);
+            swap(impl, other.impl);
         }
 
     private:
@@ -59,11 +59,11 @@ namespace libservice
         {
             void operator()(HANDLE raw)
             {
-                ::CloseHandle(raw);
+                CloseHandle(raw);
             }
         };
 
-        std::unique_ptr<std::remove_pointer<HANDLE>::type, Deleter> m_impl;
+        std::unique_ptr<std::remove_pointer<HANDLE>::type, Deleter> impl;
 
         Handle(const Handle&) = delete;
     };

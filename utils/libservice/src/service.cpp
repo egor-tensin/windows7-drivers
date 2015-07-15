@@ -6,15 +6,12 @@
  *            See LICENSE.txt for details.
  */
 
-#include "libservice/common.hpp"
-#include "libservice/service.hpp"
-#include "libservice/service_handle.hpp"
-#include "libservice/service_manager.hpp"
-#include "libservice/windows_error.hpp"
+#include "libservice/all.hpp"
 
 #include <Windows.h>
 
 #include <string>
+#include <system_error>
 #include <utility>
 #include <vector>
 
@@ -22,20 +19,23 @@ namespace libservice
 {
     namespace
     {
-        ServiceHandle open_service(const ServiceManager& mgr, const std::string& name)
+        ServiceHandle open_service(
+            const ServiceManager& mgr,
+            const std::string& name)
         {
             const auto raw = OpenServiceA(
-                static_cast<SC_HANDLE>(mgr),
+                mgr,
                 name.c_str(),
                 SERVICE_ALL_ACCESS);
 
             if (NULL == raw)
             {
                 const auto ec = GetLastError();
-                throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw std::system_error(
+                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
 
-            return ServiceHandle(raw);
+            return raw;
         }
 
         ServiceHandle install_service(
@@ -44,7 +44,7 @@ namespace libservice
             const std::string& bin_path)
         {
             const auto raw = CreateServiceA(
-                static_cast<SC_HANDLE>(mgr),
+                mgr,
                 name.c_str(),
                 name.c_str(),
                 SERVICE_ALL_ACCESS,
@@ -61,18 +61,20 @@ namespace libservice
             if (NULL == raw)
             {
                 const auto ec = GetLastError();
-                throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw std::system_error(
+                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
 
-            return ServiceHandle(raw);
+            return raw;
         }
 
         void start_service(const ServiceHandle& handle)
         {
-            if (!StartService(static_cast<SC_HANDLE>(handle), 0, NULL))
+            if (!StartService(handle, 0, NULL))
             {
                 const auto ec = GetLastError();
-                throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw std::system_error(
+                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
         }
 
@@ -80,28 +82,32 @@ namespace libservice
         {
             SERVICE_STATUS service_status;
 
-            if (!ControlService(static_cast<SC_HANDLE>(handle), SERVICE_CONTROL_STOP, &service_status))
+            if (!ControlService(handle, SERVICE_CONTROL_STOP, &service_status))
             {
                 const auto ec = GetLastError();
-                throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw std::system_error(
+                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
         }
 
         void uninstall_service(const ServiceHandle& handle)
         {
-            if (!DeleteService(static_cast<SC_HANDLE>(handle)))
+            if (!DeleteService(handle))
             {
                 const auto ec = GetLastError();
-                throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw std::system_error(
+                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
         }
 
-        bool does_service_exist(const ServiceManager& mgr,
-                                const std::string& name)
+        bool service_exists(
+            const ServiceManager& mgr,
+            const std::string& name)
         {
-            const auto raw = OpenService(static_cast<SC_HANDLE>(mgr),
-                                         name.c_str(),
-                                         SERVICE_QUERY_STATUS);
+            const auto raw = OpenServiceA(
+                mgr,
+                name.c_str(),
+                SERVICE_QUERY_STATUS);
 
             if (NULL != raw)
             {
@@ -117,23 +123,25 @@ namespace libservice
                     return false;
 
                 default:
-                    throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                    throw std::system_error(
+                        ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
         }
-        
+
         SERVICE_STATUS_PROCESS query_service_status(const ServiceHandle& handle)
         {
             SERVICE_STATUS_PROCESS status;
             DWORD nbreq;
 
-            if (!QueryServiceStatusEx(static_cast<SC_HANDLE>(handle),
-                                      SC_STATUS_PROCESS_INFO,
-                                      reinterpret_cast<BYTE*>(&status),
-                                      sizeof(status),
-                                      &nbreq))
+            const auto buf_ptr = reinterpret_cast<BYTE*>(&status);
+            const auto buf_size = sizeof(status);
+
+            if (!QueryServiceStatusEx(
+                handle, SC_STATUS_PROCESS_INFO, buf_ptr, buf_size, &nbreq))
             {
                 const auto ec = GetLastError();
-                throw std::system_error(ec, WinErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw std::system_error(
+                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
             }
 
             return status;
@@ -143,7 +151,7 @@ namespace libservice
         {
             return query_service_status(handle).dwCurrentState;
         }
-        
+
         SERVICE_STATUS_PROCESS wait_for_service_state(
             const ServiceHandle& handle,
             const DWORD desired_state)
@@ -183,31 +191,36 @@ namespace libservice
                     return status;
                 }
             }
+
             return status;
         }
     }
 
-    Service Service::open(const ServiceManager& mgr, const std::string& name)
+    Service Service::open(
+        const ServiceManager& mgr,
+        const std::string& name)
     {
-        return Service(open_service(mgr, name));
+        return open_service(mgr, name);
     }
 
-    Service Service::install(const ServiceManager& mgr,
-                             const std::string& name,
-                             const std::string& bin_path)
+    Service Service::install(
+        const ServiceManager& mgr,
+        const std::string& name,
+        const std::string& bin_path)
     {
-        return Service(install_service(mgr, name, bin_path));
+        return install_service(mgr, name, bin_path);
     }
 
-    bool Service::does_exist(const ServiceManager& mgr,
-                                     const std::string& name)
+    bool Service::exists(
+        const ServiceManager& mgr,
+        const std::string& name)
     {
-        return does_service_exist(mgr, name);
+        return service_exists(mgr, name);
     }
 
     void Service::start() const
     {
-        const auto state = query_service_state(m_handle);
+        const auto state = query_service_state(handle);
 
         switch (state)
         {
@@ -215,37 +228,37 @@ namespace libservice
                 break;
 
             case SERVICE_STOP_PENDING:
-                wait_for_service_state(m_handle, SERVICE_STOPPED);
+                wait_for_service_state(handle, SERVICE_STOPPED);
                 break;
 
             default:
                 return;
         }
 
-        start_service(m_handle);
-        wait_for_service_state(m_handle, SERVICE_RUNNING);
+        start_service(handle);
+        wait_for_service_state(handle, SERVICE_RUNNING);
     }
 
     void Service::stop() const
     {
-        switch (query_service_state(m_handle))
+        switch (query_service_state(handle))
         {
             case SERVICE_STOPPED:
                 return;
 
             case SERVICE_STOP_PENDING:
-                wait_for_service_state(m_handle, SERVICE_STOPPED);
+                wait_for_service_state(handle, SERVICE_STOPPED);
                 return;
         }
 
-        stop_service(m_handle);
-        wait_for_service_state(m_handle, SERVICE_STOPPED);
+        stop_service(handle);
+        wait_for_service_state(handle, SERVICE_STOPPED);
     }
 
     void Service::uninstall() const
     {
         stop();
-        uninstall_service(m_handle);
+        uninstall_service(handle);
     }
 
     void swap(Service& a, Service& b) LIBSERVICE_NOEXCEPT
