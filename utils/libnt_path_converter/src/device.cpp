@@ -32,18 +32,19 @@ namespace libnt_path_converter
         const auto in_buf = src.c_str();
         const auto in_buf_size = (src.size() + 1) * sizeof(wchar_t);
 
-        DWORD nbreq = get_required_output_size(
+        const auto nbreq = get_required_output_size(
             control_code,
             in_buf,
             in_buf_size);
 
         std::vector<unsigned char> output(nbreq);
 
-        send_control_code(control_code,
-                          in_buf,
-                          in_buf_size,
-                          output.data(),
-                          nbreq);
+        send_control_code(
+            control_code,
+            in_buf,
+            in_buf_size,
+            output.data(),
+            nbreq);
 
         return reinterpret_cast<wchar_t*>(output.data());
     }
