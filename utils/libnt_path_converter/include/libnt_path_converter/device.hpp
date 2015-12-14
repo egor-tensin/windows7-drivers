@@ -21,4 +21,4 @@ namespace libnt_path_converter
 
         std::wstring convert_nt_path(const std::wstring&);
     };
-}                                           
+}
