@@ -12,6 +12,8 @@
 
 #include <cstddef>
 
+#include <limits>
+#include <stdexcept>
 #include <string>
 #include <system_error>
 #include <utility>
@@ -54,11 +56,14 @@ namespace libservice
     {
         DWORD nbreq;
 
+        if (in_buf_size > std::numeric_limits<DWORD>::max())
+            throw std::range_error("input buffer size is too large");
+
         std::size_t nbwritten = DeviceIoControl(
             handle,
             code,
             const_cast<void*>(in_buf),
-            in_buf_size,
+            static_cast<DWORD>(in_buf_size),
             NULL,
             0,
             &nbreq,
@@ -91,13 +96,18 @@ namespace libservice
     {
         DWORD nbreq;
 
+        if (in_buf_size > std::numeric_limits<DWORD>::max())
+            throw std::range_error("input buffer size is too large");
+        if (out_buf_size > std::numeric_limits<DWORD>::max())
+            throw std::range_error("output buffer size is too large");
+
         std::size_t nbwritten = DeviceIoControl(
             handle,
             code,
             const_cast<void*>(in_buf),
-            in_buf_size,
+            static_cast<DWORD>(in_buf_size),
             out_buf,
-            out_buf_size,
+            static_cast<DWORD>(out_buf_size),
             &nbreq,
             NULL);
 
