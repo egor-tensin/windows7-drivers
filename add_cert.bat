@@ -5,7 +5,7 @@
 @setlocal enabledelayedexpansion
 @echo off
 
-set cert_name=windows_drivers
+set cert_name=win7drv
 
 echo ============================ CERT INFO ============================
 echo Certificate name: "%cert_name%"

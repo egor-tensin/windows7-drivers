@@ -1,6 +1,6 @@
 # Windows drivers
 
-This is a collection of drivers for Windows 7, created to amuse and entertain.
+This is a collection of basic Windows 7 drivers.
 
 ## Development
 
@@ -16,8 +16,9 @@ To set up the development environment, start a new `cmd` session, and run
 
     C:\WinDDK\7600.16385.1\bin\setenv.bat C:\WinDDK\7600.16385.1 fre WIN7 no_oacr
 
-Of course, you may want to modify `setenv.bat` parameters.
-For example, to compile under x86-64, call `setenv.bat` like this:
+Of course, you may want to provide other `setenv.bat` parameters according to
+your needs.
+For example, to compile for x86-64, call `setenv.bat` like this:
 
     C:\WinDDK\7600.16385.1\bin\setenv.bat C:\WinDDK\7600.16385.1 fre x64 WIN7 no_oacr
 
@@ -28,9 +29,9 @@ Then navigate to the root directory and call `setenv.bat`:
 ### Code signing
 
 Driver binaries are signed using the self-signed certificate issued by
-"windows_drivers" from "Trusted Root Certification Authorities" store.
-You can generate this certificate using `add_cert.bat` (but first make sure
-you've set up the development environment).
+"win7drv" from "Trusted Root Certification Authorities" store.
+You can generate this certificate using `add_cert.bat` (make sure to set up the
+development environment first).
 To verify it's there, you can use the `certmgr.msc` utility.
 
 Driver binaries are automatically signed during builds, but you can also sign
@@ -103,4 +104,4 @@ Refer to your virtualization software's documentation for more details.
 
 This project, including all of the files and their contents, is licensed under
 the terms of the MIT License.
-See [LICENSE.txt](LICENSE.txt) for details.
+See LICENSE.txt for details.
