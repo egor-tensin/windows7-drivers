@@ -1,6 +1,8 @@
-# Windows drivers
+# Windows 7 drivers
 
 This is a collection of basic Windows 7 drivers.
+These are actually not drivers as such (in the sense that they don't actually
+manage any hardware), but rather kernel modules.
 
 ## Development
 
