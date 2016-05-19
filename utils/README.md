@@ -15,8 +15,8 @@ Usage examples of some of the drivers in this repository are also included.
 I've used the compiler shipped with Visual Studio Express 2013 with Update 4
 for Windows Desktop.
 
-You can generate the solution win7drv_utils.sln using CMake and build it using
-Visual Studio.
+You can generate the solution windows7_drivers_utils.sln using CMake and build
+it using Visual Studio.
 
 ## Licensing
 

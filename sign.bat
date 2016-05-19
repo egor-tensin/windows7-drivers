@@ -5,7 +5,7 @@
 @setlocal enabledelayedexpansion
 @echo off
 
-set cert_name=win7drv
+set cert_name=windows7_drivers
 
 if [%1] == [] (
   echo Usage: %0 SYS_PATH
