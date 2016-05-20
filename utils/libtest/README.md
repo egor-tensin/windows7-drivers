@@ -1,22 +1,22 @@
-# libtest
+# test driver utilities
 
-[test](../../src/test) usage examples.
+[test] driver usage examples.
 
-## Usage
+## Library
 
-### libtest.lib
+[test] driver's virtual device is wrapped into a separate library `libtest`
+using [libservice].
+`#include <libtest/all.hpp>` and link with `libtest.lib` to use the library.
 
-Wraps `test`'s virtual device interface using [libservice](../libservice).
-Include the headers by `#include`ing `libtest/all.hpp`, which includes all the
-other header files.
+## Utilities
 
 ### exchange_ints.exe
 
     Usage: exchange_ints.exe N
 
-Parses a given `unsigned int` and exchanges it with the value stored in
-driver's memory.
-Usage example (assuming `test` is already loaded):
+Parses its argument as an `unsigned int` and exchanges it with the one stored
+in [test] driver's memory.
+For example:
 
     > exchange_ints.exe 1
     42
@@ -27,11 +27,14 @@ Usage example (assuming `test` is already loaded):
     > exchange_ints.exe 100500
     32
 
-## Building
+## See also
 
-See [Building](../README.md#building).
+* [Building]
+* [License]
 
-## Licensing
 
-This project is licensed under the terms of the MIT License.
-See [Licensing](../../README.md#licensing) for details.
+
+[building]: ../README.md#building
+[license]: ../../README.md#license
+[test]: ../../src/test
+[libservice]: ../libservice/README.md

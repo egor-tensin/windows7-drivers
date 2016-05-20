@@ -1,66 +1,84 @@
 # Windows 7 drivers
 
-This is a collection of basic Windows 7 drivers.
-These are actually not drivers as such (in the sense that they don't actually
-manage any hardware), but rather kernel modules.
+A collection of basic Windows 7 drivers.
+
+These are actually not drivers as such in the sense that they don't actually
+manage any hardware.
+The author prefers calling them *kernel modules*.
 
 ## Development
 
 ### Prerequisites
 
-The drivers are compiled using the Windows Driver Kit Version 7.1.0.
-
-I've developed a set of batch files to facilitate building the drivers and
-cleaning after the build.
-The binaries are copied into the "bin" directory under the root directory.
-
-To set up the development environment, start a new `cmd` session, and run
+The drivers are compiled using [Windows Driver Kit 7.1.0].
+Install the "Build Environments" distributed with the kit, launch the Command
+Prompt, and execute (to target x86):
 
     C:\WinDDK\7600.16385.1\bin\setenv.bat C:\WinDDK\7600.16385.1 fre WIN7 no_oacr
 
-Of course, you may want to provide other `setenv.bat` parameters according to
-your needs.
-For example, to compile for x86-64, call `setenv.bat` like this:
+or (to target x86-64):
 
     C:\WinDDK\7600.16385.1\bin\setenv.bat C:\WinDDK\7600.16385.1 fre x64 WIN7 no_oacr
 
-Then navigate to the root directory and call `setenv.bat`:
+Then `cd` to the project's root directory and execute `setenv.bat`:
 
     setenv.bat
 
 ### Code signing
 
-Driver binaries are signed using the self-signed certificate issued by
-"windows7_drivers" from "Trusted Root Certification Authorities" store.
-You can generate this certificate using `add_cert.bat` (make sure to set up the
-development environment first).
+The binaries are signed using the self-signed certificate issued by
+"windows7_drivers".
+The certificate must be stored in the "Trusted Root Certification Authorities"
+store.
+To generate such a certificate, execute `add_cert.bat`:
+
+    add_cert.bat
+
 To verify it's there, you can use the `certmgr.msc` utility.
 
-Driver binaries are automatically signed during builds, but you can also sign
-one manually by passing the path to a .sys file to `sign.bat`.
+The binaries are signed automatically after they are built, but you can also
+sign manually by passing the path to a .sys file to `sign.bat`:
 
-### Build & clean
+    sign.bat C:\workspace\personal\windows7-drivers\bin\x64\Release\test.sys
 
-To build every driver under the "src" directory, call `build_drivers.bat`.
-To build a particular driver, pass the path to the driver source directory to
-`build_driver.bat`.
-Driver binaries are copied to the "bin" directory.
+### Building
 
-Cleaning after a driver build includes deleting log and object files in the
-driver source directory and deleting the binaries from the "bin" directory.
-To clean after every driver in the "src" directory, call `clean_drivers.bat`.
-To clean after a particular driver, pass the path to the driver source
-directory to `clean_driver.bat`.
+To build every driver under the "src/" directory, execute `build_drivers.bat`:
+
+    build_drivers.bat
+
+To build a particular driver, pass the path to the driver's source directory to
+`build_driver.bat`:
+
+    build_driver.bat C:\workspace\personal\windows7-drivers\src\test
+
+Driver binaries are copied to the "bin/" directory under the project's root.
+
+### Cleaning up
+
+Cleaning up after building a driver includes deleting the log and object files
+produced during the build as well as purging the binaries from the "bin/"
+directory.
+
+To clean up after building every driver in the "src/" directory, execute
+`clean_drivers.bat`:
+
+    clean_drivers.bat
+
+To clean up after building a particular driver, pass the path to the driver's
+source directory to `clean_driver.bat`:
+
+    clean_driver.bat C:\workspace\personal\windows7-drivers\src\test
 
 ## Installation
 
-To install a driver as a service, you can use the `sc` utility.
-For example, to install a driver "C:\test.sys" as a "test" service, run
+To install a driver as a Windows service, you can use the `sc` utility (`test`
+is the name of the service):
 
-    sc create test type= kernel binPath= C:\test.sys
+    sc create test type= kernel binPath= C:\workspace\personal\windows7-drivers\bin\x64\Release\test.sys
 
-You can then load/unload the driver by using the `net` utility to start/stop
-the corresponding service.
+You can then load/unload the driver by starting/stopping the corresponding
+service using the `net` utility.
 
     net start test
     net stop test
@@ -74,36 +92,48 @@ drivers**!
 
 You may also need to explicitly enable loading self-signed drivers on 64-bit
 versions of Windows.
-One way is to use the `bcdedit` utility:
+Using the `bcdedit` utility, execute
 
     bcdedit /set testsigning on
 
-Then restart your computer and you should be all set!
+and restart your computer.
 
-## Debugging
+## Remote debugging
 
-You can debug a driver using WinDbg.
+A driver can be debugged using WinDbg.
 To enable kernel debugging, you can use the `msconfig` utility (navigate to
 "Boot" -> "Advanced options..." and check "Debug") or the `bcdedit` utility:
 
     bcdedit /debug on
     bcdedit /dbgsettings serial debugport:1 baudrate:115200
 
-Restart your computer for these settings to take effect.
+Then restart your computer for the new settings to take effect.
 
-If a driver is loaded on a separate physical machine, you can connect to a
-physical COM port from another host with WinDbg installed and enable kernel
-debugging via "File" -> "Kernel Debug...".
-You might need to restart the debuggee a couple of times in order to enter the
-kernel debugging mode.
+If a driver is loaded on a physical machine, you can connect to the COM port
+specified in kernel debugging settings (#1 by default) with a proper cable
+and enter the kernel debugging mode in WinDbg via "File" -> "Kernel Debug...".
+You might need to restart the debuggee machine a couple of times in order to
+enter the kernel debugging mode.
 
-If a driver is running on a virtual machine, the conventional approach is to
-expose a COM port via a named pipe.
-You can then connect to the pipe from WinDbg installed on the host.
-Refer to your virtualization software's documentation for more details.
+If a driver is loaded on a virtual machine, the conventional approach is to
+expose one of the guest OS's COM ports via a named pipe.
+You can then connect to the pipe from a WinDbg instance on the host OS (via
+"File" -> "Kernel Debug...").
+Refer to your virtualization software's documentation for details.
 
-## Licensing
+## Utilities
+
+A couple of usages examples are provided along with the drivers themselves.
+For details, see [Utilities].
+
+## License
 
 This project, including all of the files and their contents, is licensed under
 the terms of the MIT License.
-See LICENSE.txt for details.
+See [LICENSE.txt] for details.
+
+
+
+[Windows Driver Kit 7.1.0]: https://www.microsoft.com/en-us/download/details.aspx?id=11800
+[LICENSE.txt]: LICENSE.txt
+[Utilities]: utils/README.md

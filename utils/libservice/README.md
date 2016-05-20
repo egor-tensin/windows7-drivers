@@ -1,39 +1,32 @@
-# libservice
+# Service management utilities
 
-Simple service management library and utilities.
+Utilities to easily install/start/stop/uninstall drivers using Windows
+services.
 
-## Usage
+## Library
 
-### libservice.lib
+`#include <libservice/all.hpp>` and link with `libservice.lib` to use the
+library.
 
-Include the headers by `#include`ing `libservice/all.hpp`, which includes all
-the other header files.
-
-For service management usage examples, see the utilities descriptions below.
-
-For virtual device usage examples, refer e.g. to
-[libnt_path_converter](../libnt_path_converter).
+## Utilities
 
 ### install_service.exe
 
     Usage: install_service.exe NAME SYS_PATH
 
 Installs a driver as a service.
-The service is started manually.
 The same as
 
-    sc create NAME type= kernel binPath= SYS_PATH
+    > sc create NAME type= kernel binPath= SYS_PATH
 
 ### start_service.exe
 
     Usage: start_service.exe NAME
 
-Starts a service (loading the corresponding driver).
+Starts the service `NAME` (loading the corresponding driver).
 The same as
 
-    net start NAME
-
-except that `start_service.exe` waits until the service is actually loaded.
+    > net start NAME
 
 ### stop_service.exe
 
@@ -42,9 +35,7 @@ except that `start_service.exe` waits until the service is actually loaded.
 Stops the service `NAME` (unloading the corresponding driver).
 The same as
 
-    net stop NAME
-
-except that `stop_service.exe` waits until the service is actually stopped.
+    > net stop NAME
 
 ### uninstall_service.exe
 
@@ -54,13 +45,14 @@ Uninstalls the service `NAME`, wiping the corresponding record from the
 registry.
 The same as
 
-    sc delete NAME
+    > sc delete NAME
 
-## Building
+## See also
 
-See [Building](../README.md#building).
+* [Building]
+* [License]
 
-## Licensing
 
-This project is licensed under the terms of the MIT License.
-See [Licensing](../../README.md#licensing) for details.
+
+[building]: ../README.md#building
+[license]: ../../README.md#license

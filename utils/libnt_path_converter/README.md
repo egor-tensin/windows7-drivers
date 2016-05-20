@@ -1,33 +1,36 @@
-# libnt_path_converter
+# nt_path_converter driver utilities
 
-[nt_path_converter](../../src/nt_path_converter) usage examples.
+[nt_path_converter] driver usage examples.
 
-## Usage
+## Library
 
-### libnt_path_converter.lib
+[nt_path_converter] driver's virtual device is wrapped into a separate library
+`libnt_path_converter` using [libservice].
+`#include <libnt_path_converter/all.hpp>` and link with
+`libnt_path_converter.lib` to use the library.
 
-Wraps `nt_path_converter`'s virtual device interface using
-[libservice](../libservice).
-Include the headers by `#include`ing `libnt_path_converter/all.hpp`, which
-includes all the other header files.
+## Utilities
 
 ### convert_nt_path.exe
 
     Usage: convert_nt_path.exe [NT_PATH...]
 
 Converts a NT-style path to a DOS-style path.
-The NT namespace can be explored using the
-[WinObj](https://technet.microsoft.com/en-us/library/bb896657.aspx) utility.
-Usage example (assuming `nt_path_converter` is already loaded):
+The NT namespace can be explored using the [WinObj] utility.
+For example:
 
     > convert_nt_path.exe \Device\HarddiskVolume2\Windows
     C:\Windows
 
-## Building
+## See also
 
-See [Building](../README.md#building).
+* [Building]
+* [License]
 
-## Licensing
 
-This project is licensed under the terms of the MIT License.
-See [Licensing](../../README.md#licensing) for details.
+
+[building]: ../README.md#building
+[license]: ../../README.md#license
+[nt_path_converter]: ../../src/nt_path_converter
+[libservice]: ../libservice/README.md
+[WinObj]: https://technet.microsoft.com/en-us/library/bb896657.aspx
