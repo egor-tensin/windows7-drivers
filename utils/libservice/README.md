@@ -1,14 +1,8 @@
-# Service management utilities
+# Driver management utilities
 
-Utilities to easily install/start/stop/uninstall drivers using Windows
-services.
+Utilities to load/unload the drivers.
 
-## Library
-
-`#include <libservice/all.hpp>` and link with `libservice.lib` to use the
-library.
-
-## Utilities
+## Usage
 
 ### install_service.exe
 
@@ -49,10 +43,8 @@ The same as
 
 ## See also
 
-* [Building]
+* [Building the utilities]
 * [License]
 
-
-
-[building]: ../README.md#building
-[license]: ../../README.md#license
+[Building the utilities]: ../README.md#building-the-utilities
+[License]: ../../README.md#license

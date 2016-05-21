@@ -24,12 +24,14 @@ Then `cd` to the project's root directory and execute `setenv.bat`:
 
     setenv.bat
 
+[Windows Driver Kit 7.1.0]: https://www.microsoft.com/en-us/download/details.aspx?id=11800
+
 ### Code signing
 
 The binaries are signed using the self-signed certificate issued by
 "windows7_drivers".
-The certificate must be stored in the "Trusted Root Certification Authorities"
-store.
+The certificate must be stored in the current user's ROOT ("Trusted Root
+Certification Authorities") store.
 To generate such a certificate, execute `add_cert.bat`:
 
     add_cert.bat
@@ -41,7 +43,7 @@ sign manually by passing the path to a .sys file to `sign.bat`:
 
     sign.bat C:\workspace\personal\windows7-drivers\bin\x64\Release\test.sys
 
-### Building
+### Building the drivers
 
 To build every driver under the "src/" directory, execute `build_drivers.bat`:
 
@@ -72,8 +74,8 @@ source directory to `clean_driver.bat`:
 
 ## Installation
 
-To install a driver as a Windows service, you can use the `sc` utility (`test`
-is the name of the service):
+To install a driver as a Windows service, you can use the `sc` utility.
+For example, to install `test.sys` as a service with the name `test`, execute:
 
     sc create test type= kernel binPath= C:\workspace\personal\windows7-drivers\bin\x64\Release\test.sys
 
@@ -123,8 +125,10 @@ Refer to your virtualization software's documentation for details.
 
 ## Utilities
 
-A couple of usages examples are provided along with the drivers themselves.
+A couple of usages examples are included along with the drivers.
 For details, see [Utilities].
+
+[Utilities]: utils/README.md
 
 ## License
 
@@ -132,8 +136,4 @@ This project, including all of the files and their contents, is licensed under
 the terms of the MIT License.
 See [LICENSE.txt] for details.
 
-
-
-[Windows Driver Kit 7.1.0]: https://www.microsoft.com/en-us/download/details.aspx?id=11800
 [LICENSE.txt]: LICENSE.txt
-[Utilities]: utils/README.md

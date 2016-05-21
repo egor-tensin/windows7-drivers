@@ -2,13 +2,9 @@
 
 [test] driver usage examples.
 
-## Library
+[test]: ../../src/test
 
-[test] driver's virtual device is wrapped into a separate library `libtest`
-using [libservice].
-`#include <libtest/all.hpp>` and link with `libtest.lib` to use the library.
-
-## Utilities
+## Usage
 
 ### exchange_ints.exe
 
@@ -29,12 +25,8 @@ For example:
 
 ## See also
 
-* [Building]
+* [Building the utilities]
 * [License]
 
-
-
-[building]: ../README.md#building
-[license]: ../../README.md#license
-[test]: ../../src/test
-[libservice]: ../libservice/README.md
+[Building the utilities]: ../README.md#building-the-utilities
+[License]: ../../README.md#license
