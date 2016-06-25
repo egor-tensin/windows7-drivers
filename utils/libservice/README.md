@@ -1,8 +1,10 @@
-# Driver management utilities
+Driver management utilities
+===========================
 
 Utilities to load/unload the drivers.
 
-## Usage
+Usage
+-----
 
 ### install_service.exe
 
@@ -41,7 +43,8 @@ The same as
 
     > sc delete NAME
 
-## See also
+See also
+--------
 
 * [Building the utilities]
 * [License]

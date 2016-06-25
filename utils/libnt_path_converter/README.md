@@ -1,10 +1,12 @@
-# nt_path_converter driver utilities
+nt_path_converter driver utilities
+==================================
 
 [nt_path_converter] driver usage examples.
 
 [nt_path_converter]: ../../src/nt_path_converter
 
-## Usage
+Usage
+-----
 
 ### convert_nt_path.exe
 
@@ -19,7 +21,8 @@ For example:
 
 [WinObj]: https://technet.microsoft.com/en-us/library/bb896657.aspx
 
-## See also
+See also
+--------
 
 * [Building the utilities]
 * [License]

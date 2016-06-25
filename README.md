@@ -1,4 +1,5 @@
-# Windows 7 drivers
+Windows 7 drivers
+=================
 
 A collection of basic Windows 7 drivers.
 
@@ -6,7 +7,8 @@ These are actually not drivers as such in the sense that they don't actually
 manage any hardware.
 The author prefers calling them *kernel modules*.
 
-## Development
+Development
+-----------
 
 ### Prerequisites
 
@@ -72,7 +74,8 @@ source directory to `clean_driver.bat`:
 
     clean_driver.bat C:\workspace\personal\windows7-drivers\src\test
 
-## Installation
+Installation
+------------
 
 To install a driver as a Windows service, you can use the `sc` utility.
 For example, to install `test.sys` as a service with the name `test`, execute:
@@ -100,7 +103,8 @@ Using the `bcdedit` utility, execute
 
 and restart your computer.
 
-## Remote debugging
+Debugging
+---------
 
 A driver can be debugged using WinDbg.
 To enable kernel debugging, you can use the `msconfig` utility (navigate to
@@ -123,14 +127,16 @@ You can then connect to the pipe from a WinDbg instance on the host OS (via
 "File" -> "Kernel Debug...").
 Refer to your virtualization software's documentation for details.
 
-## Utilities
+Utilities
+---------
 
 A couple of usages examples are included along with the drivers.
 For details, see [Utilities].
 
 [Utilities]: utils/README.md
 
-## License
+License
+-------
 
 This project, including all of the files and their contents, is licensed under
 the terms of the MIT License.

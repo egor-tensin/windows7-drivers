@@ -1,4 +1,5 @@
-# Driver utilities
+Driver utilities
+================
 
 A couple of usage examples are included along with the drivers.
 
@@ -12,7 +13,8 @@ A couple of usage examples are included along with the drivers.
 [libnt_path_converter]: libnt_path_converter/README.md
 [nt_path_converter]: ../src/nt_path_converter
 
-## Building the utilities
+Building the utilities
+----------------------
 
 Create the build files using CMake and build using Visual Studio.
 
@@ -28,8 +30,9 @@ x86):
     > msbuild windows7_drivers_utils.sln
     ...
 
-## License
+See also
+--------
 
-See [License].
+* [License]
 
 [License]: ../README.md#license

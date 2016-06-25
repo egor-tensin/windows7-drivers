@@ -1,29 +1,40 @@
-# test driver utilities
+test driver utilities
+=====================
 
 [test] driver usage examples.
 
 [test]: ../../src/test
 
-## Usage
+Usage
+-----
 
 ### exchange_ints.exe
 
-    Usage: exchange_ints.exe N
+```
+Usage: exchange_ints.exe N
+```
 
 Parses its argument as an `unsigned int` and exchanges it with the one stored
 in [test] driver's memory.
 For example:
 
-    > exchange_ints.exe 1
-    42
+```
+> exchange_ints.exe 1
+42
+```
 
-    > exchange_ints.exe 32
-    1
+```
+> exchange_ints.exe 32
+1
+```
 
-    > exchange_ints.exe 100500
-    32
+```
+> exchange_ints.exe 100500
+32
+```
 
-## See also
+See also
+--------
 
 * [Building the utilities]
 * [License]
