@@ -1,10 +1,7 @@
-/**
- * \file
- * \author Egor Tensin <Egor.Tensin@gmail.com>
- * \date 2015
- * \copyright This file is licensed under the terms of the MIT License.
- *            See LICENSE.txt for details.
- */
+// Copyright (c) 2015 Egor Tensin <Egor.Tensin@gmail.com>
+// This file is part of the "Windows 7 drivers" project.
+// For details, see https://github.com/egor-tensin/windows7-drivers.
+// Distributed under the MIT License.
 
 #include "libnt_path_converter/all.hpp"
 

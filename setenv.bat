@@ -1,6 +1,7 @@
-@rem Copyright 2015 Egor Tensin <Egor.Tensin@gmail.com>
-@rem This file is licensed under the terms of the MIT License.
-@rem See LICENSE.txt for details.
+@rem Copyright (c) 2015 Egor Tensin <Egor.Tensin@gmail.com>
+@rem This file is part of the "Windows 7 drivers" project.
+@rem For details, see https://github.com/egor-tensin/windows7-drivers.
+@rem Distributed under the MIT License.
 
 @echo off
 

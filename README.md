@@ -138,8 +138,7 @@ For details, see [Utilities].
 License
 -------
 
-This project, including all of the files and their contents, is licensed under
-the terms of the MIT License.
+Distributed under the MIT License.
 See [LICENSE.txt] for details.
 
 [LICENSE.txt]: LICENSE.txt

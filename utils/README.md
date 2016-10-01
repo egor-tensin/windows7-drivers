@@ -22,7 +22,7 @@ For example, using Visual Studio 2013 Update 4 for Windows Desktop (targetting
 x86):
 
     > cd
-    C:\workspace\personal\build\windows7-drivers\utils
+    C:\workspace\build\windows7-drivers
 
     > cmake -G "Visual Studio 12 2013" C:\workspace\personal\windows7-drivers\utils
     ...
