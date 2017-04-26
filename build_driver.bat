@@ -55,15 +55,19 @@ set sys_path=%driver_src_root%\obj%BUILD_ALT_DIR%\%buildarch_directory%\%driver_
 set pdb_path=%driver_src_root%\obj%BUILD_ALT_DIR%\%buildarch_directory%\%driver_name%.pdb
 set lib_path=%driver_src_root%\obj%BUILD_ALT_DIR%\%buildarch_directory%\%driver_name%.lib
 
-echo.
-call "%root%\sign.bat" "%sys_path%" || exit /b !errorlevel!
+if exist "%sys_path%" (
+  echo.
+  call "%root%\sign.bat" "%sys_path%" || exit /b !errorlevel!
+)
 
 echo.
 echo ============================== DISTR ==============================
-call :distr_copy "%pdb_path%" "%pdb_dist_dir%" || goto :distr_failure
-call :distr_copy "%sys_path%" "%sys_dist_dir%" || goto :distr_failure
+if exist "%sys_path%" (
+  call :distr_copy "%sys_path%" "%sys_dist_dir%" || goto :distr_failure
+  call :distr_copy "%pdb_path%" "%pdb_dist_dir%" || goto :distr_failure
+)
 if exist "%lib_path%" (
-  call :distr_copy "%lib_path%" || goto :distr_failure
+  call :distr_copy "%lib_path%" "%lib_dist_dir%" || goto :distr_failure
 )
 echo ========================== DISTR SUCCESS ==========================
 exit /b
