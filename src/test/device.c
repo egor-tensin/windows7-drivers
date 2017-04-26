@@ -13,6 +13,8 @@ static NTSTATUS device_open(DEVICE_OBJECT *device_object, IRP *irp)
 {
     NTSTATUS status = STATUS_SUCCESS;
 
+    UNREFERENCED_PARAMETER(device_object);
+
     irp->IoStatus.Status = status;
     irp->IoStatus.Information = 0;
     IoCompleteRequest(irp, IO_NO_INCREMENT);
@@ -31,6 +33,12 @@ static NTSTATUS handle_say_hello(
     unsigned long out_buf_size,
     ULONG_PTR *nbwritten)
 {
+    UNREFERENCED_PARAMETER(in_buf);
+    UNREFERENCED_PARAMETER(in_buf_size);
+    UNREFERENCED_PARAMETER(out_buf);
+    UNREFERENCED_PARAMETER(out_buf_size);
+    UNREFERENCED_PARAMETER(nbwritten);
+
     DbgPrint("Hello, world!\n");
     return STATUS_SUCCESS;
 }
@@ -71,6 +79,8 @@ static NTSTATUS device_ioctl(DEVICE_OBJECT *device_object, IRP *irp)
     unsigned long in_buf_size, out_buf_size;
     ioctl_handler handler;
     NTSTATUS status = STATUS_UNSUCCESSFUL;
+
+    UNREFERENCED_PARAMETER(device_object);
 
     irp->IoStatus.Status = status;
     irp->IoStatus.Information = 0;

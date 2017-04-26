@@ -56,7 +56,10 @@ static void hook_sysenter()
     */
 
     old_msr_value = __readmsr(IA32_SYSENTER_EIP);
+#pragma warning(push)
+#pragma warning(disable: 4305)
     old_ki_fast_call_entry = (void *) old_msr_value;
+#pragma warning(pop)
     __writemsr(IA32_SYSENTER_EIP, new_ki_fast_call_entry);
 }
 
@@ -80,10 +83,12 @@ static void on_driver_unload(DRIVER_OBJECT *driver_object)
     KTIMER timer;
     LARGE_INTEGER time_out;
 
+    UNREFERENCED_PARAMETER(driver_object);
+
     unhook_sysenter();
 
     KeInitializeTimer(&timer);
-    time_out.QuadPart = -30000000; // 3 sec
+    time_out.QuadPart = -30000000;
     KeSetTimer(&timer, time_out, NULL);
 
     KeWaitForSingleObject(&timer, Executive, KernelMode, FALSE, NULL);
@@ -93,6 +98,8 @@ NTSTATUS DriverEntry(
     DRIVER_OBJECT *driver_object,
     UNICODE_STRING *registry_path)
 {
+    UNREFERENCED_PARAMETER(registry_path);
+
     driver_object->DriverUnload = on_driver_unload;
     hook_sysenter();
     return STATUS_SUCCESS;

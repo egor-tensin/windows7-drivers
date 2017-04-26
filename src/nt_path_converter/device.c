@@ -15,6 +15,8 @@ static NTSTATUS device_open(DEVICE_OBJECT *device_object, IRP *irp)
 {
     NTSTATUS status = STATUS_SUCCESS;
 
+    UNREFERENCED_PARAMETER(device_object);
+
     irp->IoStatus.Status = status;
     irp->IoStatus.Information = 0;
     IoCompleteRequest(irp, IO_NO_INCREMENT);
@@ -72,6 +74,8 @@ static NTSTATUS device_ioctl(DEVICE_OBJECT *device_object, IRP *irp)
     unsigned long in_buf_size, out_buf_size;
     ioctl_handler handler;
     NTSTATUS status = STATUS_UNSUCCESSFUL;
+
+    UNREFERENCED_PARAMETER(device_object);
 
     irp->IoStatus.Status = status;
     irp->IoStatus.Information = 0;
