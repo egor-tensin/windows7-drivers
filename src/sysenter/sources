@@ -1,3 +1,4 @@
 TARGETTYPE = DRIVER
 TARGETNAME = sysenter
-SOURCES = main.c
+SOURCES =
+I386_SOURCES = main.c
