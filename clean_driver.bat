@@ -7,8 +7,8 @@
 @echo off
 
 if [%1] == [] (
-  echo Usage: %~0 DRIVER_SRC_ROOT
-  exit /b 1
+    echo Usage: %~0 DRIVER_SRC_ROOT
+    exit /b 1
 )
 
 call check_ddk.bat || exit /b !errorlevel!
@@ -18,8 +18,8 @@ set driver_src_root=%~f1
 cd "%driver_src_root%"
 
 for /f %%i in ("%driver_src_root%") do (
-  set driver_name=%%~ni
-  set driver_dist_root=%%~dpi
+    set driver_name=%%~ni
+    set driver_dist_root=%%~dpi
 )
 
 call :make_relative driver_dist_root "%src_root%"
@@ -46,15 +46,17 @@ exit /b
 
 :clean_rmdir
 if exist "%~1\" (
-  echo rmdir /s /q "%~1"...
-  rmdir /s /q "%~1" >nul || exit /b !errorlevel!
+    echo rmdir /s /q "%~1"
+         rmdir /s /q "%~1" >nul
+    exit /b !errorlevel!
 )
 exit /b
 
 :clean_del
 if exist "%~1" (
-  echo del "%~1"
-  del "%~1" >nul || exit /b !errorlevel!
+    echo del "%~1"
+         del "%~1" >nul
+    exit /b !errorlevel!
 )
 exit /b
 
@@ -73,13 +75,13 @@ for /f "tokens=*" %%a in ("%base%") do set base=%%~fa
 set match=
 set c=
 for /f "tokens=*" %%a in ('echo.%base:\=^&echo.%') do (
-  set sub=!sub!%%a\
-  call set tmp=%%src:!sub!=%%
-  if "!tmp!" neq "!src!" (
-    set match=!sub!
-  ) else (
-    set upper=!upper!..\
-  )
+    set sub=!sub!%%a\
+    call set tmp=%%src:!sub!=%%
+    if "!tmp!" neq "!src!" (
+        set match=!sub!
+    ) else (
+        set upper=!upper!..\
+    )
 )
 set src=%upper%!src:%match%=!
 (endlocal

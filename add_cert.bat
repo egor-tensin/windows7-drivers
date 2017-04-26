@@ -15,9 +15,9 @@ echo.
 echo ======================= ADDING CERTIFICATE ========================
 call check_ddk.bat || goto :add_cert_failure
 echo makecert.exe -r -pe -ss root -n CN="%cert_name%" "%cert_name%.cer"
-makecert.exe -r -pe -ss root -n CN="%cert_name%" "%cert_name%.cer" >nul || goto :add_cert_failure
+     makecert.exe -r -pe -ss root -n CN="%cert_name%" "%cert_name%.cer" >nul || goto :add_cert_failure
 echo del "%cert_name%.cer"
-del "%cert_name%.cer" >nul || goto :add_cert_failure
+     del "%cert_name%.cer" >nul || goto :add_cert_failure
 echo =================== ADDING CERTIFICATE SUCCESS ====================
 exit /b 0
 
