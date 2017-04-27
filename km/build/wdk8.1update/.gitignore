@@ -1,8 +1,3 @@
-*.err
-*.log
-*.wrn
-obj*/
-
 *.suo
 *.vcxproj.filters
 *.vcxproj.user
