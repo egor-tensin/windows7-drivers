@@ -3,17 +3,17 @@
 // For details, see https://github.com/egor-tensin/windows7-drivers.
 // Distributed under the MIT License.
 
-#include "libtest/all.hpp"
+#include "libsimple/all.hpp"
 
 #include "libservice/all.hpp"
 
 #include <Windows.h>
 
-namespace libtest
+namespace libsimple
 {
     namespace
     {
-        const char* const device_path = "\\\\.\\test_device1";
+        const char* const device_path = "\\\\.\\simple_device1";
         const auto exchange_ints_ctl_code = CTL_CODE(0x8001, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS);
     }
 

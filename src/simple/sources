@@ -1,3 +1,3 @@
 TARGETTYPE = DRIVER
-TARGETNAME = test
+TARGETNAME = simple
 SOURCES = device.c main.c

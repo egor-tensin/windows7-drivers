@@ -43,7 +43,7 @@ To verify it's there, you can use the `certmgr.msc` utility.
 The binaries are signed automatically after they are built, but you can also
 sign manually by passing the path to a .sys file to `sign.bat`:
 
-    sign.bat C:\workspace\personal\windows7-drivers\bin\x64\Release\test.sys
+    sign.bat C:\workspace\personal\windows7-drivers\bin\x64\Release\simple.sys
 
 ### Building the drivers
 
@@ -54,7 +54,7 @@ To build every driver under the "src/" directory, execute `build_drivers.bat`:
 To build a particular driver, pass the path to the driver's source directory to
 `build_driver.bat`:
 
-    build_driver.bat C:\workspace\personal\windows7-drivers\src\test
+    build_driver.bat C:\workspace\personal\windows7-drivers\src\simple
 
 Driver binaries are copied to the "bin/" directory under the project's root.
 
@@ -72,25 +72,26 @@ To clean up after building every driver in the "src/" directory, execute
 To clean up after building a particular driver, pass the path to the driver's
 source directory to `clean_driver.bat`:
 
-    clean_driver.bat C:\workspace\personal\windows7-drivers\src\test
+    clean_driver.bat C:\workspace\personal\windows7-drivers\src\simple
 
 Installation
 ------------
 
 To install a driver as a Windows service, you can use the `sc` utility.
-For example, to install `test.sys` as a service with the name `test`, execute:
+For example, to install `simple.sys` as a service with the name `simple`,
+execute:
 
-    sc create test type= kernel binPath= C:\workspace\personal\windows7-drivers\bin\x64\Release\test.sys
+    sc create simple type= kernel binPath= C:\workspace\personal\windows7-drivers\bin\x64\Release\simple.sys
 
 You can then load/unload the driver by starting/stopping the corresponding
 service using the `net` utility.
 
-    net start test
-    net stop test
+    net start simple
+    net stop simple
 
 To uninstall a driver, delete the corresponding service using `sc`.
 
-    sc delete test
+    sc delete simple
 
 Please note, that **64-bit versions of Windows 7 disallow loading 32-bit
 drivers**!

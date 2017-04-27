@@ -1,9 +1,9 @@
-test driver utilities
-=====================
+simple driver utilities
+=======================
 
-[test] driver usage examples.
+[simple] driver usage examples.
 
-[test]: ../../src/test
+[simple]: ../../src/simple
 
 Usage
 -----
@@ -15,7 +15,7 @@ Usage: exchange_ints.exe N
 ```
 
 Parses its argument as an `unsigned int` and exchanges it with the one stored
-in [test] driver's memory.
+in [simple] driver's memory.
 For example:
 
 ```

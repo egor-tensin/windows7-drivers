@@ -3,7 +3,7 @@
 // For details, see https://github.com/egor-tensin/windows7-drivers.
 // Distributed under the MIT License.
 
-#include "libtest/all.hpp"
+#include "libsimple/all.hpp"
 
 #include <exception>
 #include <iostream>
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        std::cout << libtest::Device().exchange_ints(src) << "\n";
+        std::cout << libsimple::Device().exchange_ints(src) << "\n";
     }
     catch (const std::exception& e)
     {

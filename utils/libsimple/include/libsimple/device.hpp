@@ -7,7 +7,7 @@
 
 #include "libservice/all.hpp"
 
-namespace libtest
+namespace libsimple
 {
     class Device : libservice::Device
     {

@@ -4,12 +4,12 @@ Driver utilities
 A couple of usage examples are included along with the drivers.
 
 * [libservice]: Utilities to load/unload the drivers.
-* [libtest]: [test] driver usage examples.
+* [libsimple]: [simple] driver usage examples.
 * [libnt_path_converter]: [nt_path_converter] driver usage examples.
 
 [libservice]: libservice/README.md
-[libtest]: libtest/README.md
-[test]: ../src/test
+[libsimple]: libsimple/README.md
+[simple]: ../src/simple
 [libnt_path_converter]: libnt_path_converter/README.md
 [nt_path_converter]: ../src/nt_path_converter
 

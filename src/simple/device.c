@@ -136,12 +136,12 @@ Device;
 static DeviceInfo devices_info[NUMOF_DEVICES] =
 {
     {
-        L"\\Device\\test_device1",
-        L"\\DosDevices\\test_device1",
+        L"\\Device\\simple_device1",
+        L"\\DosDevices\\simple_device1",
     },
     {
-        L"\\Device\\test_device2",
-        L"\\DosDevices\\test_device2",
+        L"\\Device\\simple_device2",
+        L"\\DosDevices\\simple_device2",
     },
 };
 
