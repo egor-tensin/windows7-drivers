@@ -3,9 +3,8 @@ Windows 7 drivers
 
 A collection of basic Windows 7 drivers.
 
-These are actually not drivers as such in the sense that they don't actually
-manage any hardware.
-The author prefers calling them *kernel modules*.
+These don't actually manage any hardware, this is just an example of code
+running in the kernel mode.
 
 Development
 -----------
