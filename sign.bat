@@ -8,15 +8,15 @@
 
 set cert_name=windows7_drivers
 
-if [%1] == [] (
-    echo Usage: %0 SYS_PATH
+if "%~1" == "" (
+    echo Usage: %~nx0 SYS_PATH >&2
     exit /b 1
 )
 
-set sys_path=%~f1
+set "sys_path=%~f1"
 
 echo ============================ CERT INFO ============================
-echo Certificate name: "%cert_name%"
+echo Certificate name: %cert_name%
 echo ========================== END CERT INFO ==========================
 echo.
 echo ============================= SIGNING =============================

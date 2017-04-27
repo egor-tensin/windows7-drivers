@@ -9,7 +9,7 @@
 set cert_name=windows7_drivers
 
 echo ============================ CERT INFO ============================
-echo Certificate name: "%cert_name%"
+echo Certificate name: %cert_name%
 echo ========================== END CERT INFO ==========================
 echo.
 echo ======================= ADDING CERTIFICATE ========================

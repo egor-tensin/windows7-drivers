@@ -8,11 +8,11 @@
 
 call check_env.bat || exit /b !errorlevel!
 
-if [%BUILD_ALT_DIR%] == [] goto :ddk_not_set
-if [%_BUILDARCH%] == [] goto :ddk_not_set
+if not defined BUILD_ALT_DIR goto :ddk_not_set
+if not defined _BUILDARCH goto :ddk_not_set
 
-if not exist %root%\sign.bat (
-    echo Error: %root%\sign.bat is missing ^(don^'t know how to sign drivers^)
+if not exist "%root%\sign.bat" (
+    echo Error: %root%\sign.bat was not found ^(don^'t know how to sign drivers otherwise^) >&2
     exit /b 1
 )
 
@@ -22,17 +22,17 @@ where makecert.exe >nul 2>&1 || goto :makecert_not_found
 exit /b 0
 
 :ddk_not_set
-echo Error: either %%BUILD_ALT_DIR%% or %%_BUILDARCH%% are not set ^(perhaps you forgot to set up the WinDDK environment^)
+echo Error: either %%BUILD_ALT_DIR%% or %%_BUILDARCH%% are not set ^(have you set up the WinDDK environment?^) >&2
 exit /b 1
 
 :build_not_found
-echo Error: build.exe not found ^(perhaps you forgot to set up the WinDDK environment^)
+echo Error: build.exe was not found ^(have you set up the WinDDK environment?^) >&2
 exit /b 1
 
 :signtool_not_found
-echo Error: signtool.exe not found ^(perhaps you forgot to set up the WinDDK environment^)
+echo Error: signtool.exe was not found ^(have you set up the WinDDK environment?^) >&2
 exit /b 1
 
 :makecert_not_found
-echo Error: makecert.exe not found ^(perhaps you forgot to set up the WinDDK environment^)
+echo Error: makecert.exe was not found ^(have you set up the WinDDK environment?^) >&2
 exit /b 1

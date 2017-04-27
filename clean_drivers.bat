@@ -7,7 +7,7 @@
 @echo off
 
 for /f "delims=" %%i in ('dir /s sources /b') do (
-    set driver_src_root=%%~dpi
+    set "driver_src_root=%%~dpi"
     echo.
     call clean_driver.bat "!driver_src_root:~0,-1!" || exit /b !errorlevel!
 )
