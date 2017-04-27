@@ -1,0 +1,1 @@
+DIRS = minimal nt_path_converter simple sysenter

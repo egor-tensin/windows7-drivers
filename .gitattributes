@@ -1,5 +1,6 @@
 * text=auto
 
+dirs text eol=crlf
 makefile text eol=crlf
 sources text eol=crlf
 *.bat text eol=crlf
