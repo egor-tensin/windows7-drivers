@@ -3,7 +3,7 @@ simple driver utilities
 
 [simple] driver usage examples.
 
-[simple]: ../../km/src/simple
+[simple]: ../../../km/src/simple
 
 Usage
 -----
@@ -39,5 +39,5 @@ See also
 * [Building the utilities]
 * [License]
 
-[Building the utilities]: ../README.md#building-the-utilities
-[License]: ../../README.md#license
+[Building the utilities]: ../../README.md#building-the-utilities
+[License]: ../../../README.md#license

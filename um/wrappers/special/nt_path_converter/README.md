@@ -3,7 +3,7 @@ nt_path_converter driver utilities
 
 [nt_path_converter] driver usage examples.
 
-[nt_path_converter]: ../../km/src/special/nt_path_converter
+[nt_path_converter]: ../../../../km/src/special/nt_path_converter
 
 Usage
 -----
@@ -27,5 +27,5 @@ See also
 * [Building the utilities]
 * [License]
 
-[Building the utilities]: ../README.md#building-the-utilities
-[License]: ../../README.md#license
+[Building the utilities]: ../../../README.md#building-the-utilities
+[License]: ../../../../README.md#license
