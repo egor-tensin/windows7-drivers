@@ -1,7 +1,7 @@
-Building drivers
-================
+WDK 8.1 Update
+==============
 
-The drivers can be built using WDK 8.1.
+The drivers can be built using WDK 8.1 Update.
 
 You can find the Visual Studio 2013 solution & project files required to build
 the drivers in this directory.

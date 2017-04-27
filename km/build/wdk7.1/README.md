@@ -1,5 +1,5 @@
-Building drivers
-================
+WDK 7.1.0
+=========
 
 The drivers can be built using [Windows Driver Kit 7.1.0].
 
@@ -8,7 +8,7 @@ The drivers can be built using [Windows Driver Kit 7.1.0].
 Prerequisites
 -------------
 
-Install the "Build Environments" distributed with the kit, fire up `cmd`, and
+Install the "Build Environments" distributed with the kit, fire up `cmd` and
 execute (to target Windows 7/x86):
 
     C:\WinDDK\7600.16385.1\bin\setenv.bat C:\WinDDK\7600.16385.1 fre WIN7 no_oacr
@@ -17,10 +17,10 @@ or (to target Windows 7/x86-64):
 
     C:\WinDDK\7600.16385.1\bin\setenv.bat C:\WinDDK\7600.16385.1 fre x64 WIN7 no_oacr
 
-Manually
---------
+DIY
+---
 
-Navigate to "km/src/" and execute:
+From the project's root directory, navigate to "km/src/" and execute:
 
     build.exe /cegwZ
 
@@ -28,8 +28,8 @@ This should build every driver, generating the .sys files somewhere in the
 obj*something* directories in the respective drivers' directories.
 They are not signed though.
 
-Automatically
--------------
+Automation
+----------
 
 I developed a bunch of batch scripts to automatically build, sign and copy the
 .sys files to a predefined directory.
@@ -52,7 +52,7 @@ sign manually by passing the path to a .sys file to `sign.bat`:
 
     sign.bat C:\workspace\personal\windows7-drivers\km\build\wdk7.1\bin\x64\Release\simple.sys
 
-### Building the drivers
+### Building
 
 To build every driver, execute `build_drivers.bat`:
 

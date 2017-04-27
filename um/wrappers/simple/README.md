@@ -36,8 +36,8 @@ For example:
 See also
 --------
 
-* [Building the utilities]
+* [Building]
 * [License]
 
-[Building the utilities]: ../../README.md#building-the-utilities
+[Building]: ../../README.md#building
 [License]: ../../../README.md#license

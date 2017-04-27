@@ -13,8 +13,8 @@ A couple of usage examples are included along with the drivers.
 [libnt_path_converter]: wrappers/special/nt_path_converter/README.md
 [nt_path_converter]: ../km/src/special/nt_path_converter
 
-Building the utilities
-----------------------
+Building
+--------
 
 Create the build files using CMake and build using Visual Studio.
 
