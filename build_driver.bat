@@ -7,7 +7,7 @@
 @echo off
 
 if "%~1" == "" (
-    echo Usage: %~nx0 DRIVER_SRC_ROOT
+    echo Usage: %~nx0 DRIVER_SRC_ROOT >&2
     exit /b 1
 )
 
