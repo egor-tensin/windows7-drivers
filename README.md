@@ -47,14 +47,15 @@ sign manually by passing the path to a .sys file to `sign.bat`:
 
 ### Building the drivers
 
-To build every driver under the "src/" directory, execute `build_drivers.bat`:
+To build every driver under the "km/src/" directory, execute
+`build_drivers.bat`:
 
     build_drivers.bat
 
 To build a particular driver, pass the path to the driver's source directory to
 `build_driver.bat`:
 
-    build_driver.bat C:\workspace\personal\windows7-drivers\src\simple
+    build_driver.bat C:\workspace\personal\windows7-drivers\km\src\simple
 
 Driver binaries are copied to the "bin/" directory under the project's root.
 
@@ -64,7 +65,7 @@ Cleaning up after building a driver includes deleting the log and object files
 produced during the build as well as purging the binaries from the "bin/"
 directory.
 
-To clean up after building every driver in the "src/" directory, execute
+To clean up after building every driver in the "km/src/" directory, execute
 `clean_drivers.bat`:
 
     clean_drivers.bat
@@ -72,7 +73,7 @@ To clean up after building every driver in the "src/" directory, execute
 To clean up after building a particular driver, pass the path to the driver's
 source directory to `clean_driver.bat`:
 
-    clean_driver.bat C:\workspace\personal\windows7-drivers\src\simple
+    clean_driver.bat C:\workspace\personal\windows7-drivers\km\src\simple
 
 Installation
 ------------
@@ -134,7 +135,7 @@ Utilities
 A couple of usages examples are included along with the drivers.
 For details, see [Utilities].
 
-[Utilities]: utils/README.md
+[Utilities]: um/README.md
 
 License
 -------

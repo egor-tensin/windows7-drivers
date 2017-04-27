@@ -3,7 +3,7 @@ simple driver utilities
 
 [simple] driver usage examples.
 
-[simple]: ../../src/simple
+[simple]: ../../km/src/simple
 
 Usage
 -----

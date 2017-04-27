@@ -5,10 +5,14 @@
 
 @echo off
 
-set "root=%~dp0%"
-set "src_root=%root%src"
-set "bin_root=%root%bin"
-set "lib_root=%root%lib"
+set "build_root=%~dp0%"
+
+set "root=%build_root%\..\..\.."
+for /f "delims=" %%i in ("%root%") do set "root=%%~fi"
+
+set "src_root=%root%\km\src"
+set "bin_root=%root%\km\build\wdk7.1\bin"
+set "lib_root=%root%\km\build\wdk7.1\lib"
 
 set target_configuration=Release
 

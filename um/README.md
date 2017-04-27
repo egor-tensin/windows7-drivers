@@ -9,9 +9,9 @@ A couple of usage examples are included along with the drivers.
 
 [libservice]: libservice/README.md
 [libsimple]: libsimple/README.md
-[simple]: ../src/simple
+[simple]: ../km/src/simple
 [libnt_path_converter]: libnt_path_converter/README.md
-[nt_path_converter]: ../src/nt_path_converter
+[nt_path_converter]: ../km/src/special/nt_path_converter
 
 Building the utilities
 ----------------------
@@ -24,7 +24,7 @@ x86):
     > cd
     C:\workspace\build\windows7-drivers
 
-    > cmake -G "Visual Studio 12 2013" C:\workspace\personal\windows7-drivers\utils
+    > cmake -G "Visual Studio 12 2013" C:\workspace\personal\windows7-drivers\um
     ...
 
     > msbuild windows7_drivers_utils.sln

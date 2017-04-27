@@ -57,7 +57,7 @@ set "lib_path=%driver_src_root%\obj%BUILD_ALT_DIR%\%buildarch_directory%\%driver
 
 if exist "%sys_path%" (
     echo.
-    call "%root%\sign.bat" "%sys_path%" || exit /b !errorlevel!
+    call "%build_root%\sign.bat" "%sys_path%" || exit /b !errorlevel!
 )
 
 echo.

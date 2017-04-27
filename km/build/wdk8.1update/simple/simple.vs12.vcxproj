@@ -51,13 +51,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6B611107-4492-46B1-A233-12BAB1FF0FC2}</ProjectGuid>
+    <ProjectGuid>{8251FD47-D3D6-4A5D-8DFD-84669E075DAF}</ProjectGuid>
     <TemplateGuid>{dd38f7fc-d7bd-488b-9242-7d8754cde80d}</TemplateGuid>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition="'$(Configuration)' == ''">Win8.1 Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">Win32</Platform>
-    <RootNamespace>nt_path_converter_vs12</RootNamespace>
+    <RootNamespace>simple_vs12</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win8.1 Debug|Win32'" Label="Configuration">
@@ -217,14 +217,11 @@
     <FilesToPackage Include="@(Inf->'%(CopyOutput)')" Condition="'@(Inf)'!=''" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\control_codes.h" />
-    <ClInclude Include="..\device.h" />
-    <ClInclude Include="..\nt2dos.h" />
+    <ClCompile Include="..\..\..\src\simple\device.c" />
+    <ClCompile Include="..\..\..\src\simple\main.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\device.c" />
-    <ClCompile Include="..\main.c" />
-    <ClCompile Include="..\nt2dos.c" />
+    <ClInclude Include="..\..\..\src\simple\device.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
