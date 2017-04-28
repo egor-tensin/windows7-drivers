@@ -7,15 +7,16 @@
 @echo off
 
 if not defined BUILD_ALT_DIR goto :ddk_not_set
-if not defined _BUILDARCH goto :ddk_not_set
+if not defined _BUILDARCH    goto :ddk_not_set
+if not defined DDKBUILDENV   goto :ddk_not_set
 
-where build.exe >nul 2>&1 || goto :build_not_found
+where build.exe >nul 2>&1    || goto :build_not_found
 where signtool.exe >nul 2>&1 || goto :signtool_not_found
 where makecert.exe >nul 2>&1 || goto :makecert_not_found
 exit /b 0
 
 :ddk_not_set
-echo Error: either %%BUILD_ALT_DIR%% or %%_BUILDARCH%% are not set ^(have you set up the WinDDK environment?^) >&2
+echo Error: either %%BUILD_ALT_DIR%%, %%_BUILDARCH%% or %%DDKBUILDENV%% are not set ^(have you set up the WinDDK environment?^) >&2
 exit /b 1
 
 :build_not_found

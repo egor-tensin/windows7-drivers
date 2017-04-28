@@ -22,9 +22,9 @@ for /f %%i in ("%drv_src_dir%") do (
 
 call :make_relative drv_subdir "%proj_src_dir%"
 
-set "sys_dist_dir=%proj_bin_dir%\%target_platform%\%target_configuration%\%drv_subdir%"
-set "pdb_dist_dir=%proj_bin_dir%\%target_platform%\%target_configuration%\%drv_subdir%"
-set "lib_dist_dir=%proj_lib_dir%\%target_platform%\%target_configuration%\%drv_subdir%"
+set "sys_dist_dir=%proj_bin_dir%\%target_arch%\%target_config%\%drv_subdir%"
+set "pdb_dist_dir=%proj_bin_dir%\%target_arch%\%target_config%\%drv_subdir%"
+set "lib_dist_dir=%proj_lib_dir%\%target_arch%\%target_config%\%drv_subdir%"
 
 echo =========================== DRIVER INFO ===========================
 echo Driver source directory: %drv_src_dir%
