@@ -5,13 +5,13 @@ A couple of usage examples are included along with the drivers.
 
 * [libservice]: Utilities to load/unload the drivers.
 * [libsimple]: [simple] driver usage examples.
-* [libnt_path_converter]: [nt_path_converter] driver usage examples.
+* [libnt_namespace]: [nt_namespace] driver usage examples.
 
 [libservice]: service/README.md
 [libsimple]: wrappers/simple/README.md
 [simple]: ../km/src/simple
-[libnt_path_converter]: wrappers/special/nt_path_converter/README.md
-[nt_path_converter]: ../km/src/special/nt_path_converter
+[libnt_namespace]: wrappers/special/nt_namespace/README.md
+[nt_namespace]: ../km/src/special/nt_namespace
 
 Building
 --------

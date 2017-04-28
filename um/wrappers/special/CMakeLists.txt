@@ -1,1 +1,1 @@
-add_subdirectory(nt_path_converter)
+add_subdirectory(nt_namespace)

@@ -9,7 +9,7 @@
 
 #include <string>
 
-namespace libnt_path_converter
+namespace libnt_namespace
 {
     class Device : libservice::Device
     {

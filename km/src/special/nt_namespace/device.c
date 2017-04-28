@@ -38,8 +38,8 @@ static NTSTATUS handle_convert_nt_path(
     UNICODE_STRING uUnresolved, uResolved;
     NTSTATUS status = STATUS_SUCCESS;
 
-    DbgPrint("nt_path_converter: unresolved path: %ws\n", (WCHAR *) in_buf);
-    DbgPrint("nt_path_converter: unresolved size: %lu\n", in_buf_size);
+    DbgPrint("nt_namespace: unresolved path: %ws\n", (WCHAR *) in_buf);
+    DbgPrint("nt_namespace: unresolved size: %lu\n", in_buf_size);
 
     RtlInitUnicodeString(&uUnresolved, (WCHAR *) in_buf);
     status = nt2dos(&uResolved, &uUnresolved);
@@ -49,8 +49,8 @@ static NTSTATUS handle_convert_nt_path(
 
     *nbwritten = uResolved.Length + sizeof(WCHAR);
 
-    DbgPrint("nt_path_converter: resolved path: %wZ\n", &uResolved);
-    DbgPrint("nt_path_converter: resolved size: %Iu\n", *nbwritten);
+    DbgPrint("nt_namespace: resolved path: %wZ\n", &uResolved);
+    DbgPrint("nt_namespace: resolved size: %Iu\n", *nbwritten);
 
     if (out_buf_size < *nbwritten)
     {
@@ -127,8 +127,8 @@ Device;
 static DeviceInfo devices_info[NUMOF_DEVICES] =
 {
     {
-        L"\\Device\\nt_path_converter",
-        L"\\DosDevices\\nt_path_converter",
+        L"\\Device\\nt_namespace",
+        L"\\DosDevices\\nt_namespace",
     },
 };
 

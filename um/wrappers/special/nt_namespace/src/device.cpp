@@ -3,7 +3,7 @@
 // For details, see https://github.com/egor-tensin/windows7-drivers.
 // Distributed under the MIT License.
 
-#include "libnt_path_converter/device.hpp"
+#include "libnt_namespace/device.hpp"
 
 #include "libservice/all.hpp"
 
@@ -12,11 +12,11 @@
 #include <string>
 #include <vector>
 
-namespace libnt_path_converter
+namespace libnt_namespace
 {
     namespace
     {
-        const auto device_path = "\\\\.\\nt_path_converter";
+        const auto device_path = "\\\\.\\nt_namespace";
         const auto control_code = CTL_CODE(0x8000, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS);
     }
 

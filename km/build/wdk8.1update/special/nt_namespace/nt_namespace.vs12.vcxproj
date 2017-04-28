@@ -57,7 +57,7 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition="'$(Configuration)' == ''">Win8.1 Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">Win32</Platform>
-    <RootNamespace>nt_path_converter_vs12</RootNamespace>
+    <RootNamespace>nt_namespace_vs12</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win8.1 Debug|Win32'" Label="Configuration">
@@ -217,14 +217,14 @@
     <FilesToPackage Include="@(Inf->'%(CopyOutput)')" Condition="'@(Inf)'!=''" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\src\special\nt_path_converter\control_codes.h" />
-    <ClInclude Include="..\..\..\..\src\special\nt_path_converter\device.h" />
-    <ClInclude Include="..\..\..\..\src\special\nt_path_converter\nt2dos.h" />
+    <ClInclude Include="..\..\..\..\src\special\nt_namespace\control_codes.h" />
+    <ClInclude Include="..\..\..\..\src\special\nt_namespace\device.h" />
+    <ClInclude Include="..\..\..\..\src\special\nt_namespace\nt2dos.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\src\special\nt_path_converter\device.c" />
-    <ClCompile Include="..\..\..\..\src\special\nt_path_converter\main.c" />
-    <ClCompile Include="..\..\..\..\src\special\nt_path_converter\nt2dos.c" />
+    <ClCompile Include="..\..\..\..\src\special\nt_namespace\device.c" />
+    <ClCompile Include="..\..\..\..\src\special\nt_namespace\main.c" />
+    <ClCompile Include="..\..\..\..\src\special\nt_namespace\nt2dos.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

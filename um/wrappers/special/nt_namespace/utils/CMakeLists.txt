@@ -1,5 +1,5 @@
 add_executable(convert_nt_path convert_nt_path.cpp)
-target_link_libraries(convert_nt_path PRIVATE libnt_path_converter)
+target_link_libraries(convert_nt_path PRIVATE libnt_namespace)
 if(MINGW)
     target_compile_options(convert_nt_path PRIVATE -municode)
     target_link_libraries(convert_nt_path PRIVATE -municode)

@@ -1,9 +1,9 @@
-nt_path_converter driver utilities
+nt_namespace driver utilities
 ==================================
 
-[nt_path_converter] driver usage examples.
+[nt_namespace] driver usage examples.
 
-[nt_path_converter]: ../../../../km/src/special/nt_path_converter
+[nt_namespace]: ../../../../km/src/special/nt_namespace
 
 Usage
 -----
