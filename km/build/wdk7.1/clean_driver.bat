@@ -7,30 +7,29 @@
 @echo off
 
 if "%~1" == "" (
-    echo Usage: %~nx0 DRIVER_SRC_ROOT >&2
+    echo Usage: %~nx0 DRIVER_SRC_DIR >&2
     exit /b 1
 )
 
-call check_ddk.bat || exit /b !errorlevel!
 call check_env.bat || exit /b !errorlevel!
 
-set "driver_src_root=%~f1"
-cd "%driver_src_root%" || exit /b !errorlevel!
+set "drv_src_dir=%~f1"
+cd "%drv_src_dir%" || exit /b !errorlevel!
 
-for /f %%i in ("%driver_src_root%") do (
-    set "driver_name=%%~ni"
-    set "driver_dist_root=%%~dpi"
+for /f %%i in ("%drv_src_dir%") do (
+    set "drv_name=%%~ni"
+    set "drv_subdir=%%~dpi"
 )
 
-call :make_relative driver_dist_root "%src_root%"
+call :make_relative drv_subdir "%proj_src_dir%"
 
-set "sys_dist_dir=%bin_root%\%target_platform%\%target_configuration%\%driver_dist_root%"
-set "pdb_dist_dir=%bin_root%\%target_platform%\%target_configuration%\%driver_dist_root%"
-set "lib_dist_dir=%lib_root%\%target_platform%\%target_configuration%\%driver_dist_root%"
+set "sys_dist_dir=%proj_bin_dir%\%target_platform%\%target_configuration%\%drv_subdir%"
+set "pdb_dist_dir=%proj_bin_dir%\%target_platform%\%target_configuration%\%drv_subdir%"
+set "lib_dist_dir=%proj_lib_dir%\%target_platform%\%target_configuration%\%drv_subdir%"
 
 echo =========================== DRIVER INFO ===========================
-echo Driver source directory: %driver_src_root%
-echo Driver name: %driver_name%
+echo Driver source directory: %drv_src_dir%
+echo Driver name: %drv_name%
 echo ========================= END DRIVER INFO =========================
 echo.
 echo ============================== CLEAN ==============================
@@ -38,9 +37,9 @@ call :clean_rmdir "obj%BUILD_ALT_DIR%"     || goto :clean_failure
 call :clean_del "build%BUILD_ALT_DIR%.err" || goto :clean_failure
 call :clean_del "build%BUILD_ALT_DIR%.log" || goto :clean_failure
 call :clean_del "build%BUILD_ALT_DIR%.wrn" || goto :clean_failure
-call :clean_del "%sys_dist_dir%%driver_name%.sys" || goto :clean_failure
-call :clean_del "%pdb_dist_dir%%driver_name%.pdb" || goto :clean_failure
-call :clean_del "%lib_dist_dir%%driver_name%.lib" || goto :clean_failure
+call :clean_del "%sys_dist_dir%%drv_name%.sys" || goto :clean_failure
+call :clean_del "%pdb_dist_dir%%drv_name%.pdb" || goto :clean_failure
+call :clean_del "%lib_dist_dir%%drv_name%.lib" || goto :clean_failure
 echo ========================== CLEAN SUCCESS ==========================
 exit /b 0
 

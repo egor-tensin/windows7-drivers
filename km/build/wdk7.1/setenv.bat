@@ -5,14 +5,14 @@
 
 @echo off
 
-set "build_root=%~dp0%"
+set "proj_build_dir=%~dp0%"
 
-set "root=%build_root%\..\..\.."
-for /f "delims=" %%i in ("%root%") do set "root=%%~fi"
+set "proj_dir=%proj_build_dir%\..\..\.."
+for /f "delims=" %%i in ("%proj_dir%") do set "proj_dir=%%~fi"
 
-set "src_root=%root%\km\src"
-set "bin_root=%root%\km\build\wdk7.1\bin"
-set "lib_root=%root%\km\build\wdk7.1\lib"
+set "proj_src_dir=%proj_dir%\km\src"
+set "proj_bin_dir=%proj_build_dir%\bin"
+set "proj_lib_dir=%proj_build_dir%\lib"
 
 set target_configuration=Release
 

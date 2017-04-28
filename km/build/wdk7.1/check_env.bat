@@ -6,13 +6,20 @@
 @setlocal enabledelayedexpansion
 @echo off
 
-if not defined root goto :env_not_set
-if not defined bin_root goto :env_not_set
-if not defined lib_root goto :env_not_set
-if not defined src_root goto :env_not_set
+call check_ddk.bat || exit /b !errorlevel!
+
+if not defined proj_build_dir goto :env_not_set
+if not defined proj_bin_dir goto :env_not_set
+if not defined proj_lib_dir goto :env_not_set
+if not defined proj_src_dir goto :env_not_set
+
+if not exist "%proj_build_dir%\sign.bat" (
+    echo Error: %proj_build_dir%\sign.bat was not found ^(don^'t know how to sign drivers otherwise^) >&2
+    exit /b 1
+)
 
 exit /b 0
 
 :env_not_set
-echo Error: either %%root%%, %%bin_root%%, %%lib_root%% or %%src_root%% are not set ^(have you set up the build environment using setenv.bat?^) >&2
+echo Error: either %%proj_build_dir%%, %%proj_bin_dir%%, %%proj_lib_dir%% or %%proj_src_dir%% are not set ^(have set up the build environment using setenv.bat?^) >&2
 exit /b 1

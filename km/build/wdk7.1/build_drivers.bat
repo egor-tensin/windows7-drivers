@@ -6,8 +6,10 @@
 @setlocal enabledelayedexpansion
 @echo off
 
-for /f "delims=" %%i in ('dir "%src_root%\sources" /b /s') do (
-    set "driver_src_root=%%~dpi"
+call check_env.bat || exit /b !errorlevel!
+
+for /f "delims=" %%i in ('dir "%proj_src_dir%\sources" /b /s') do (
+    set "drv_src_dir=%%~dpi"
     echo.
-    call build_driver.bat "!driver_src_root:~0,-1!" || exit /b !errorlevel!
+    call build_driver.bat "!drv_src_dir:~0,-1!" || exit /b !errorlevel!
 )

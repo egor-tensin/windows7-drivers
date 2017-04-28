@@ -6,15 +6,8 @@
 @setlocal enabledelayedexpansion
 @echo off
 
-call check_env.bat || exit /b !errorlevel!
-
 if not defined BUILD_ALT_DIR goto :ddk_not_set
 if not defined _BUILDARCH goto :ddk_not_set
-
-if not exist "%build_root%\sign.bat" (
-    echo Error: %build_root%\sign.bat was not found ^(don^'t know how to sign drivers otherwise^) >&2
-    exit /b 1
-)
 
 where build.exe >nul 2>&1 || goto :build_not_found
 where signtool.exe >nul 2>&1 || goto :signtool_not_found
