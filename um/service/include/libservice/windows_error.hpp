@@ -8,6 +8,7 @@
 #include "common.hpp"
 #include "singleton.hpp"
 
+#include <sstream>
 #include <string>
 #include <system_error>
 
@@ -25,7 +26,29 @@ namespace libservice
     private:
         friend class Singleton<WindowsErrorCategory>;
     };
+
+    namespace error
+    {
+        inline std::string build_what(
+            const char* function,
+            const char* file,
+            int line)
+        {
+            std::ostringstream oss;
+            oss << "Error in function '" << function
+                << "' at file '" << file
+                << "', line " << line;
+            return oss.str();
+        }
+    }
 }
 
+#if defined(_MSC_VER)
 #define LIBSERVICE_ERROR_PREFIX \
     "Error in function '" LIBSERVICE_FUNCTION_NAME "' at file '" LIBSERVICE_FILE_PATH "', line " LIBSERVICE_LINE_NUMBER_STRING
+#elif defined(__GNUC__)
+#define LIBSERVICE_ERROR_PREFIX \
+    libservice::error::build_what(LIBSERVICE_FUNCTION_NAME, LIBSERVICE_FILE_PATH, LIBSERVICE_LINE_NUMBER)
+#else
+#define LIBSERVICE_ERROR_PREFIX "Error"
+#endif

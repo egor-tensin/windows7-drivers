@@ -1,11 +1,11 @@
 add_executable(install_service install_service.cpp)
-target_link_libraries(install_service libservice)
+target_link_libraries(install_service PRIVATE libservice)
 
 add_executable(start_service start_service.cpp)
-target_link_libraries(start_service libservice)
+target_link_libraries(start_service PRIVATE libservice)
 
 add_executable(stop_service stop_service.cpp)
-target_link_libraries(stop_service libservice)
+target_link_libraries(stop_service PRIVATE libservice)
 
 add_executable(uninstall_service uninstall_service.cpp)
-target_link_libraries(uninstall_service libservice)
+target_link_libraries(uninstall_service PRIVATE libservice)

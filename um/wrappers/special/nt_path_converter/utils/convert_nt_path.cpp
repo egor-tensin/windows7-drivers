@@ -18,7 +18,7 @@ int wmain(int argc, wchar_t* argv[])
     }
     catch (const std::exception& e)
     {
-        std::wcerr << e.what() << "\n";
+        std::cerr << e.what() << "\n";
         return 1;
     }
 
