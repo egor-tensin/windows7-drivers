@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 {
     try
     {
-        unsigned int src;
+        unsigned int src = 0;
 
         if (argc != 2 || !parse_int(src, argv[1]))
         {

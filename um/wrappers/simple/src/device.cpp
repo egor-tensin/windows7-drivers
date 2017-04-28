@@ -13,7 +13,7 @@ namespace libsimple
 {
     namespace
     {
-        const char* const device_path = "\\\\.\\simple_device1";
+        const auto device_path = "\\\\.\\simple_device1";
         const auto exchange_ints_ctl_code = CTL_CODE(0x8001, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS);
     }
 

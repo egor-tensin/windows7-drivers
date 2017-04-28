@@ -129,7 +129,7 @@ namespace std
     template <>
     void swap<libservice::Device>(
         libservice::Device& a,
-        libservice::Device& b)
+        libservice::Device& b) LIBSERVICE_NOEXCEPT
     {
         a.swap(b);
     }

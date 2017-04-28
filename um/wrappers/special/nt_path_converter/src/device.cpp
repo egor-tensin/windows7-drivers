@@ -16,7 +16,7 @@ namespace libnt_path_converter
 {
     namespace
     {
-        const char* const device_path = "\\\\.\\nt_path_converter";
+        const auto device_path = "\\\\.\\nt_path_converter";
         const auto control_code = CTL_CODE(0x8000, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS);
     }
 
