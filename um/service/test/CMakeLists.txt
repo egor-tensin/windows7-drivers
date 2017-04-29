@@ -1,3 +1,3 @@
-add_executable(libservice_test_windows_error windows_error.cpp)
-target_link_libraries(libservice_test_windows_error PRIVATE libservice)
-set_target_properties(libservice_test_windows_error PROPERTIES OUTPUT_NAME windows_error)
+add_executable(service_test_windows_error windows_error.cpp)
+target_link_libraries(service_test_windows_error PRIVATE service)
+set_target_properties(service_test_windows_error PROPERTIES OUTPUT_NAME windows_error)

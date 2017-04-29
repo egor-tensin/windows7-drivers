@@ -1,2 +1,3 @@
-add_executable(exchange_ints exchange_ints.cpp)
-target_link_libraries(exchange_ints PRIVATE libsimple)
+add_executable(simple_exchange_ints exchange_ints.cpp)
+target_link_libraries(simple_exchange_ints PRIVATE simple)
+set_target_properties(simple_exchange_ints PROPERTIES OUTPUT_NAME exchange_ints)

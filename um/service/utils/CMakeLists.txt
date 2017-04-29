@@ -1,11 +1,15 @@
-add_executable(install_service install_service.cpp)
-target_link_libraries(install_service PRIVATE libservice)
+add_executable(service_install install_service.cpp)
+target_link_libraries(service_install PRIVATE service)
+set_target_properties(service_install PROPERTIES OUTPUT_NAME install_service)
 
-add_executable(start_service start_service.cpp)
-target_link_libraries(start_service PRIVATE libservice)
+add_executable(service_start start_service.cpp)
+target_link_libraries(service_start PRIVATE service)
+set_target_properties(service_start PROPERTIES OUTPUT_NAME start_service)
 
-add_executable(stop_service stop_service.cpp)
-target_link_libraries(stop_service PRIVATE libservice)
+add_executable(service_stop stop_service.cpp)
+target_link_libraries(service_stop PRIVATE service)
+set_target_properties(service_stop PROPERTIES OUTPUT_NAME stop_service)
 
-add_executable(uninstall_service uninstall_service.cpp)
-target_link_libraries(uninstall_service PRIVATE libservice)
+add_executable(service_uninstall uninstall_service.cpp)
+target_link_libraries(service_uninstall PRIVATE service)
+set_target_properties(service_uninstall PROPERTIES OUTPUT_NAME uninstall_service)

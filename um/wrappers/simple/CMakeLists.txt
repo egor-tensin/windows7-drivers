@@ -1,9 +1,7 @@
-file(GLOB_RECURSE libsimple_headers "include/*.hpp")
-file(GLOB libsimple_sources "src/*.cpp")
-add_library(libsimple
-    ${libsimple_sources}
-    ${libsimple_headers})
-target_link_libraries(libsimple libservice)
-target_include_directories(libsimple PUBLIC include/)
+file(GLOB_RECURSE simple_include "include/*.hpp")
+file(GLOB simple_src "src/*.cpp")
+add_library(simple ${simple_src} ${simple_include})
+target_include_directories(simple PUBLIC include/)
+target_link_libraries(simple PRIVATE service)
 
 add_subdirectory(utils)

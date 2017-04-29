@@ -1,10 +1,7 @@
-project(libnt_namespace)
-file(GLOB libnt_namespace_sources "src/*.cpp")
-file(GLOB_RECURSE libnt_namespace_headers "include/*.hpp")
-add_library(libnt_namespace
-    ${libnt_namespace_sources}
-    ${libnt_namespace_headers})
-target_link_libraries(libnt_namespace libservice)
-target_include_directories(libnt_namespace PUBLIC include/)
+file(GLOB_RECURSE nt_namespace_include "include/*.hpp")
+file(GLOB nt_namespace_src "src/*.cpp")
+add_library(nt_namespace ${nt_namespace_src} ${nt_namespace_include})
+target_include_directories(nt_namespace PUBLIC include/)
+target_link_libraries(nt_namespace PRIVATE service)
 
 add_subdirectory(utils)
