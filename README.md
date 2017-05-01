@@ -9,20 +9,16 @@ running in the kernel mode.
 Development
 -----------
 
-* [Using WDK 7.1.0]
-* [Using WDK 8.1 Update]
-
-[Using WDK 7.1.0]: km/build/wdk7.1/README.md
-[Using WDK 8.1 Update]: km/build/wdk8.1update/README.md
+* [Using WDK 7.1.0](km/build/wdk7.1/README.md)
+* [Using WDK 8.1 Update](km/build/wdk8.1update/README.md)
 
 Installation
 ------------
 
 To install a driver as a Windows service, you can use the `sc` utility.
-For example, to install `simple.sys` as a service with the name `simple`,
-execute:
+For example:
 
-    sc create simple type= kernel binPath= C:\workspace\personal\windows7-drivers\km\build\wdk7.1\bin\x64\Release\simple.sys
+    sc create simple type= kernel binPath= C:\workspace\personal\windows7-drivers\km\build\wdk7.1\bin\x64\release\simple.sys
 
 You can then load/unload the driver by starting/stopping the corresponding
 service using the `net` utility.
@@ -34,11 +30,11 @@ To uninstall a driver, delete the corresponding service using `sc`.
 
     sc delete simple
 
-Please note, that **64-bit versions of Windows 7 disallow loading 32-bit
-drivers**!
+Please note that **64-bit versions of Windows 7 (or later) disallow loading
+32-bit drivers**!
 
-You may also need to explicitly enable loading self-signed drivers on 64-bit
-versions of Windows.
+You may also need to explicitly enable self-signed drivers on 64-bit versions
+of Windows.
 Using the `bcdedit` utility, execute
 
     bcdedit /set testsigning on

@@ -29,10 +29,3 @@ x86):
 
     > cmake --build . --config release
     ...
-
-See also
---------
-
-* [License]
-
-[License]: ../README.md#license

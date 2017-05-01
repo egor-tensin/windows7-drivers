@@ -1,9 +1,7 @@
-nt_namespace driver utilities
-==================================
+nt_namespace
+============
 
-[nt_namespace] driver usage examples.
-
-[nt_namespace]: ../../../../km/src/special/nt_namespace
+[nt_namespace](../../../../km/src/special/nt_namespace): usage examples.
 
 Usage
 -----
@@ -24,8 +22,4 @@ For example:
 See also
 --------
 
-* [Building]
-* [License]
-
-[Building]: ../../../README.md#building
-[License]: ../../../../README.md#license
+* [Building](../../../README.md#building)

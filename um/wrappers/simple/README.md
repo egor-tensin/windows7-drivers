@@ -1,9 +1,7 @@
-simple driver utilities
-=======================
+simple
+======
 
-[simple] driver usage examples.
-
-[simple]: ../../../km/src/simple
+[simple](../../../km/src/simple): usage examples.
 
 Usage
 -----
@@ -15,7 +13,7 @@ Usage: exchange_ints.exe N
 ```
 
 Parses its argument as an `unsigned int` and exchanges it with the one stored
-in [simple] driver's memory.
+in the driver's memory.
 For example:
 
 ```
@@ -36,8 +34,4 @@ For example:
 See also
 --------
 
-* [Building]
-* [License]
-
-[Building]: ../../README.md#building
-[License]: ../../../README.md#license
+* [Building](../../README.md#building)

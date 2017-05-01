@@ -1,5 +1,5 @@
-Driver management utilities
-===========================
+Driver management
+=================
 
 Utilities to load/unload the drivers.
 
@@ -46,8 +46,4 @@ The same as
 See also
 --------
 
-* [Building]
-* [License]
-
-[Building]: ../README.md#building
-[License]: ../../README.md#license
+* [Building](../README.md#building)
