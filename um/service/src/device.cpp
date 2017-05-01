@@ -13,7 +13,6 @@
 #include <stdexcept>
 #include <string>
 #include <system_error>
-#include <utility>
 
 namespace libservice
 {
@@ -116,21 +115,5 @@ namespace libservice
         }
 
         return nbwritten;
-    }
-
-    void swap(Device& a, Device& b) LIBSERVICE_NOEXCEPT
-    {
-        a.swap(b);
-    }
-}
-
-namespace std
-{
-    template <>
-    void swap<libservice::Device>(
-        libservice::Device& a,
-        libservice::Device& b) LIBSERVICE_NOEXCEPT
-    {
-        a.swap(b);
     }
 }

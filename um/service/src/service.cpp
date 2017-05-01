@@ -9,8 +9,6 @@
 
 #include <string>
 #include <system_error>
-#include <utility>
-#include <vector>
 
 namespace libservice
 {
@@ -256,21 +254,5 @@ namespace libservice
     {
         stop();
         uninstall_service(handle);
-    }
-
-    void swap(Service& a, Service& b) LIBSERVICE_NOEXCEPT
-    {
-        a.swap(b);
-    }
-}
-
-namespace std
-{
-    template <>
-    void swap<libservice::Service>(
-        libservice::Service& a,
-        libservice::Service& b) LIBSERVICE_NOEXCEPT
-    {
-        a.swap(b);
     }
 }

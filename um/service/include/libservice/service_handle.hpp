@@ -64,13 +64,19 @@ namespace libservice
         ServiceHandle(const ServiceHandle&) = delete;
     };
 
-    void swap(ServiceHandle&, ServiceHandle&) LIBSERVICE_NOEXCEPT;
+    inline void swap(ServiceHandle& a, ServiceHandle& b) LIBSERVICE_NOEXCEPT
+    {
+        a.swap(b);
+    }
 }
 
 namespace std
 {
     template <>
-    void swap<libservice::ServiceHandle>(
-        libservice::ServiceHandle&,
-        libservice::ServiceHandle&) LIBSERVICE_NOEXCEPT;
+    inline void swap<libservice::ServiceHandle>(
+        libservice::ServiceHandle& a,
+        libservice::ServiceHandle& b) LIBSERVICE_NOEXCEPT
+    {
+        a.swap(b);
+    }
 }

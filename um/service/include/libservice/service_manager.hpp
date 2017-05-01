@@ -51,13 +51,19 @@ namespace libservice
         ServiceManager(const ServiceManager&) = delete;
     };
 
-    void swap(ServiceManager& a, ServiceManager& b) LIBSERVICE_NOEXCEPT;
+    inline void swap(ServiceManager& a, ServiceManager& b) LIBSERVICE_NOEXCEPT
+    {
+        a.swap(b);
+    }
 }
 
 namespace std
 {
     template <>
-    void swap<libservice::ServiceManager>(
-        libservice::ServiceManager&,
-        libservice::ServiceManager&) LIBSERVICE_NOEXCEPT;
+    inline void swap<libservice::ServiceManager>(
+        libservice::ServiceManager& a,
+        libservice::ServiceManager& b) LIBSERVICE_NOEXCEPT
+    {
+        a.swap(b);
+    }
 }

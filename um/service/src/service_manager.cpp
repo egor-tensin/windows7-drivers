@@ -8,13 +8,12 @@
 #include <Windows.h>
 
 #include <system_error>
-#include <utility>
 
 namespace libservice
 {
     ServiceManager ServiceManager::open()
     {
-        SC_HANDLE raw = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+        const auto raw = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
 
         if (NULL == raw)
         {
@@ -24,21 +23,5 @@ namespace libservice
         }
 
         return ServiceHandle(raw);
-    }
-
-    void swap(ServiceManager& a, ServiceManager& b) LIBSERVICE_NOEXCEPT
-    {
-        a.swap(b);
-    }
-}
-
-namespace std
-{
-    template <>
-    void swap<libservice::ServiceManager>(
-        libservice::ServiceManager& a,
-        libservice::ServiceManager& b) LIBSERVICE_NOEXCEPT
-    {
-        a.swap(b);
     }
 }
