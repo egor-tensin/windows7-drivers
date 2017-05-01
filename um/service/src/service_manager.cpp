@@ -7,8 +7,6 @@
 
 #include <Windows.h>
 
-#include <system_error>
-
 namespace service
 {
     ServiceManager ServiceManager::open()
@@ -18,8 +16,7 @@ namespace service
         if (NULL == raw)
         {
             const auto ec = GetLastError();
-            throw std::system_error(
-                ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+            throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
         }
 
         return ServiceHandle(raw);

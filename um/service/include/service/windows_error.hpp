@@ -8,31 +8,33 @@
 #include "common.hpp"
 #include "singleton.hpp"
 
+#include <Windows.h>
+
 #include <sstream>
 #include <string>
 #include <system_error>
 
 namespace service
 {
-    class WindowsErrorCategory
-        : public std::error_category
-        , public Singleton<WindowsErrorCategory>
+    namespace windows_error
     {
-    public:
-        const char* name() const LIBSERVICE_NOEXCEPT { return "Windows"; }
+        class Category
+            : public std::error_category
+            , public Singleton<Category>
+        {
+        public:
+            const char* name() const LIBSERVICE_NOEXCEPT { return "Windows"; }
 
-        std::string message(int) const;
+            std::string message(int) const;
 
-    private:
-        friend class Singleton<WindowsErrorCategory>;
-    };
+        private:
+            friend class Singleton<Category>;
+        };
 
-    namespace error
-    {
-        inline std::string build_what(
-            const char* function,
+        inline std::string build_message_prefix(
             const char* file,
-            int line)
+            int line,
+            const char* function)
         {
             std::ostringstream oss;
             oss << "Error in function '" << function
@@ -40,15 +42,17 @@ namespace service
                 << "', line " << line;
             return oss.str();
         }
+
+        inline std::system_error make(
+            DWORD code,
+            const char* file,
+            int line,
+            const char* function)
+        {
+            return std::system_error(
+                code,
+                Category::get(),
+                build_message_prefix(file, line, function));
+        }
     }
 }
-
-#if defined(_MSC_VER)
-#define LIBSERVICE_ERROR_PREFIX \
-    "Error in function '" LIBSERVICE_FUNCTION_NAME "' at file '" LIBSERVICE_FILE_PATH "', line " LIBSERVICE_LINE_NUMBER_STRING
-#elif defined(__GNUC__)
-#define LIBSERVICE_ERROR_PREFIX \
-    service::error::build_what(LIBSERVICE_FUNCTION_NAME, LIBSERVICE_FILE_PATH, LIBSERVICE_LINE_NUMBER)
-#else
-#define LIBSERVICE_ERROR_PREFIX "Error"
-#endif

@@ -12,7 +12,6 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
-#include <system_error>
 
 namespace service
 {
@@ -32,8 +31,7 @@ namespace service
             if (INVALID_HANDLE_VALUE == raw)
             {
                 const auto ec = GetLastError();
-                throw std::system_error(
-                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
 
             return Handle(raw);
@@ -75,8 +73,7 @@ namespace service
                     return nbreq;
 
                 default:
-                    throw std::system_error(
-                        ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                    throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
         }
 
@@ -110,8 +107,7 @@ namespace service
         if (0 == nbwritten)
         {
             const auto ec = GetLastError();
-            throw std::system_error(
-                ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+            throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
         }
 
         return nbwritten;

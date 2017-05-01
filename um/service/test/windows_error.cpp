@@ -9,16 +9,14 @@
 
 #include <exception>
 #include <iostream>
-#include <system_error>
 
 int main()
 {
     try
     {
-        throw std::system_error(
+        throw service::windows_error::make(
             ERROR_FILE_NOT_FOUND,
-            service::WindowsErrorCategory::get(),
-            LIBSERVICE_ERROR_PREFIX);
+            __FILE__, __LINE__, __FUNCTION__);
     }
     catch (const std::exception& e)
     {

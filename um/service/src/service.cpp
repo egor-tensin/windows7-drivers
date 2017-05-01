@@ -8,7 +8,6 @@
 #include <Windows.h>
 
 #include <string>
-#include <system_error>
 
 namespace service
 {
@@ -26,8 +25,7 @@ namespace service
             if (NULL == raw)
             {
                 const auto ec = GetLastError();
-                throw std::system_error(
-                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
 
             return raw;
@@ -56,8 +54,7 @@ namespace service
             if (NULL == raw)
             {
                 const auto ec = GetLastError();
-                throw std::system_error(
-                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
 
             return raw;
@@ -68,8 +65,7 @@ namespace service
             if (!StartService(handle, 0, NULL))
             {
                 const auto ec = GetLastError();
-                throw std::system_error(
-                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
         }
 
@@ -80,8 +76,7 @@ namespace service
             if (!ControlService(handle, SERVICE_CONTROL_STOP, &service_status))
             {
                 const auto ec = GetLastError();
-                throw std::system_error(
-                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
         }
 
@@ -90,8 +85,7 @@ namespace service
             if (!DeleteService(handle))
             {
                 const auto ec = GetLastError();
-                throw std::system_error(
-                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
         }
 
@@ -118,8 +112,7 @@ namespace service
                     return false;
 
                 default:
-                    throw std::system_error(
-                        ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                    throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
         }
 
@@ -135,8 +128,7 @@ namespace service
                 handle, SC_STATUS_PROCESS_INFO, buf_ptr, buf_size, &nbreq))
             {
                 const auto ec = GetLastError();
-                throw std::system_error(
-                    ec, WindowsErrorCategory::get(), LIBSERVICE_ERROR_PREFIX);
+                throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
             }
 
             return status;
