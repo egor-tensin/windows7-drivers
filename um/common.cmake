@@ -1,3 +1,7 @@
+# It's a CMake code snippet I use in all of my CMake projects.
+# It makes targets link the runtime statically by default + strips debug
+# symbols in release builds.
+
 get_directory_property(parent_directory PARENT_DIRECTORY)
 set(is_root_project $<NOT:parent_directory>)
 
@@ -17,9 +21,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 function(use_static_runtime_msvc target)
-    target_compile_options("${target}" PRIVATE
-        $<$<CONFIG:Debug>:/MTd>
-        $<$<NOT:$<CONFIG:Debug>>:/MT>)
+    get_target_property(target_type "${target}" TYPE)
+    if(target_type STREQUAL INTERFACE_LIBRARY)
+    else()
+        target_compile_options("${target}" PRIVATE
+            $<$<CONFIG:Debug>:/MTd>
+            $<$<NOT:$<CONFIG:Debug>>:/MT>)
+    endif()
 endfunction()
 
 function(use_static_runtime_gcc target)
@@ -40,8 +48,12 @@ function(use_static_runtime target)
 endfunction()
 
 function(strip_symbol_table_gcc target)
-    target_link_libraries("${target}" PRIVATE
-        $<$<OR:$<CONFIG:Release>,$<CONFIG:MinSizeRel>>:-s>)
+    get_target_property(target_type "${target}" TYPE)
+    set(release_build $<OR:$<CONFIG:Release>,$<CONFIG:MinSizeRel>>)
+    if(target_type STREQUAL INTERFACE_LIBRARY)
+    else()
+        target_link_libraries("${target}" PRIVATE $<${release_build}:-s>)
+    endif()
 endfunction()
 
 function(strip_symbol_table target)
@@ -53,23 +65,26 @@ function(strip_symbol_table target)
     endif()
 endfunction()
 
-macro(add_executable target)
-    _add_executable(${ARGV})
+function(apply_common_settings target)
     if(TARGET "${target}")
-        if(USE_STATIC_RUNTIME)
-            use_static_runtime("${target}")
-        endif()
-        if(STRIP_SYMBOL_TABLE)
-            strip_symbol_table("${target}")
+        get_target_property(target_imported "${target}" IMPORTED)
+        if(target_imported STREQUAL NOTFOUND OR NOT target_imported)
+            if(STRIP_SYMBOL_TABLE)
+                strip_symbol_table("${target}")
+            endif()
+            if(USE_STATIC_RUNTIME)
+                use_static_runtime("${target}")
+            endif()
         endif()
     endif()
+endfunction()
+
+macro(add_executable target)
+    _add_executable(${ARGV})
+    apply_common_settings("${target}")
 endmacro()
 
 macro(add_library target)
     _add_library(${ARGV})
-    if(TARGET "${target}")
-        if(USE_STATIC_RUNTIME)
-            use_static_runtime("${target}")
-        endif()
-    endif()
+    apply_common_settings("${target}")
 endmacro()
