@@ -5,17 +5,15 @@
 
 #pragma once
 
-#include "libservice/all.hpp"
+#include "service/all.hpp"
 
-#include <string>
-
-namespace libnt_namespace
+namespace libsimple
 {
     class Device : libservice::Device
     {
     public:
         Device();
 
-        std::wstring convert_nt_path(const std::wstring&);
+        unsigned int exchange_ints(unsigned int) const;
     };
 }

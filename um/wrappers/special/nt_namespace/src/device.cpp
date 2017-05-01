@@ -3,9 +3,9 @@
 // For details, see https://github.com/egor-tensin/windows7-drivers.
 // Distributed under the MIT License.
 
-#include "libnt_namespace/device.hpp"
+#include "nt_namespace/device.hpp"
 
-#include "libservice/all.hpp"
+#include "service/all.hpp"
 
 #include <Windows.h>
 

@@ -3,7 +3,7 @@
 // For details, see https://github.com/egor-tensin/windows7-drivers.
 // Distributed under the MIT License.
 
-#include "libnt_namespace/all.hpp"
+#include "nt_namespace/all.hpp"
 
 #include <exception>
 #include <iostream>
