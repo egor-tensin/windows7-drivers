@@ -9,9 +9,9 @@
 
 #include <string>
 
-namespace libnt_namespace
+namespace nt_namespace
 {
-    class Device : libservice::Device
+    class Device : service::Device
     {
     public:
         Device();

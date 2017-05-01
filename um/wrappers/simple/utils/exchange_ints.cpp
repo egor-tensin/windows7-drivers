@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        std::cout << libsimple::Device().exchange_ints(src) << "\n";
+        std::cout << simple::Device().exchange_ints(src) << "\n";
     }
     catch (const std::exception& e)
     {

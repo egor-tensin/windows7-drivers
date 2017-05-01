@@ -9,7 +9,7 @@
 
 #include <system_error>
 
-namespace libservice
+namespace service
 {
     ServiceManager ServiceManager::open()
     {

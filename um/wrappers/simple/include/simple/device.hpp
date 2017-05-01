@@ -7,9 +7,9 @@
 
 #include "service/all.hpp"
 
-namespace libsimple
+namespace simple
 {
-    class Device : libservice::Device
+    class Device : service::Device
     {
     public:
         Device();

@@ -12,7 +12,7 @@ int wmain(int argc, wchar_t* argv[])
 {
     try
     {
-        libnt_namespace::Device dev;
+        nt_namespace::Device dev;
         for (int i = 1; i < argc; ++i)
             std::wcout << dev.convert_nt_path(argv[i]) << L"\n";
     }

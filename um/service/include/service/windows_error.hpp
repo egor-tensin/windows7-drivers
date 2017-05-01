@@ -12,7 +12,7 @@
 #include <string>
 #include <system_error>
 
-namespace libservice
+namespace service
 {
     class WindowsErrorCategory
         : public std::error_category
@@ -48,7 +48,7 @@ namespace libservice
     "Error in function '" LIBSERVICE_FUNCTION_NAME "' at file '" LIBSERVICE_FILE_PATH "', line " LIBSERVICE_LINE_NUMBER_STRING
 #elif defined(__GNUC__)
 #define LIBSERVICE_ERROR_PREFIX \
-    libservice::error::build_what(LIBSERVICE_FUNCTION_NAME, LIBSERVICE_FILE_PATH, LIBSERVICE_LINE_NUMBER)
+    service::error::build_what(LIBSERVICE_FUNCTION_NAME, LIBSERVICE_FILE_PATH, LIBSERVICE_LINE_NUMBER)
 #else
 #define LIBSERVICE_ERROR_PREFIX "Error"
 #endif

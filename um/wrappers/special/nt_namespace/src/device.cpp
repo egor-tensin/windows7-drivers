@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-namespace libnt_namespace
+namespace nt_namespace
 {
     namespace
     {
@@ -21,7 +21,7 @@ namespace libnt_namespace
     }
 
     Device::Device()
-        : libservice::Device(libservice::Device::open(device_path))
+        : service::Device(service::Device::open(device_path))
     { }
 
     std::wstring Device::convert_nt_path(const std::wstring& src)

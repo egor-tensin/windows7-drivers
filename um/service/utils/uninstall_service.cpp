@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
     try
     {
-        libservice::Service::open(libservice::ServiceManager::open(), argv[1]).uninstall();
+        service::Service::open(service::ServiceManager::open(), argv[1]).uninstall();
     }
     catch (const std::exception& e)
     {

@@ -9,7 +9,7 @@
 
 #include <Windows.h>
 
-namespace libsimple
+namespace simple
 {
     namespace
     {
@@ -18,7 +18,7 @@ namespace libsimple
     }
 
     Device::Device()
-        : libservice::Device(libservice::Device::open(device_path))
+        : service::Device(service::Device::open(device_path))
     { }
 
     unsigned int Device::exchange_ints(unsigned int src) const

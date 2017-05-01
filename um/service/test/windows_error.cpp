@@ -17,7 +17,7 @@ int main()
     {
         throw std::system_error(
             ERROR_FILE_NOT_FOUND,
-            libservice::WindowsErrorCategory::get(),
+            service::WindowsErrorCategory::get(),
             LIBSERVICE_ERROR_PREFIX);
     }
     catch (const std::exception& e)

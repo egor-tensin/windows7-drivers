@@ -12,7 +12,7 @@
 
 #include <utility>
 
-namespace libservice
+namespace service
 {
     class ServiceManager
     {
@@ -60,9 +60,9 @@ namespace libservice
 namespace std
 {
     template <>
-    inline void swap<libservice::ServiceManager>(
-        libservice::ServiceManager& a,
-        libservice::ServiceManager& b) LIBSERVICE_NOEXCEPT
+    inline void swap<service::ServiceManager>(
+        service::ServiceManager& a,
+        service::ServiceManager& b) LIBSERVICE_NOEXCEPT
     {
         a.swap(b);
     }

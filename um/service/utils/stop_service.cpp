@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
     try
     {
-        libservice::Service::open(libservice::ServiceManager::open(), argv[1]).stop();
+        service::Service::open(service::ServiceManager::open(), argv[1]).stop();
     }
     catch (const std::exception& e)
     {

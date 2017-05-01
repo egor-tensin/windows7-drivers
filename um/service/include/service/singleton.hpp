@@ -7,7 +7,7 @@
 
 #include <mutex>
 
-namespace libservice
+namespace service
 {
     template <typename DerivedT>
     class Singleton

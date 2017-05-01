@@ -13,7 +13,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace libservice
+namespace service
 {
     class Handle
     {
@@ -74,9 +74,9 @@ namespace libservice
 namespace std
 {
     template <>
-    inline void swap<libservice::Handle>(
-        libservice::Handle& a,
-        libservice::Handle& b) LIBSERVICE_NOEXCEPT
+    inline void swap<service::Handle>(
+        service::Handle& a,
+        service::Handle& b) LIBSERVICE_NOEXCEPT
     {
         a.swap(b);
     }

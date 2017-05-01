@@ -9,7 +9,7 @@
 
 #include <string>
 
-namespace libservice
+namespace service
 {
     std::string WindowsErrorCategory::message(int code) const
     {

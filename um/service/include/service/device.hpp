@@ -15,7 +15,7 @@
 #include <string>
 #include <utility>
 
-namespace libservice
+namespace service
 {
     class Device
     {
@@ -72,9 +72,9 @@ namespace libservice
 namespace std
 {
     template <>
-    inline void swap<libservice::Device>(
-        libservice::Device& a,
-        libservice::Device& b) LIBSERVICE_NOEXCEPT
+    inline void swap<service::Device>(
+        service::Device& a,
+        service::Device& b) LIBSERVICE_NOEXCEPT
     {
         a.swap(b);
     }
