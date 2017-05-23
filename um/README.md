@@ -16,16 +16,20 @@ A couple of usage examples are included along with the drivers.
 Building
 --------
 
-Create the build files using CMake and build using Visual Studio.
+Create the build files using CMake and build the project using Visual Studio.
 
-For example, using Visual Studio 2013 Update 4 for Windows Desktop (targetting
-x86):
+* **Customization.**
+The runtime libraries are linked statically by default (when this project is
+the root CMake project).
+You can link the runtime dynamically by passing `-D USE_STATIC_RUNTIME=OFF` to
+`cmake`.
+* **Example.**
+In the example below, the project directory is
+"C:\workspace\personal\windows7-drivers\um" and Visual Studio 2013 is used,
+targeting x86.
 
-    > cd
-    C:\workspace\build\windows7-drivers\um
+      > cmake -G "Visual Studio 12 2013" C:\workspace\personal\windows7-drivers\um
+      ...
 
-    > cmake -G "Visual Studio 12 2013" C:\workspace\personal\windows7-drivers\um
-    ...
-
-    > cmake --build . --config release
-    ...
+      > cmake --build . --config release -- /m
+      ...
