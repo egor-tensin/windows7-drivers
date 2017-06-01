@@ -29,15 +29,17 @@ namespace nt_namespace
         const auto in_buf = src.c_str();
         const auto in_buf_size = (src.size() + 1) * sizeof(wchar_t);
 
+        static_assert(sizeof(control_code) == sizeof(service::Device::Code), "CTL_CODE() must return DWORDs");
+
         const auto nbreq = get_required_output_size(
-            control_code,
+            static_cast<service::Device::Code>(control_code),
             in_buf,
             in_buf_size);
 
         std::vector<unsigned char> output(nbreq);
 
         send_control_code(
-            control_code,
+            static_cast<service::Device::Code>(control_code),
             in_buf,
             in_buf_size,
             output.data(),

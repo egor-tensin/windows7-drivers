@@ -23,10 +23,12 @@ namespace simple
 
     unsigned int Device::exchange_ints(unsigned int src) const
     {
+        static_assert(sizeof(exchange_ints_ctl_code) == sizeof(service::Device::Code), "CTL_CODE() must produce DWORDs");
+
         unsigned int dest;
 
         send_control_code(
-            exchange_ints_ctl_code,
+            static_cast<service::Device::Code>(exchange_ints_ctl_code),
             &src,
             sizeof(src),
             &dest,
