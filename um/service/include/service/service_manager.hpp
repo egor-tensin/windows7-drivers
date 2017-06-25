@@ -60,7 +60,7 @@ namespace service
 namespace std
 {
     template <>
-    inline void swap<service::ServiceManager>(
+    inline void swap(
         service::ServiceManager& a,
         service::ServiceManager& b) LIBSERVICE_NOEXCEPT
     {

@@ -73,7 +73,7 @@ namespace service
 namespace std
 {
     template <>
-    inline void swap<service::ServiceHandle>(
+    inline void swap(
         service::ServiceHandle& a,
         service::ServiceHandle& b) LIBSERVICE_NOEXCEPT
     {

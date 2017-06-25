@@ -72,7 +72,7 @@ namespace service
 namespace std
 {
     template <>
-    inline void swap<service::Device>(
+    inline void swap(
         service::Device& a,
         service::Device& b) LIBSERVICE_NOEXCEPT
     {
