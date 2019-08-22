@@ -45,7 +45,7 @@ function Set-AppVeyorDefaults {
     $script:Configuration = $env:CONFIGURATION
 }
 
-function Build-Project {
+function Build-ProjectUserMode {
     param(
         [Parameter(Mandatory=$true)]
         [string] $ProjectDir,
@@ -64,6 +64,102 @@ function Build-Project {
 
     Invoke-Exe { cmake.exe -Wno-dev -G $Generator -A $Platform "$ProjectDir\um" }
     Invoke-Exe { cmake.exe --build . --config $Configuration -- /m }
+}
+
+function Get-DriverConfiguration {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string] $Configuration
+    )
+
+    return "Win7 $Configuration"
+}
+
+function Get-DriverBuildDir {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string] $ProjectDir,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverSpec
+    )
+
+    return "$ProjectDir\km\build\wdk8.1update\$DriverSpec"
+}
+
+function Get-DriverSolutionPath {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string] $ProjectDir,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverSpec
+    )
+
+    $build_dir = Get-DriverBuildDir -ProjectDir $ProjectDir -DriverSpec $DriverSpec
+    $driver_name = Split-Path -Path $build_dir -Leaf -Resolve
+    return "$build_dir\$driver_name.vs12.sln"
+}
+
+function Build-Driver {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string] $ProjectDir,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverSpec,
+        [Parameter(Mandatory=$true)]
+        [string] $Platform,
+        [Parameter(Mandatory=$true)]
+        [string] $Configuration
+    )
+
+    $build_dir = Get-DriverBuildDir -ProjectDir $ProjectDir -DriverSpec $DriverSpec
+    $solution_path = Get-DriverSolutionPath -ProjectDir $ProjectDir -DriverSpec $DriverSpec
+
+    $Configuration = Get-DriverConfiguration -Configuration $Configuration
+    $msbuild_params = "/p:Configuration=$Configuration;Platform=$Platform"
+
+    cd $build_dir
+    Invoke-Exe { msbuild.exe $msbuild_params $solution_path }
+}
+
+function Build-ProjectKernelMode {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string] $ProjectDir,
+        [Parameter(Mandatory=$true)]
+        [string] $Platform,
+        [Parameter(Mandatory=$true)]
+        [string] $Configuration
+    )
+
+    Build-Driver -ProjectDir $ProjectDir -Platform $Platform -Configuration $Configuration -DriverSpec 'minimal'
+    Build-Driver -ProjectDir $ProjectDir -Platform $Platform -Configuration $Configuration -DriverSpec 'simple'
+    Build-Driver -ProjectDir $ProjectDir -Platform $Platform -Configuration $Configuration -DriverSpec 'special\nt_namespace'
+}
+
+function Build-Project {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string] $ProjectDir,
+        [Parameter(Mandatory=$true)]
+        [string] $BuildDir,
+        [Parameter(Mandatory=$true)]
+        [string] $Generator,
+        [Parameter(Mandatory=$true)]
+        [string] $Platform,
+        [Parameter(Mandatory=$true)]
+        [string] $Configuration
+    )
+
+    Build-ProjectUserMode       `
+        -ProjectDir $ProjectDir `
+        -BuildDir $BuildDir     `
+        -Generator $Generator   `
+        -Platform $Platform     `
+        -Configuration $Configuration
+    Build-ProjectKernelMode     `
+        -ProjectDir $ProjectDir `
+        -Platform $Platform     `
+        -Configuration $Configuration
 }
 
 function Build-ProjectAppVeyor {
