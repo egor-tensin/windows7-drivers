@@ -5,6 +5,12 @@ branches:
   only:
     - master
 
+#environment:
+#  APPVEYOR_RDP_PASSWORD: 'FooBar01!'
+
+#on_finish:
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 platform:
   - Win32
   - x64
@@ -15,3 +21,22 @@ configuration:
 
 build_script:
   - ps: .\.appveyor\build.ps1
+
+# Workers are 64-bit, can't load 32-bit drivers.
+for:
+-
+  matrix:
+    only:
+      - platform: x64
+
+  # https://github.com/appveyor/ci/issues/715
+  install:
+    - appveyor AddMessage "Enabling self-signed drivers..."
+    - bcdedit.exe /set TESTSIGNING ON
+    - appveyor AddMessage "Rebooting the worker..."
+    - ps: Restart-Computer -Force
+    - ps: Start-Sleep -s 10
+    - appveyor AddMessage "OK"
+
+  test_script:
+    - ps: .\.appveyor\test.ps1

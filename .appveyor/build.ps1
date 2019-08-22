@@ -115,7 +115,7 @@ function Build-Driver {
     $solution_path = Get-DriverSolutionPath -ProjectDir $ProjectDir -DriverSpec $DriverSpec
 
     $Configuration = Get-DriverConfiguration -Configuration $Configuration
-    $msbuild_params = "/p:Configuration=$Configuration;Platform=$Platform"
+    $msbuild_params = "/p:Configuration=$Configuration;Platform=$Platform;SignMode=TestSign"
 
     cd $build_dir
     Invoke-Exe { msbuild.exe $msbuild_params $solution_path }
