@@ -1,11 +1,6 @@
 version: '{build}'
 image: Visual Studio 2013
 
-branches:
-  only:
-    - master
-    - appveyor
-
 #environment:
 #  APPVEYOR_RDP_PASSWORD: 'FooBar01!'
 
@@ -31,8 +26,7 @@ build_script:
 
 # Workers are 64-bit, can't load 32-bit drivers.
 for:
--
-  matrix:
+- matrix:
     only:
       - platform: x64
 
