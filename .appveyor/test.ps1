@@ -2,7 +2,8 @@ param(
     [string] $BuildDir = $null,
     [string] $ProjectDir = $null,
     [string] $Configuration = $null,
-    [string] $Platform = $null
+    [string] $Platform = $null,
+    [string] $DriverTargetOS = $null
 )
 
 $ErrorActionPreference = "Stop";
@@ -37,6 +38,7 @@ function Set-AppVeyorDefaults {
     $script:BuildDir = 'C:\Projects\build'
     $script:Platform = $env:PLATFORM
     $script:Configuration = $env:CONFIGURATION
+    $script:DriverTargetOS = $env:appveyor_driver_target_os
 }
 
 function Add-UtilsPath {
@@ -69,7 +71,9 @@ function Get-DriverBinDir {
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $Configuration,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverTargetOS
     )
 
     $Platform = switch ($Platform) {
@@ -78,9 +82,16 @@ function Get-DriverBinDir {
         default { throw "Unsupported platform: $Platform" }
     }
 
+    $DriverTargetOS = switch ($DriverTargetOS) {
+        'Win7' { 'Windows7' }
+        'Win8' { 'Windows8' }
+        'Win8.1' { 'WindowsV6.3' }
+        default { throw "Unsupported target OS: $DriverTargetOS" }
+    }
+
     $driver_name = Get-DriverName -DriverSpec $DriverSpec
 
-    return "$ProjectDir\km\build\wdk8.1update\$DriverSpec\bin\Windows7\$Platform\$Configuration"
+    return "$ProjectDir\km\build\wdk8.1update\$DriverSpec\bin\$DriverTargetOS\$Platform\$Configuration"
 }
 
 function Get-DriverSysPath {
@@ -92,14 +103,17 @@ function Get-DriverSysPath {
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $Configuration,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverTargetOS
     )
 
-    $bin_dir = Get-DriverBinDir `
-        -ProjectDir $ProjectDir `
-        -DriverSpec $DriverSpec `
-        -Platform $Platform     `
-        -Configuration $Configuration
+    $bin_dir = Get-DriverBinDir       `
+        -ProjectDir $ProjectDir       `
+        -DriverSpec $DriverSpec       `
+        -Platform $Platform           `
+        -Configuration $Configuration `
+        -DriverTargetOS $DriverTargetOS
     $driver_name = Get-DriverName -DriverSpec $DriverSpec
 
     return "$bin_dir\$driver_name.vs12.sys"
@@ -114,15 +128,18 @@ function Start-Driver {
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $Configuration,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverTargetOS
     )
 
     $service_name = Get-DriverName -DriverSpec $DriverSpec
-    $sys_path = Get-DriverSysPath `
-        -ProjectDir $ProjectDir   `
-        -DriverSpec $DriverSpec   `
-        -Platform $Platform       `
-        -Configuration $Configuration
+    $sys_path = Get-DriverSysPath     `
+        -ProjectDir $ProjectDir       `
+        -DriverSpec $DriverSpec       `
+        -Platform $Platform           `
+        -Configuration $Configuration `
+        -DriverTargetOS $DriverTargetOS
 
     Write-Host "Starting driver $service_name..."
     Invoke-Exe { install_service.exe $service_name $sys_path }
@@ -176,18 +193,30 @@ function Run-ProjectTests {
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $Configuration,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverTargetOS
     )
 
     Add-UtilsPath -BuildDir $BuildDir -Configuration $Configuration
-    Start-Driver                `
-        -ProjectDir $ProjectDir `
-        -DriverSpec 'simple'    `
-        -Platform $Platform     `
-        -Configuration $Configuration
+
+    $drivers = 'minimal', 'simple', 'special\nt_namespace'
+
+    foreach ($driver in $drivers) {
+        Start-Driver                      `
+            -ProjectDir $ProjectDir       `
+            -DriverSpec $driver           `
+            -Platform $Platform           `
+            -Configuration $Configuration `
+            -DriverTargetOS $DriverTargetOS
+    }
+
     Verify-ExchangeInts -NewInt 69 -OldInt 42
     Verify-ExchangeInts -NewInt 100500 -OldInt 69
-    Stop-Driver -DriverSpec 'simple'
+
+    foreach ($driver in $drivers) {
+        Stop-Driver -DriverSpec $driver
+    }
 }
 
 function Run-ProjectTestsAppVeyor {
@@ -197,11 +226,12 @@ function Run-ProjectTestsAppVeyor {
     }
 
     try {
-        Run-ProjectTests                   `
-            -ProjectDir $script:ProjectDir `
-            -BuildDir $script:BuildDir     `
-            -Platform $script:Platform     `
-            -Configuration $script:Configuration
+        Run-ProjectTests                         `
+            -ProjectDir $script:ProjectDir       `
+            -BuildDir $script:BuildDir           `
+            -Platform $script:Platform           `
+            -Configuration $script:Configuration `
+            -DriverTargetOS $script:DriverTargetOS
     } finally {
         if (Test-AppVeyor) {
             cd $appveyor_cwd

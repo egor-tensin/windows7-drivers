@@ -4,12 +4,19 @@ image: Visual Studio 2013
 branches:
   only:
     - master
+    - appveyor
 
 #environment:
 #  APPVEYOR_RDP_PASSWORD: 'FooBar01!'
 
 #on_finish:
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+environment:
+  matrix:
+    - appveyor_driver_target_os: Win7
+    - appveyor_driver_target_os: Win8
+    - appveyor_driver_target_os: Win8.1
 
 platform:
   - Win32

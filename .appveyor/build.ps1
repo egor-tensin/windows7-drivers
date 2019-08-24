@@ -3,7 +3,8 @@ param(
     [string] $ProjectDir = $null,
     [string] $Generator = $null,
     [string] $Platform = $null,
-    [string] $Configuration = $null
+    [string] $Configuration = $null,
+    [string] $DriverTargetOS = $null
 )
 
 $ErrorActionPreference = "Stop";
@@ -43,6 +44,7 @@ function Set-AppVeyorDefaults {
     }
     $script:Platform = $env:PLATFORM
     $script:Configuration = $env:CONFIGURATION
+    $script:DriverTargetOS = $env:appveyor_driver_target_os
 }
 
 function Build-ProjectUserMode {
@@ -69,10 +71,12 @@ function Build-ProjectUserMode {
 function Get-DriverConfiguration {
     param(
         [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $Configuration,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverTargetOS
     )
 
-    return "Win7 $Configuration"
+    return "$DriverTargetOS $Configuration"
 }
 
 function Get-DriverBuildDir {
@@ -108,14 +112,16 @@ function Build-Driver {
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $Configuration,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverTargetOS
     )
 
     $build_dir = Get-DriverBuildDir -ProjectDir $ProjectDir -DriverSpec $DriverSpec
     $solution_path = Get-DriverSolutionPath -ProjectDir $ProjectDir -DriverSpec $DriverSpec
 
-    $Configuration = Get-DriverConfiguration -Configuration $Configuration
-    $msbuild_params = "/p:Configuration=$Configuration;Platform=$Platform;SignMode=TestSign"
+    $Configuration = Get-DriverConfiguration -Configuration $Configuration -DriverTargetOS $DriverTargetOS
+    $msbuild_params = "/p:Platform=$Platform;Configuration=$Configuration;SignMode=TestSign"
 
     cd $build_dir
     Invoke-Exe { msbuild.exe $msbuild_params $solution_path }
@@ -128,12 +134,21 @@ function Build-ProjectKernelMode {
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $Configuration,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverTargetOS
     )
 
-    Build-Driver -ProjectDir $ProjectDir -Platform $Platform -Configuration $Configuration -DriverSpec 'minimal'
-    Build-Driver -ProjectDir $ProjectDir -Platform $Platform -Configuration $Configuration -DriverSpec 'simple'
-    Build-Driver -ProjectDir $ProjectDir -Platform $Platform -Configuration $Configuration -DriverSpec 'special\nt_namespace'
+    $drivers = 'minimal', 'simple', 'special\nt_namespace'
+
+    foreach ($driver in $drivers) {
+        Build-Driver                      `
+            -ProjectDir $ProjectDir       `
+            -DriverSpec $driver           `
+            -Platform $Platform           `
+            -Configuration $Configuration `
+            -DriverTargetOS $DriverTargetOS
+    }
 }
 
 function Build-Project {
@@ -147,7 +162,9 @@ function Build-Project {
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $Configuration,
+        [Parameter(Mandatory=$true)]
+        [string] $DriverTargetOS
     )
 
     Build-ProjectUserMode       `
@@ -156,10 +173,11 @@ function Build-Project {
         -Generator $Generator   `
         -Platform $Platform     `
         -Configuration $Configuration
-    Build-ProjectKernelMode     `
-        -ProjectDir $ProjectDir `
-        -Platform $Platform     `
-        -Configuration $Configuration
+    Build-ProjectKernelMode           `
+        -ProjectDir $ProjectDir       `
+        -Platform $Platform           `
+        -Configuration $Configuration `
+        -DriverTargetOS $DriverTargetOS
 }
 
 function Build-ProjectAppVeyor {
@@ -169,15 +187,17 @@ function Build-ProjectAppVeyor {
     }
 
     try {
-        Build-Project                      `
-            -ProjectDir $script:ProjectDir `
-            -BuildDir $script:BuildDir     `
-            -Generator $script:Generator   `
-            -Platform $script:Platform     `
-            -Configuration $script:Configuration
+        Build-Project                            `
+            -ProjectDir $script:ProjectDir       `
+            -BuildDir $script:BuildDir           `
+            -Generator $script:Generator         `
+            -Platform $script:Platform           `
+            -Configuration $script:Configuration `
+            -DriverTargetOS $script:DriverTargetOS
     } finally {
         if (Test-AppVeyor) {
             cd $appveyor_cwd
+            Set-PSDebug -Off
         }
     }
 }
