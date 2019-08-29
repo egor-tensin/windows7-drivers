@@ -32,12 +32,12 @@ for:
 
   # https://github.com/appveyor/ci/issues/715
   install:
-    - appveyor AddMessage "Enabling self-signed drivers..."
+    - appveyor.exe AddMessage "Enabling self-signed drivers..."
     - bcdedit.exe /set TESTSIGNING ON
-    - appveyor AddMessage "Rebooting the worker..."
+    - appveyor.exe AddMessage "Rebooting the worker..."
     - ps: Restart-Computer -Force
     - ps: Start-Sleep -s 10
-    - appveyor AddMessage "OK"
+    - appveyor.exe AddMessage "OK"
 
   test_script:
     - ps: .\.appveyor\test.ps1
