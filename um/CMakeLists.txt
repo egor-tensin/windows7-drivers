@@ -1,6 +1,6 @@
 project(win7drv CXX)
 
-include(common.cmake)
+include(cmake/common.cmake)
 
 add_subdirectory(service)
 add_subdirectory(wrappers)

@@ -1,0 +1,3 @@
+[submodule "um/cmake"]
+	path = um/cmake
+	url = https://github.com/egor-tensin/cmake-common.git
