@@ -1,4 +1,5 @@
 version: '{build}'
+
 image: Visual Studio 2013
 
 #environment:
@@ -21,6 +22,9 @@ configuration:
   - Debug
   - Release
 
+install:
+  - git submodule update --init --recursive
+
 build_script:
   - ps: .\.appveyor\build.ps1
 
@@ -32,6 +36,7 @@ for:
 
   # https://github.com/appveyor/ci/issues/715
   install:
+    - git submodule update --init --recursive
     - appveyor.exe AddMessage "Enabling self-signed drivers..."
     - bcdedit.exe /set TESTSIGNING ON
     - appveyor.exe AddMessage "Rebooting the worker..."
