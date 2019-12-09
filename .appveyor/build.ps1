@@ -64,7 +64,7 @@ function Build-ProjectUserMode {
     mkdir $BuildDir
     cd $BuildDir
 
-    Invoke-Exe { cmake.exe -Wno-dev -G $Generator -A $Platform "$ProjectDir\um" }
+    Invoke-Exe { cmake.exe -G $Generator -A $Platform "$ProjectDir\um" }
     Invoke-Exe { cmake.exe --build . --config $Configuration -- /m }
 }
 
