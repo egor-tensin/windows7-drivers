@@ -28,13 +28,19 @@ install:
 build_script:
   - ps: .\.appveyor\build.ps1
 
-# Workers are 64-bit, can't load 32-bit drivers.
 for:
+# Only build Release builds for master to speed things up:
+- branches:
+    except:
+      - master
+  configuration:
+    - Debug
+
+# Workers are 64-bit, can't load 32-bit drivers.
+# https://github.com/appveyor/ci/issues/715
 - matrix:
     only:
       - platform: x64
-
-  # https://github.com/appveyor/ci/issues/715
   install:
     - git submodule update --init --recursive
     - appveyor.exe AddMessage "Enabling self-signed drivers..."
@@ -43,6 +49,5 @@ for:
     - ps: Restart-Computer -Force
     - ps: Start-Sleep -s 10
     - appveyor.exe AddMessage "OK"
-
   test_script:
     - ps: .\.appveyor\test.ps1
