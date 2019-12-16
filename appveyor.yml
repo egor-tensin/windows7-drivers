@@ -32,6 +32,10 @@ build_script:
   - '"%python_exe%" um/cmake/ci/build_appveyor.py --install "%install_dir%"'
   - ps: .\.appveyor\build.ps1 -InstallDir $env:install_dir
 
+after_build:
+  - 7z.exe a "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%appveyor_driver_target_os%.zip" "%install_dir%"
+  - appveyor.exe PushArtifact "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%appveyor_driver_target_os%.zip"
+
 for:
 # Only build Release builds for master to speed things up:
 - branches:
