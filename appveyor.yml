@@ -9,6 +9,9 @@ image: Visual Studio 2013
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 environment:
+  global:
+    python_exe: C:\Python36-x64\python.exe
+    install_dir: C:\Projects\install\win7drv
   matrix:
     - appveyor_driver_target_os: Win7
     - appveyor_driver_target_os: Win8
@@ -26,6 +29,7 @@ install:
   - git submodule update --init --recursive
 
 build_script:
+  - '"%python_exe%" um/cmake/ci/build_appveyor.py --install "%install_dir%"'
   - ps: .\.appveyor\build.ps1
 
 for:
@@ -50,4 +54,4 @@ for:
     - ps: Start-Sleep -s 10
     - appveyor.exe AddMessage "OK"
   test_script:
-    - ps: .\.appveyor\test.ps1
+    - ps: .\.appveyor\test.ps1 -InstallDir $env:install_dir

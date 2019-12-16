@@ -1,7 +1,5 @@
 param(
-    [string] $BuildDir = $null,
     [string] $ProjectDir = $null,
-    [string] $Generator = $null,
     [string] $Platform = $null,
     [string] $Configuration = $null,
     [string] $DriverTargetOS = $null
@@ -35,37 +33,9 @@ function Test-AppVeyor {
 
 function Set-AppVeyorDefaults {
     $script:ProjectDir = $env:APPVEYOR_BUILD_FOLDER
-    $script:BuildDir = 'C:\Projects\build'
-    $script:Generator = switch ($env:APPVEYOR_BUILD_WORKER_IMAGE) {
-        'Visual Studio 2013' { 'Visual Studio 12 2013' }
-        'Visual Studio 2015' { 'Visual Studio 14 2015' }
-        'Visual Studio 2017' { 'Visual Studio 15 2017' }
-        default { throw "Unsupported AppVeyor image: $env:APPVEYOR_BUILD_WORKER_IMAGE" }
-    }
     $script:Platform = $env:PLATFORM
     $script:Configuration = $env:CONFIGURATION
     $script:DriverTargetOS = $env:appveyor_driver_target_os
-}
-
-function Build-ProjectUserMode {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string] $ProjectDir,
-        [Parameter(Mandatory=$true)]
-        [string] $BuildDir,
-        [Parameter(Mandatory=$true)]
-        [string] $Generator,
-        [Parameter(Mandatory=$true)]
-        [string] $Platform,
-        [Parameter(Mandatory=$true)]
-        [string] $Configuration
-    )
-
-    mkdir $BuildDir
-    cd $BuildDir
-
-    Invoke-Exe { cmake.exe -G $Generator -A $Platform "$ProjectDir\um" }
-    Invoke-Exe { cmake.exe --build . --config $Configuration -- /m }
 }
 
 function Get-DriverConfiguration {
@@ -151,35 +121,6 @@ function Build-ProjectKernelMode {
     }
 }
 
-function Build-Project {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string] $ProjectDir,
-        [Parameter(Mandatory=$true)]
-        [string] $BuildDir,
-        [Parameter(Mandatory=$true)]
-        [string] $Generator,
-        [Parameter(Mandatory=$true)]
-        [string] $Platform,
-        [Parameter(Mandatory=$true)]
-        [string] $Configuration,
-        [Parameter(Mandatory=$true)]
-        [string] $DriverTargetOS
-    )
-
-    Build-ProjectUserMode       `
-        -ProjectDir $ProjectDir `
-        -BuildDir $BuildDir     `
-        -Generator $Generator   `
-        -Platform $Platform     `
-        -Configuration $Configuration
-    Build-ProjectKernelMode           `
-        -ProjectDir $ProjectDir       `
-        -Platform $Platform           `
-        -Configuration $Configuration `
-        -DriverTargetOS $DriverTargetOS
-}
-
 function Build-ProjectAppVeyor {
     if (Test-AppVeyor) {
         Set-AppVeyorDefaults
@@ -187,10 +128,8 @@ function Build-ProjectAppVeyor {
     }
 
     try {
-        Build-Project                            `
+        Build-ProjectKernelMode                  `
             -ProjectDir $script:ProjectDir       `
-            -BuildDir $script:BuildDir           `
-            -Generator $script:Generator         `
             -Platform $script:Platform           `
             -Configuration $script:Configuration `
             -DriverTargetOS $script:DriverTargetOS

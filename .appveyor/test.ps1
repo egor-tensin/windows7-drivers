@@ -1,5 +1,6 @@
 param(
-    [string] $BuildDir = $null,
+    [Parameter(Mandatory=$true)]
+    [string] $InstallDir = $null,
     [string] $ProjectDir = $null,
     [string] $Configuration = $null,
     [string] $Platform = $null,
@@ -35,22 +36,9 @@ function Test-AppVeyor {
 
 function Set-AppVeyorDefaults {
     $script:ProjectDir = $env:APPVEYOR_BUILD_FOLDER
-    $script:BuildDir = 'C:\Projects\build'
     $script:Platform = $env:PLATFORM
     $script:Configuration = $env:CONFIGURATION
     $script:DriverTargetOS = $env:appveyor_driver_target_os
-}
-
-function Add-UtilsPath {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string] $BuildDir,
-        [Parameter(Mandatory=$true)]
-        [string] $Configuration
-    )
-
-    $env:PATH = "$BuildDir\service\utils\$Configuration;${env:PATH}"
-    $env:PATH = "$BuildDir\wrappers\simple\utils\$Configuration;${env:PATH}"
 }
 
 function Get-DriverName {
@@ -189,7 +177,7 @@ function Run-ProjectTests {
         [Parameter(Mandatory=$true)]
         [string] $ProjectDir,
         [Parameter(Mandatory=$true)]
-        [string] $BuildDir,
+        [string] $InstallDir,
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
@@ -198,7 +186,7 @@ function Run-ProjectTests {
         [string] $DriverTargetOS
     )
 
-    Add-UtilsPath -BuildDir $BuildDir -Configuration $Configuration
+    $env:PATH = "$InstallDir\bin;${env:PATH}"
 
     $drivers = 'minimal', 'simple', 'special\nt_namespace'
 
@@ -228,7 +216,7 @@ function Run-ProjectTestsAppVeyor {
     try {
         Run-ProjectTests                         `
             -ProjectDir $script:ProjectDir       `
-            -BuildDir $script:BuildDir           `
+            -InstallDir $script:InstallDir       `
             -Platform $script:Platform           `
             -Configuration $script:Configuration `
             -DriverTargetOS $script:DriverTargetOS
