@@ -5,3 +5,5 @@ if(MINGW)
     target_compile_options(nt_namespace_convert PRIVATE -municode)
     target_link_libraries(nt_namespace_convert PRIVATE -municode)
 endif()
+
+install(TARGETS nt_namespace_convert RUNTIME DESTINATION bin)

@@ -13,3 +13,6 @@ set_target_properties(service_stop PROPERTIES OUTPUT_NAME stop_service)
 add_executable(service_uninstall uninstall_service.cpp)
 target_link_libraries(service_uninstall PRIVATE service)
 set_target_properties(service_uninstall PROPERTIES OUTPUT_NAME uninstall_service)
+
+install(TARGETS service_install service_start service_stop service_uninstall
+        RUNTIME DESTINATION bin)
