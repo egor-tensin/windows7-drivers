@@ -1,4 +1,6 @@
 param(
+    [Parameter(Mandatory=$true)]
+    [string] $InstallDir = $null,
     [string] $ProjectDir = $null,
     [string] $Platform = $null,
     [string] $Configuration = $null,
@@ -78,6 +80,8 @@ function Build-Driver {
         [Parameter(Mandatory=$true)]
         [string] $ProjectDir,
         [Parameter(Mandatory=$true)]
+        [string] $InstallDir,
+        [Parameter(Mandatory=$true)]
         [string] $DriverSpec,
         [Parameter(Mandatory=$true)]
         [string] $Platform,
@@ -91,7 +95,7 @@ function Build-Driver {
     $solution_path = Get-DriverSolutionPath -ProjectDir $ProjectDir -DriverSpec $DriverSpec
 
     $Configuration = Get-DriverConfiguration -Configuration $Configuration -DriverTargetOS $DriverTargetOS
-    $msbuild_params = "/p:Platform=$Platform;Configuration=$Configuration;SignMode=TestSign"
+    $msbuild_params = "/p:Platform=$Platform;Configuration=$Configuration;SignMode=TestSign;OutDir=$InstallDir\lib"
 
     cd $build_dir
     Invoke-Exe { msbuild.exe $msbuild_params $solution_path }
@@ -101,6 +105,8 @@ function Build-ProjectKernelMode {
     param(
         [Parameter(Mandatory=$true)]
         [string] $ProjectDir,
+        [Parameter(Mandatory=$true)]
+        [string] $InstallDir,
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
@@ -114,6 +120,7 @@ function Build-ProjectKernelMode {
     foreach ($driver in $drivers) {
         Build-Driver                      `
             -ProjectDir $ProjectDir       `
+            -InstallDir $InstallDir       `
             -DriverSpec $driver           `
             -Platform $Platform           `
             -Configuration $Configuration `
@@ -130,6 +137,7 @@ function Build-ProjectAppVeyor {
     try {
         Build-ProjectKernelMode                  `
             -ProjectDir $script:ProjectDir       `
+            -InstallDir $script:InstallDir       `
             -Platform $script:Platform           `
             -Configuration $script:Configuration `
             -DriverTargetOS $script:DriverTargetOS

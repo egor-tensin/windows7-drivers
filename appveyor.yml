@@ -30,7 +30,7 @@ install:
 
 build_script:
   - '"%python_exe%" um/cmake/ci/build_appveyor.py --install "%install_dir%"'
-  - ps: .\.appveyor\build.ps1
+  - ps: .\.appveyor\build.ps1 -InstallDir $env:install_dir
 
 for:
 # Only build Release builds for master to speed things up:
