@@ -1,18 +1,18 @@
-add_executable(service_install install_service.cpp)
-target_link_libraries(service_install PRIVATE service)
-set_target_properties(service_install PROPERTIES OUTPUT_NAME install_service)
+function(add_util action src)
+    set(target "service_${action}")
+    set(name "${action}_service")
 
-add_executable(service_start start_service.cpp)
-target_link_libraries(service_start PRIVATE service)
-set_target_properties(service_start PROPERTIES OUTPUT_NAME start_service)
+    add_executable("${target}" ${src})
+    target_link_libraries("${target}" PRIVATE service)
+    set_target_properties("${target}" PROPERTIES OUTPUT_NAME "${name}")
 
-add_executable(service_stop stop_service.cpp)
-target_link_libraries(service_stop PRIVATE service)
-set_target_properties(service_stop PROPERTIES OUTPUT_NAME stop_service)
+    install(TARGETS "${target}" RUNTIME DESTINATION bin)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        install(FILES "$<TARGET_PDB_FILE:${target}>" DESTINATION bin OPTIONAL)
+    endif()
+endfunction()
 
-add_executable(service_uninstall uninstall_service.cpp)
-target_link_libraries(service_uninstall PRIVATE service)
-set_target_properties(service_uninstall PROPERTIES OUTPUT_NAME uninstall_service)
-
-install(TARGETS service_install service_start service_stop service_uninstall
-        RUNTIME DESTINATION bin)
+add_util(install install_service.cpp)
+add_util(start start_service.cpp)
+add_util(stop stop_service.cpp)
+add_util(uninstall uninstall_service.cpp)
