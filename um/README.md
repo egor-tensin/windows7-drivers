@@ -18,18 +18,6 @@ Building
 
 Create the build files using CMake and build the project using Visual Studio.
 
-* **Customization.**
-The runtime libraries are linked statically by default (when this project is
-the root CMake project).
-You can link the runtime dynamically by passing `-D USE_STATIC_RUNTIME=OFF` to
+The runtime libraries are linked statically by default.
+You can link the runtime dynamically by passing `-D CC_STATIC_RUNTIME=OFF` to
 `cmake`.
-* **Example.**
-In the example below, the project directory is
-"C:\workspace\personal\windows7-drivers\um" and Visual Studio 2013 is used,
-targeting x86.
-
-      > cmake -G "Visual Studio 12 2013" C:\workspace\personal\windows7-drivers\um
-      ...
-
-      > cmake --build . --config release -- /m
-      ...
