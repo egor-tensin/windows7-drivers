@@ -32,7 +32,9 @@ install:
   - git submodule update --init --recursive
 
 build_script:
-  - '"%python_exe%" um\cmake\cmake\build\ci\appveyor.py --install "%install_dir%"'
+  - cd um\cmake
+  - '"%python_exe%" -m project.ci.appveyor.cmake --install "%install_dir%"'
+  - cd ..\..
   - ps: .\.appveyor\build.ps1 -InstallDir $env:install_dir
 
 after_build:
