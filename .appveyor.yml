@@ -28,6 +28,11 @@ configuration:
 matrix:
   fast_finish: true
 
+  # On Win32, only build Debug to speed things up:
+  exclude:
+    - platform: Win32
+      configuration: Release
+
 install:
   - git submodule update --init --recursive
 
@@ -42,7 +47,7 @@ after_build:
   - appveyor.exe PushArtifact "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%appveyor_driver_target_os%.zip"
 
 for:
-# Only build Release builds for master to speed things up:
+# Build Release on master only to speed things up:
 - branches:
     except:
       - master
