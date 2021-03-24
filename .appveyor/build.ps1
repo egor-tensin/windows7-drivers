@@ -134,6 +134,9 @@ function Build-ProjectAppVeyor {
         $appveyor_cwd = pwd
     }
 
+    $script:ProjectDir = (Resolve-Path $script:ProjectDir).Path
+    $script:InstallDir = (Resolve-Path $script:InstallDir).Path
+
     try {
         Build-ProjectKernelMode                  `
             -ProjectDir $script:ProjectDir       `

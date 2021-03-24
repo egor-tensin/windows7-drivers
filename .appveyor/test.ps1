@@ -108,6 +108,8 @@ function Run-ProjectTestsAppVeyor {
         $appveyor_cwd = pwd
     }
 
+    $script:InstallDir = (Resolve-Path $script:InstallDir).Path
+
     try {
         Run-ProjectTests -InstallDir $script:InstallDir
     } finally {

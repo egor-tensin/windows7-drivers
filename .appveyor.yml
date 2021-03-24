@@ -11,7 +11,6 @@ image: Visual Studio 2013
 environment:
   global:
     python_exe: C:\Python36-x64\python.exe
-    install_dir: C:\Projects\install\win7drv
   matrix:
     - appveyor_driver_target_os: Win7
     - appveyor_driver_target_os: Win8
@@ -38,12 +37,12 @@ install:
 
 build_script:
   - cd um\cmake
-  - '"%python_exe%" -m project.ci.appveyor.cmake --install "%install_dir%"'
+  - '"%python_exe%" -m project.ci.cmake --install'
   - cd ..\..
-  - ps: .\.appveyor\build.ps1 -InstallDir $env:install_dir
+  - ps: .\.appveyor\build.ps1 -InstallDir ..\build\install
 
 after_build:
-  - 7z.exe a "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%appveyor_driver_target_os%.zip" "%install_dir%"
+  - 7z.exe a "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%appveyor_driver_target_os%.zip" "..\build\install\*"
   - appveyor.exe PushArtifact "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%appveyor_driver_target_os%.zip"
 
 for:
@@ -68,4 +67,4 @@ for:
     - ps: Start-Sleep -s 10
     - appveyor.exe AddMessage "OK"
   test_script:
-    - ps: .\.appveyor\test.ps1 -InstallDir $env:install_dir
+    - ps: .\.appveyor\test.ps1 -InstallDir ..\build\install
