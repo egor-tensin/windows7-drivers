@@ -3,9 +3,9 @@ Windows 7 drivers
 
 [![AppVeyor branch](https://img.shields.io/appveyor/ci/egor-tensin/windows7-drivers/master?label=AppVeyor)](https://ci.appveyor.com/project/egor-tensin/windows7-drivers/branch/master)
 
-A collection of basic Windows 7 drivers.
+Basic Windows 7 drivers.
 
-These don't actually manage any hardware, this is just an example of code
+These don't actually manage any hardware, they are just examples of code
 running in the kernel mode.
 
 Development
