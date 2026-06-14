@@ -10,8 +10,8 @@ A couple of usage examples are included along with the drivers.
 [libservice]: service/README.md
 [libsimple]: wrappers/simple/README.md
 [simple]: ../km/src/simple
-[libnt_namespace]: wrappers/special/nt_namespace/README.md
-[nt_namespace]: ../km/src/special/nt_namespace
+[libnt_namespace]: wrappers/nt_namespace/README.md
+[nt_namespace]: ../km/src/nt_namespace
 
 Building
 --------

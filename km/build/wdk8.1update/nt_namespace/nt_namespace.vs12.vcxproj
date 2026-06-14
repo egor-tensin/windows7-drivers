@@ -217,14 +217,14 @@
     <FilesToPackage Include="@(Inf->'%(CopyOutput)')" Condition="'@(Inf)'!=''" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\src\special\nt_namespace\control_codes.h" />
-    <ClInclude Include="..\..\..\..\src\special\nt_namespace\device.h" />
-    <ClInclude Include="..\..\..\..\src\special\nt_namespace\nt2dos.h" />
+    <ClInclude Include="..\..\..\src\nt_namespace\control_codes.h" />
+    <ClInclude Include="..\..\..\src\nt_namespace\device.h" />
+    <ClInclude Include="..\..\..\src\nt_namespace\nt2dos.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\src\special\nt_namespace\device.c" />
-    <ClCompile Include="..\..\..\..\src\special\nt_namespace\main.c" />
-    <ClCompile Include="..\..\..\..\src\special\nt_namespace\nt2dos.c" />
+    <ClCompile Include="..\..\..\src\nt_namespace\device.c" />
+    <ClCompile Include="..\..\..\src\nt_namespace\main.c" />
+    <ClCompile Include="..\..\..\src\nt_namespace\nt2dos.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

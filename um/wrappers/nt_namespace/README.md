@@ -1,7 +1,7 @@
 nt_namespace
 ============
 
-[nt_namespace](../../../../km/src/special/nt_namespace): usage examples.
+[nt_namespace](../../../km/src/nt_namespace): usage examples.
 
 Usage
 -----
@@ -22,4 +22,4 @@ For example:
 See also
 --------
 
-* [Building](../../../README.md#building)
+* [Building](../../README.md#building)

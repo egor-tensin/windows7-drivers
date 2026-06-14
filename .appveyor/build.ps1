@@ -115,7 +115,7 @@ function Build-ProjectKernelMode {
         [string] $DriverTargetOS
     )
 
-    $drivers = 'minimal', 'simple', 'special\nt_namespace'
+    $drivers = 'minimal', 'simple', 'nt_namespace'
 
     foreach ($driver in $drivers) {
         Build-Driver                      `
