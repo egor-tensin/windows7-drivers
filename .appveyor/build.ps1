@@ -55,42 +55,27 @@ function Get-DriverSolutionPath {
 function Build-Driver {
     param(
         [Parameter(Mandatory=$true)]
-        [string] $InstallDir,
-        [Parameter(Mandatory=$true)]
-        [string] $DriverName,
-        [Parameter(Mandatory=$true)]
-        [string] $Platform,
-        [Parameter(Mandatory=$true)]
-        [string] $Configuration
+        [string] $DriverName
     )
 
     $build_dir = Get-DriverBuildDir -DriverName $DriverName
     $solution_path = Get-DriverSolutionPath -DriverName $DriverName
 
-    $msbuild_params = "/p:Platform=$Platform;Configuration=$Configuration;SignMode=TestSign;OutDir=$InstallDir\lib"
+    $msbuild_params = @()
+    $msbuild_params += "/p:Platform=$script:Platform"
+    $msbuild_params += "/p:Configuration=$script:Configuration"
+    $msbuild_params += "/p:SignMode=TestSign"
+    $msbuild_params += "/p:OutDir=$InstallDir\lib"
 
     cd $build_dir
     Invoke-Exe { msbuild.exe $msbuild_params $solution_path }
 }
 
 function Build-ProjectKernelMode {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string] $InstallDir,
-        [Parameter(Mandatory=$true)]
-        [string] $Platform,
-        [Parameter(Mandatory=$true)]
-        [string] $Configuration
-    )
-
     $drivers = 'minimal', 'simple', 'nt_namespace'
 
     foreach ($driver in $drivers) {
-        Build-Driver                      `
-            -InstallDir $InstallDir       `
-            -DriverName $driver           `
-            -Platform $Platform           `
-            -Configuration $Configuration
+        Build-Driver -DriverName $driver
     }
 }
 
@@ -102,10 +87,7 @@ function Build-Project {
     $script:InstallDir = (Resolve-Path $script:InstallDir).Path
 
     try {
-        Build-ProjectKernelMode                  `
-            -InstallDir $script:InstallDir       `
-            -Platform $script:Platform           `
-            -Configuration $script:Configuration
+        Build-ProjectKernelMode
     } finally {
         if (Test-AppVeyor) {
             cd $appveyor_cwd
