@@ -72,7 +72,7 @@ function Get-DriverSolutionPath {
 
     $build_dir = Get-DriverBuildDir -ProjectDir $ProjectDir -DriverSpec $DriverSpec
     $driver_name = Split-Path -Path $build_dir -Leaf -Resolve
-    return "$build_dir\$driver_name.vs12.sln"
+    return "$build_dir\$driver_name.sln"
 }
 
 function Build-Driver {

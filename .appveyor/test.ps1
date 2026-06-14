@@ -39,7 +39,7 @@ function Start-Driver {
     )
 
     Write-Host "Starting driver $DriverName..."
-    Invoke-Exe { install_service.exe $DriverName "$InstallDir\lib\$DriverName.vs12.sys" }
+    Invoke-Exe { install_service.exe $DriverName "$InstallDir\lib\$DriverName.sys" }
     Invoke-Exe { start_service.exe $DriverName }
 }
 
