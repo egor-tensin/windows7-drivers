@@ -9,6 +9,14 @@ endif()
 
 project(win7drv CXX)
 
+if(MSVC)
+    add_compile_options(/MP /W4)
+else()
+    add_compile_options(-Wall -Wextra)
+endif()
+
+add_compile_definitions(NOMINMAX)
+
 add_subdirectory(um)
 
 install(FILES LICENSE.txt DESTINATION share)

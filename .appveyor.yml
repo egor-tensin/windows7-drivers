@@ -9,8 +9,6 @@ image: Visual Studio 2013
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 environment:
-  global:
-    python_exe: C:\Python36-x64\python.exe
   matrix:
     - TARGET_OS: Win7
     - TARGET_OS: Win8
@@ -36,18 +34,26 @@ install:
   - git submodule update --init --recursive
 
 build_script:
-  - cd um\cmake
-  - '"%python_exe%" -m project.ci.cmake --install'
-  - cd ..\..
   - ps: |
+      cd $Env:APPVEYOR_BUILD_FOLDER
+      New-Item -Type Directory build\cmake | Out-Null
+      cd build\cmake
+
+      cmake -A $Env:PLATFORM `
+          "-DCMAKE_INSTALL_PREFIX=$Env:APPVEYOR_BUILD_FOLDER\build\install" `
+          $Env:APPVEYOR_BUILD_FOLDER
+
+      cmake --build . --target install --config $Env:CONFIGURATION
+  - ps: |
+      cd $Env:APPVEYOR_BUILD_FOLDER
       .\scripts\build.ps1 `
-          -InstallDir ..\build\install `
+          -InstallDir .\build\install `
           -Configuration "$Env:TARGET_OS $Env:CONFIGURATION" `
           -Platform $Env:PLATFORM `
           -WDK wdk8.1update
 
 after_build:
-  - 7z.exe a "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%TARGET_OS%.zip" "..\build\install\*"
+  - 7z.exe a "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%TARGET_OS%.zip" .\build\install\*
   - appveyor.exe PushArtifact "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%TARGET_OS%.zip"
 
 for:
@@ -72,4 +78,4 @@ for:
     - ps: Start-Sleep -s 10
     - appveyor.exe AddMessage "OK"
   test_script:
-    - ps: .\scripts\test.ps1 -InstallDir ..\build\install
+    - ps: .\scripts\test.ps1 -InstallDir build\install

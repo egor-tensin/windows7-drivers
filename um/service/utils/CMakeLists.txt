@@ -7,7 +7,10 @@ function(add_util action src)
     set_target_properties("${target}" PROPERTIES OUTPUT_NAME "${name}")
 
     install(TARGETS "${target}" RUNTIME DESTINATION bin)
-    install_pdbs(TARGETS "${target}" DESTINATION bin)
+    if(MSVC)
+        install(FILES $<TARGET_PDB_FILE:${target}>
+                DESTINATION bin OPTIONAL)
+    endif()
 endfunction()
 
 add_util(install install_service.cpp)

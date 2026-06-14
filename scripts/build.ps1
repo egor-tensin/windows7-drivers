@@ -86,6 +86,7 @@ function Build-Project {
         $appveyor_cwd = pwd
     }
 
+    New-Item -ItemType Directory -Force $script:InstallDir | Out-Null
     $script:InstallDir = (Resolve-Path $script:InstallDir).Path
 
     try {

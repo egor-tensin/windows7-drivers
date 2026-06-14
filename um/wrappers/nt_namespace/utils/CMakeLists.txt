@@ -7,4 +7,7 @@ if(MINGW)
 endif()
 
 install(TARGETS nt_namespace_convert RUNTIME DESTINATION bin)
-install_pdbs(TARGETS nt_namespace_convert DESTINATION bin)
+if(MSVC)
+    install(FILES $<TARGET_PDB_FILE:nt_namespace_convert>
+            DESTINATION bin OPTIONAL)
+endif()
