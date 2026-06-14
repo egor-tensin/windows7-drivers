@@ -4,7 +4,9 @@ param(
     [Parameter(Mandatory=$true)]
     [string] $Platform = $null,
     [Parameter(Mandatory=$true)]
-    [string] $Configuration = $null
+    [string] $Configuration = $null,
+    [Parameter(Mandatory=$true)]
+    [string] $WDK = $null
 )
 
 $ErrorActionPreference = "Stop";
@@ -39,7 +41,7 @@ function Get-DriverBuildDir {
         [string] $DriverName
     )
 
-    return "$script:PSScriptRoot\..\km\build\wdk8.1update\$DriverName"
+    return "$script:PSScriptRoot\..\km\build\$script:WDK\$DriverName"
 }
 
 function Get-DriverSolutionPath {

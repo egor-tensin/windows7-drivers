@@ -43,7 +43,8 @@ build_script:
       .\scripts\build.ps1 `
           -InstallDir ..\build\install `
           -Configuration "$Env:TARGET_OS $Env:CONFIGURATION" `
-          -Platform $Env:PLATFORM
+          -Platform $Env:PLATFORM `
+          -WDK wdk8.1update
 
 after_build:
   - 7z.exe a "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%TARGET_OS%.zip" "..\build\install\*"
