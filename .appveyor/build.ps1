@@ -1,7 +1,9 @@
 param(
     [Parameter(Mandatory=$true)]
     [string] $InstallDir = $null,
+    [Parameter(Mandatory=$true)]
     [string] $Platform = $null,
+    [Parameter(Mandatory=$true)]
     [string] $Configuration = $null
 )
 
@@ -31,45 +33,23 @@ function Test-AppVeyor {
     return Test-Path env:APPVEYOR
 }
 
-function Set-AppVeyorDefaults {
-    $script:Platform = $env:PLATFORM
-    $script:Configuration = $env:CONFIGURATION
-    $script:DriverTargetOS = $env:appveyor_driver_target_os
-}
-
-function Get-DriverConfiguration {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string] $Configuration,
-        [Parameter(Mandatory=$true)]
-        [string] $DriverTargetOS
-    )
-
-    if (Test-AppVeyor) {
-        return "$DriverTargetOS $Configuration"
-    } else {
-        return $Configuration
-    }
-}
-
 function Get-DriverBuildDir {
     param(
         [Parameter(Mandatory=$true)]
-        [string] $DriverSpec
+        [string] $DriverName
     )
 
-    return "$script:PSScriptRoot\..\km\build\wdk8.1update\$DriverSpec"
+    return "$script:PSScriptRoot\..\km\build\wdk8.1update\$DriverName"
 }
 
 function Get-DriverSolutionPath {
     param(
         [Parameter(Mandatory=$true)]
-        [string] $DriverSpec
+        [string] $DriverName
     )
 
-    $build_dir = Get-DriverBuildDir -DriverSpec $DriverSpec
-    $driver_name = Split-Path -Path $build_dir -Leaf -Resolve
-    return "$build_dir\$driver_name.sln"
+    $build_dir = Get-DriverBuildDir -DriverName $DriverName
+    return "$build_dir\$DriverName.sln"
 }
 
 function Build-Driver {
@@ -77,19 +57,16 @@ function Build-Driver {
         [Parameter(Mandatory=$true)]
         [string] $InstallDir,
         [Parameter(Mandatory=$true)]
-        [string] $DriverSpec,
+        [string] $DriverName,
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration,
-        [Parameter(Mandatory=$true)]
-        [string] $DriverTargetOS
+        [string] $Configuration
     )
 
-    $build_dir = Get-DriverBuildDir -DriverSpec $DriverSpec
-    $solution_path = Get-DriverSolutionPath -DriverSpec $DriverSpec
+    $build_dir = Get-DriverBuildDir -DriverName $DriverName
+    $solution_path = Get-DriverSolutionPath -DriverName $DriverName
 
-    $Configuration = Get-DriverConfiguration -Configuration $Configuration -DriverTargetOS $DriverTargetOS
     $msbuild_params = "/p:Platform=$Platform;Configuration=$Configuration;SignMode=TestSign;OutDir=$InstallDir\lib"
 
     cd $build_dir
@@ -103,9 +80,7 @@ function Build-ProjectKernelMode {
         [Parameter(Mandatory=$true)]
         [string] $Platform,
         [Parameter(Mandatory=$true)]
-        [string] $Configuration,
-        [Parameter(Mandatory=$true)]
-        [string] $DriverTargetOS
+        [string] $Configuration
     )
 
     $drivers = 'minimal', 'simple', 'nt_namespace'
@@ -113,16 +88,14 @@ function Build-ProjectKernelMode {
     foreach ($driver in $drivers) {
         Build-Driver                      `
             -InstallDir $InstallDir       `
-            -DriverSpec $driver           `
+            -DriverName $driver           `
             -Platform $Platform           `
-            -Configuration $Configuration `
-            -DriverTargetOS $DriverTargetOS
+            -Configuration $Configuration
     }
 }
 
-function Build-ProjectAppVeyor {
+function Build-Project {
     if (Test-AppVeyor) {
-        Set-AppVeyorDefaults
         $appveyor_cwd = pwd
     }
 
@@ -132,8 +105,7 @@ function Build-ProjectAppVeyor {
         Build-ProjectKernelMode                  `
             -InstallDir $script:InstallDir       `
             -Platform $script:Platform           `
-            -Configuration $script:Configuration `
-            -DriverTargetOS $script:DriverTargetOS
+            -Configuration $script:Configuration
     } finally {
         if (Test-AppVeyor) {
             cd $appveyor_cwd
@@ -142,4 +114,4 @@ function Build-ProjectAppVeyor {
     }
 }
 
-Build-ProjectAppVeyor
+Build-Project

@@ -12,9 +12,9 @@ environment:
   global:
     python_exe: C:\Python36-x64\python.exe
   matrix:
-    - appveyor_driver_target_os: Win7
-    - appveyor_driver_target_os: Win8
-    - appveyor_driver_target_os: Win8.1
+    - TARGET_OS: Win7
+    - TARGET_OS: Win8
+    - TARGET_OS: Win8.1
 
 platform:
   - Win32
@@ -39,11 +39,15 @@ build_script:
   - cd um\cmake
   - '"%python_exe%" -m project.ci.cmake --install'
   - cd ..\..
-  - ps: .\.appveyor\build.ps1 -InstallDir ..\build\install
+  - ps: |
+      .\.appveyor\build.ps1 `
+          -InstallDir ..\build\install `
+          -Configuration "$Env:TARGET_OS $Env:CONFIGURATION" `
+          -Platform $Env:PLATFORM
 
 after_build:
-  - 7z.exe a "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%appveyor_driver_target_os%.zip" "..\build\install\*"
-  - appveyor.exe PushArtifact "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%appveyor_driver_target_os%.zip"
+  - 7z.exe a "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%TARGET_OS%.zip" "..\build\install\*"
+  - appveyor.exe PushArtifact "%APPVEYOR_PROJECT_NAME%-%PLATFORM%-%CONFIGURATION%-%TARGET_OS%.zip"
 
 for:
 # Build Release on master only to speed things up:
