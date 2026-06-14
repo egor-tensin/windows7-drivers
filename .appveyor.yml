@@ -40,7 +40,7 @@ build_script:
   - '"%python_exe%" -m project.ci.cmake --install'
   - cd ..\..
   - ps: |
-      .\.appveyor\build.ps1 `
+      .\scripts\build.ps1 `
           -InstallDir ..\build\install `
           -Configuration "$Env:TARGET_OS $Env:CONFIGURATION" `
           -Platform $Env:PLATFORM
@@ -71,4 +71,4 @@ for:
     - ps: Start-Sleep -s 10
     - appveyor.exe AddMessage "OK"
   test_script:
-    - ps: .\.appveyor\test.ps1 -InstallDir ..\build\install
+    - ps: .\scripts\test.ps1 -InstallDir ..\build\install
