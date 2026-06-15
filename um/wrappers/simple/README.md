@@ -30,8 +30,3 @@ For example:
 > exchange_ints.exe 100500
 32
 ```
-
-See also
---------
-
-* [Building](../../README.md#building)

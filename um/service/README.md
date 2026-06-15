@@ -42,8 +42,3 @@ registry.
 The same as
 
     > sc delete NAME
-
-See also
---------
-
-* [Building](../README.md#building)

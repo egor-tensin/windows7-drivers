@@ -18,8 +18,3 @@ For example:
     C:\Windows
 
 [WinObj]: https://technet.microsoft.com/en-us/library/bb896657.aspx
-
-See also
---------
-
-* [Building](../../README.md#building)

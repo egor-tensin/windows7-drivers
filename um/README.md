@@ -17,7 +17,3 @@ Building
 --------
 
 Create the build files using CMake and build the project using Visual Studio.
-
-The runtime libraries are linked statically by default.
-You can link the runtime dynamically by passing `-D CC_STATIC_RUNTIME=OFF` to
-`cmake`.

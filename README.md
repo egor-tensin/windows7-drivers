@@ -14,6 +14,7 @@ Development
 
 * [Using WDK 7.1.0](km/build/wdk7.1/README.md)
 * [Using WDK 8.1 Update](km/build/wdk8.1update/README.md)
+* [Using WDK 10](km/build/wdk10/README.md)
 
 Installation
 ------------
@@ -21,7 +22,7 @@ Installation
 To install a driver as a Windows service, you can use the `sc` utility.
 For example:
 
-    sc create simple type= kernel binPath= C:\workspace\personal\windows7-drivers\km\build\wdk7.1\bin\x64\release\simple.sys
+    sc create simple type= kernel binPath= C:\workspace\personal\windows7-drivers\build\install\lib\simple.sys
 
 You can then load/unload the driver by starting/stopping the corresponding
 service using the `net` utility.
