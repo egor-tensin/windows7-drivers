@@ -50,6 +50,8 @@ jobs:
       - name: Install NuGet packages
         # As of June '26, WDK doesn't seem to be included in VS 2026 (windows-2025) images.
         # The recommended way is to use NuGet: https://github.com/actions/runner-images/issues/13071#issuecomment-3361203846
+        # How to use it: https://community.osr.com/t/announcing-the-wdk-nuget-a-new-way-to-develop-drivers-on-windows/58887/20
+        # Also, see Microsoft's driver samples: https://github.com/microsoft/windows-driver-samples
         run: nuget restore .\packages.config -PackagesDirectory .\packages\
         if: matrix.toolset == 'vs2026'
 
