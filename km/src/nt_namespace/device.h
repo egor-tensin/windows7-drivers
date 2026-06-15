@@ -9,5 +9,5 @@
 
 #include <ntddk.h>
 
-NTSTATUS set_up_devices(DRIVER_OBJECT *);
+NTSTATUS set_up_devices(DRIVER_OBJECT*);
 void destroy_devices();

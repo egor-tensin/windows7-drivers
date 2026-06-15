@@ -9,4 +9,4 @@
 
 #include <ntstrsafe.h>
 
-NTSTATUS nt2dos(UNICODE_STRING *resolved, UNICODE_STRING *unresolved);
+NTSTATUS nt2dos(UNICODE_STRING* resolved, UNICODE_STRING* unresolved);

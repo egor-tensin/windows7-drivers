@@ -8,20 +8,15 @@
 #include <exception>
 #include <iostream>
 
-int main(int argc, char* argv[])
-{
-    if (argc != 2)
-    {
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
         std::cout << "Usage: " << argv[0] << " NAME\n";
         return 1;
     }
 
-    try
-    {
+    try {
         service::Service::open(service::ServiceManager::open(), argv[1]).start();
-    }
-    catch (const std::exception& e)
-    {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;
     }

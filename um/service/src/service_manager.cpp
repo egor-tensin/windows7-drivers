@@ -7,18 +7,17 @@
 
 #include <Windows.h>
 
-namespace service
-{
-    ServiceManager ServiceManager::open()
-    {
-        const auto raw = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+namespace service {
 
-        if (NULL == raw)
-        {
-            const auto ec = GetLastError();
-            throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
-        }
+ServiceManager ServiceManager::open() {
+    const auto raw = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
 
-        return ServiceHandle(raw);
+    if (NULL == raw) {
+        const auto ec = GetLastError();
+        throw windows_error::make(ec, __FILE__, __LINE__, __FUNCTION__);
     }
+
+    return ServiceHandle(raw);
 }
+
+} // namespace service

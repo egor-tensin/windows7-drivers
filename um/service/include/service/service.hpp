@@ -12,68 +12,57 @@
 #include <string>
 #include <utility>
 
-namespace service
-{
-    class Service
-    {
-    public:
-        static bool exists(
-            const ServiceManager&,
-            const std::string& name);
+namespace service {
 
-        static Service open(
-            const ServiceManager&,
-            const std::string& name);
+class Service {
+public:
+    static bool exists(const ServiceManager&, const std::string& name);
 
-        static Service install(
-            const ServiceManager&,
-            const std::string& name,
-            const std::string& bin_path);
+    static Service open(const ServiceManager&, const std::string& name);
 
-        void start() const;
-        void stop() const;
-        void uninstall() const;
+    static Service install(
+        const ServiceManager&,
+        const std::string& name,
+        const std::string& bin_path
+    );
 
-        Service(Service&& other) LIBSERVICE_NOEXCEPT
-        {
-            swap(other);
-        }
+    void start() const;
+    void stop() const;
+    void uninstall() const;
 
-        Service& operator=(Service other) LIBSERVICE_NOEXCEPT
-        {
-            swap(other);
-            return *this;
-        }
-
-        void swap(Service& other) LIBSERVICE_NOEXCEPT
-        {
-            using std::swap;
-            swap(handle, other.handle);
-        }
-
-    private:
-        Service(ServiceHandle handle)
-            : handle(std::move(handle))
-        { }
-
-        ServiceHandle handle;
-
-        Service(const Service&) = delete;
-    };
-
-    inline void swap(Service& a, Service& b) LIBSERVICE_NOEXCEPT
-    {
-        a.swap(b);
+    Service(Service&& other) LIBSERVICE_NOEXCEPT {
+        swap(other);
     }
+
+    Service& operator=(Service other) LIBSERVICE_NOEXCEPT {
+        swap(other);
+        return *this;
+    }
+
+    void swap(Service& other) LIBSERVICE_NOEXCEPT {
+        using std::swap;
+        swap(handle, other.handle);
+    }
+
+private:
+    Service(ServiceHandle handle) : handle(std::move(handle)) {}
+
+    ServiceHandle handle;
+
+    Service(const Service&) = delete;
+};
+
+inline void swap(Service& a, Service& b) LIBSERVICE_NOEXCEPT {
+    a.swap(b);
 }
 
-namespace std
-{
-    template <>
-    inline void swap(
-        service::Service& a,
-        service::Service& b) LIBSERVICE_NOEXCEPT
-    {
-        a.swap(b);
-    }
+} // namespace service
+
+namespace std {
+
+template <>
+inline void swap(service::Service& a, service::Service& b) LIBSERVICE_NOEXCEPT {
+    a.swap(b);
 }
+
+} // namespace std

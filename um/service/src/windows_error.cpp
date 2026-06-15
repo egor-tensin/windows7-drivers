@@ -9,34 +9,31 @@
 
 #include <string>
 
-namespace service
-{
-    namespace windows_error
-    {
-        std::string Category::message(int code) const
-        {
-            char* buf_ptr;
+namespace service {
+namespace windows_error {
 
-            const auto nbwritten = FormatMessageA(
-                FORMAT_MESSAGE_ALLOCATE_BUFFER
-                    | FORMAT_MESSAGE_FROM_SYSTEM
-                    | FORMAT_MESSAGE_IGNORE_INSERTS,
-                NULL,
-                code,
-                MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                reinterpret_cast<char*>(&buf_ptr),
-                0,
-                NULL);
+std::string Category::message(int code) const {
+    char* buf_ptr;
 
-            if (0 == nbwritten)
-            {
-                LocalFree(buf_ptr);
-                return "Couldn't format the error message";
-            }
+    const auto nbwritten = FormatMessageA(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        code,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        reinterpret_cast<char*>(&buf_ptr),
+        0,
+        NULL
+    );
 
-            std::string str(buf_ptr, nbwritten - 2);
-            LocalFree(buf_ptr);
-            return str;
-        }
+    if (0 == nbwritten) {
+        LocalFree(buf_ptr);
+        return "Couldn't format the error message";
     }
+
+    std::string str(buf_ptr, nbwritten - 2);
+    LocalFree(buf_ptr);
+    return str;
 }
+
+} // namespace windows_error
+} // namespace service

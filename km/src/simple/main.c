@@ -9,18 +9,14 @@
 
 #include <ntddk.h>
 
-static void on_driver_unload(DRIVER_OBJECT *driver_object)
-{
+static void on_driver_unload(DRIVER_OBJECT* driver_object) {
     UNREFERENCED_PARAMETER(driver_object);
 
     DbgPrint("simple: unloading...\n");
     destroy_devices();
 }
 
-NTSTATUS DriverEntry(
-    DRIVER_OBJECT *driver_object,
-    UNICODE_STRING *registry_path)
-{
+NTSTATUS DriverEntry(DRIVER_OBJECT* driver_object, UNICODE_STRING* registry_path) {
     UNREFERENCED_PARAMETER(registry_path);
 
     DbgPrint("simple: loading...\n");

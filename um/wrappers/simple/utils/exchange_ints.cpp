@@ -10,32 +10,27 @@
 #include <sstream>
 #include <string>
 
-namespace
-{
-    bool parse_int(unsigned int& dest, const std::string& src)
-    {
-        std::istringstream iss(src);
-        char c;
-        return iss >> dest && !iss.get(c);
-    }
+namespace {
+
+bool parse_int(unsigned int& dest, const std::string& src) {
+    std::istringstream iss(src);
+    char c;
+    return iss >> dest && !iss.get(c);
 }
 
-int main(int argc, char* argv[])
-{
-    try
-    {
+} // namespace
+
+int main(int argc, char* argv[]) {
+    try {
         unsigned int src = 0;
 
-        if (argc != 2 || !parse_int(src, argv[1]))
-        {
+        if (argc != 2 || !parse_int(src, argv[1])) {
             std::cout << "Usage: " << argv[0] << " N\n";
             return 1;
         }
 
         std::cout << simple::Device().exchange_ints(src) << "\n";
-    }
-    catch (const std::exception& e)
-    {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;
     }

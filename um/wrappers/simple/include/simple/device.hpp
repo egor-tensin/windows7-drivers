@@ -7,13 +7,13 @@
 
 #include "service/all.hpp"
 
-namespace simple
-{
-    class Device : service::Device
-    {
-    public:
-        Device();
+namespace simple {
 
-        unsigned int exchange_ints(unsigned int) const;
-    };
-}
+class Device : service::Device {
+public:
+    Device();
+
+    unsigned int exchange_ints(unsigned int) const;
+};
+
+} // namespace simple

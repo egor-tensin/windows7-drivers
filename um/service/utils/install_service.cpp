@@ -8,20 +8,15 @@
 #include <exception>
 #include <iostream>
 
-int main(int argc, char* argv[])
-{
-    if (argc != 3)
-    {
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
         std::cout << "Usage: " << argv[0] << " NAME SYS_PATH\n";
         return 1;
     }
 
-    try
-    {
+    try {
         service::Service::install(service::ServiceManager::open(), argv[1], argv[2]);
-    }
-    catch (const std::exception& e)
-    {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;
     }

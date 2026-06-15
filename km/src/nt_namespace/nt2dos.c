@@ -5,12 +5,13 @@
  * Distributed under the MIT License.
  */
 
+/* clang-format off */
 #include <ntifs.h>
 
 #include "nt2dos.h"
+/* clang-format on */
 
-static PVOID allocate(SIZE_T nb)
-{
+static PVOID allocate(SIZE_T nb) {
 #if !defined(NTDDI_WIN10) || NTDDI_VERSION < NTDDI_WIN10
     return ExAllocatePoolWithTag(PagedPool, nb, '1l');
 #else
@@ -18,10 +19,7 @@ static PVOID allocate(SIZE_T nb)
 #endif
 }
 
-static NTSTATUS get_object_name_info(
-    void *object,
-    OBJECT_NAME_INFORMATION **object_name_info)
-{
+static NTSTATUS get_object_name_info(void* object, OBJECT_NAME_INFORMATION** object_name_info) {
     unsigned long nbneeded;
     NTSTATUS status = STATUS_SUCCESS;
 
@@ -48,11 +46,10 @@ free_object_name_info:
     return status;
 }
 
-NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
-{
+NTSTATUS nt2dos(UNICODE_STRING* u_resolved, UNICODE_STRING* u_unresolved) {
     IO_STATUS_BLOCK io_status_block;
-    DEVICE_OBJECT *volume_object;
-    FILE_OBJECT *file_object;
+    DEVICE_OBJECT* volume_object;
+    FILE_OBJECT* file_object;
     HANDLE file;
     OBJECT_ATTRIBUTES file_attrs;
     OBJECT_NAME_INFORMATION *file_name_info, *volume_name_info;
@@ -61,11 +58,8 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
     NTSTATUS status = STATUS_SUCCESS;
 
     InitializeObjectAttributes(
-        &file_attrs,
-        u_unresolved,
-        OBJ_CASE_INSENSITIVE | OBJ_OPENIF,
-        NULL,
-        NULL);
+        &file_attrs, u_unresolved, OBJ_CASE_INSENSITIVE | OBJ_OPENIF, NULL, NULL
+    );
 
     status = ZwCreateFile(
         &file,
@@ -78,18 +72,15 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
         FILE_OPEN,
         FILE_SYNCHRONOUS_IO_NONALERT,
         NULL,
-        0);
+        0
+    );
 
     if (!NT_SUCCESS(status))
         return status;
 
     status = ObReferenceObjectByHandle(
-        file,
-        FILE_READ_ATTRIBUTES,
-        *IoFileObjectType,
-        KernelMode,
-        &file_object,
-        NULL);
+        file, FILE_READ_ATTRIBUTES, *IoFileObjectType, KernelMode, &file_object, NULL
+    );
 
     if (!NT_SUCCESS(status))
         goto close_file;
@@ -99,18 +90,15 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
     if (!NT_SUCCESS(status))
         goto close_file;
 
-    if (file_object->Vpb == NULL)
-    {
+    if (file_object->Vpb == NULL) {
         u_resolved->Buffer = allocate(file_name_info->Name.Length);
 
-        if (u_resolved->Buffer == NULL)
-        {
+        if (u_resolved->Buffer == NULL) {
             status = STATUS_INSUFFICIENT_RESOURCES;
             goto free_file_name_info;
         }
 
-        RtlInitEmptyUnicodeString(
-            u_resolved, u_resolved->Buffer, file_name_info->Name.Length);
+        RtlInitEmptyUnicodeString(u_resolved, u_resolved->Buffer, file_name_info->Name.Length);
         RtlCopyUnicodeString(u_resolved, &file_name_info->Name);
         goto free_file_name_info;
     }
@@ -126,12 +114,12 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
     if (!NT_SUCCESS(status))
         goto free_volume_name_info;
 
-    u_resolved_size = file_name_info->Name.Length - volume_name_info->Name.Length + u_dos_name.Length;
+    u_resolved_size =
+        file_name_info->Name.Length - volume_name_info->Name.Length + u_dos_name.Length;
 
     u_resolved->Buffer = allocate(u_resolved_size);
 
-    if (u_resolved->Buffer == NULL)
-    {
+    if (u_resolved->Buffer == NULL) {
         status = STATUS_INSUFFICIENT_RESOURCES;
         goto free_dos_name;
     }

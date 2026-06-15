@@ -9,8 +9,7 @@
 
 #include <ntddk.h>
 
-static NTSTATUS device_open(DEVICE_OBJECT *device_object, IRP *irp)
-{
+static NTSTATUS device_open(DEVICE_OBJECT* device_object, IRP* irp) {
     NTSTATUS status = STATUS_SUCCESS;
 
     UNREFERENCED_PARAMETER(device_object);
@@ -21,18 +20,15 @@ static NTSTATUS device_open(DEVICE_OBJECT *device_object, IRP *irp)
     return status;
 }
 
-typedef NTSTATUS (*ioctl_handler)(
-    void *, unsigned long,
-    void *, unsigned long,
-    ULONG_PTR *);
+typedef NTSTATUS (*ioctl_handler)(void*, unsigned long, void*, unsigned long, ULONG_PTR*);
 
 static NTSTATUS handle_say_hello(
-    void *in_buf,
+    void* in_buf,
     unsigned long in_buf_size,
-    void *out_buf,
+    void* out_buf,
     unsigned long out_buf_size,
-    ULONG_PTR *nbwritten)
-{
+    ULONG_PTR* nbwritten
+) {
     UNREFERENCED_PARAMETER(in_buf);
     UNREFERENCED_PARAMETER(in_buf_size);
     UNREFERENCED_PARAMETER(out_buf);
@@ -46,12 +42,12 @@ static NTSTATUS handle_say_hello(
 static unsigned int num = 42;
 
 static NTSTATUS handle_exchange_ints(
-    void *in_buf,
+    void* in_buf,
     unsigned long in_buf_size,
-    void *out_buf,
+    void* out_buf,
     unsigned long out_buf_size,
-    ULONG_PTR *nbwritten)
-{
+    ULONG_PTR* nbwritten
+) {
     unsigned int temp_num;
 
     if (in_buf_size != sizeof(temp_num))
@@ -69,13 +65,12 @@ static NTSTATUS handle_exchange_ints(
     return STATUS_SUCCESS;
 }
 
-#define SAY_HELLO CTL_CODE(0x8000, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define SAY_HELLO     CTL_CODE(0x8000, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define EXCHANGE_INTS CTL_CODE(0x8001, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
-static NTSTATUS device_ioctl(DEVICE_OBJECT *device_object, IRP *irp)
-{
-    IO_STACK_LOCATION *io_stack_loc;
-    void* in_buf, *out_buf;
+static NTSTATUS device_ioctl(DEVICE_OBJECT* device_object, IRP* irp) {
+    IO_STACK_LOCATION* io_stack_loc;
+    void *in_buf, *out_buf;
     unsigned long in_buf_size, out_buf_size;
     ioctl_handler handler;
     NTSTATUS status = STATUS_UNSUCCESSFUL;
@@ -90,8 +85,7 @@ static NTSTATUS device_ioctl(DEVICE_OBJECT *device_object, IRP *irp)
     in_buf_size = io_stack_loc->Parameters.DeviceIoControl.InputBufferLength;
     out_buf_size = io_stack_loc->Parameters.DeviceIoControl.OutputBufferLength;
 
-    switch (io_stack_loc->Parameters.DeviceIoControl.IoControlCode)
-    {
+    switch (io_stack_loc->Parameters.DeviceIoControl.IoControlCode) {
         case SAY_HELLO:
             handler = handle_say_hello;
             break;
@@ -105,10 +99,8 @@ static NTSTATUS device_ioctl(DEVICE_OBJECT *device_object, IRP *irp)
             goto complete_request;
     }
 
-    status = irp->IoStatus.Status = handler(
-        in_buf, in_buf_size,
-        out_buf, out_buf_size,
-        &irp->IoStatus.Information);
+    status = irp->IoStatus.Status =
+        handler(in_buf, in_buf_size, out_buf, out_buf_size, &irp->IoStatus.Information);
 
 complete_request:
     IoCompleteRequest(irp, IO_NO_INCREMENT);
@@ -116,25 +108,20 @@ complete_request:
     return status;
 }
 
-typedef struct
-{
-    const wchar_t *path;
-    const wchar_t *symlink;
-}
-DeviceInfo;
+typedef struct {
+    const wchar_t* path;
+    const wchar_t* symlink;
+} DeviceInfo;
 
-typedef struct
-{
-    DEVICE_OBJECT *object;
+typedef struct {
+    DEVICE_OBJECT* object;
     UNICODE_STRING path;
     UNICODE_STRING symlink;
-}
-Device;
+} Device;
 
 #define NUMOF_DEVICES 2
 
-static DeviceInfo devices_info[NUMOF_DEVICES] =
-{
+static DeviceInfo devices_info[NUMOF_DEVICES] = {
     {
         L"\\Device\\simple_device1",
         L"\\DosDevices\\simple_device1",
@@ -147,21 +134,18 @@ static DeviceInfo devices_info[NUMOF_DEVICES] =
 
 static Device devices[NUMOF_DEVICES];
 
-static void destroy_device(int i)
-{
+static void destroy_device(int i) {
     IoDeleteSymbolicLink(&devices[i].symlink);
     IoDeleteDevice(devices[i].object);
 }
 
-void destroy_devices()
-{
+void destroy_devices() {
     int i;
     for (i = 0; i < NUMOF_DEVICES; ++i)
         destroy_device(i);
 }
 
-static NTSTATUS set_up_device(DRIVER_OBJECT *driver_object, int i)
-{
+static NTSTATUS set_up_device(DRIVER_OBJECT* driver_object, int i) {
     NTSTATUS status = STATUS_SUCCESS;
 
     DbgPrint("Setting up device...\n");
@@ -178,7 +162,8 @@ static NTSTATUS set_up_device(DRIVER_OBJECT *driver_object, int i)
         FILE_DEVICE_UNKNOWN,
         FILE_DEVICE_SECURE_OPEN,
         FALSE,
-        &devices[i].object);
+        &devices[i].object
+    );
 
     if (!NT_SUCCESS(status))
         return status;
@@ -186,8 +171,7 @@ static NTSTATUS set_up_device(DRIVER_OBJECT *driver_object, int i)
     devices[i].object->Flags |= DO_BUFFERED_IO;
     devices[i].object->Flags &= ~DO_DEVICE_INITIALIZING;
 
-    if (!NT_SUCCESS(status = IoCreateSymbolicLink(
-            &devices[i].symlink, &devices[i].path)))
+    if (!NT_SUCCESS(status = IoCreateSymbolicLink(&devices[i].symlink, &devices[i].path)))
         goto delete_device;
 
     return status;
@@ -198,8 +182,7 @@ delete_device:
     return status;
 }
 
-NTSTATUS set_up_devices(DRIVER_OBJECT *driver_object)
-{
+NTSTATUS set_up_devices(DRIVER_OBJECT* driver_object) {
     int i, j;
     NTSTATUS status = STATUS_SUCCESS;
 

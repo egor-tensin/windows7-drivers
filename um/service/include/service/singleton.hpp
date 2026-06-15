@@ -7,37 +7,34 @@
 
 #include <mutex>
 
-namespace service
-{
-    template <typename DerivedT>
-    class Singleton
-    {
-    public:
-        static DerivedT& get()
-        {
-            std::call_once(initialized, initialize);
-            return get_unsafe();
-        }
+namespace service {
 
-    protected:
-        Singleton() = default;
-        virtual ~Singleton() = default;
+template <typename DerivedT>
+class Singleton {
+public:
+    static DerivedT& get() {
+        std::call_once(initialized, initialize);
+        return get_unsafe();
+    }
 
-    private:
-        static void initialize()
-        {
-            get_unsafe();
-        }
+protected:
+    Singleton() = default;
+    virtual ~Singleton() = default;
 
-        static DerivedT& get_unsafe()
-        {
-            static DerivedT instance;
-            return instance;
-        }
+private:
+    static void initialize() {
+        get_unsafe();
+    }
 
-        static std::once_flag initialized;
-    };
+    static DerivedT& get_unsafe() {
+        static DerivedT instance;
+        return instance;
+    }
 
-    template <typename DerivedT>
-    std::once_flag Singleton<DerivedT>::initialized;
-}
+    static std::once_flag initialized;
+};
+
+template <typename DerivedT>
+std::once_flag Singleton<DerivedT>::initialized;
+
+} // namespace service

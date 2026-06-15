@@ -10,16 +10,10 @@
 #include <exception>
 #include <iostream>
 
-int main()
-{
-    try
-    {
-        throw service::windows_error::make(
-            ERROR_FILE_NOT_FOUND,
-            __FILE__, __LINE__, __FUNCTION__);
-    }
-    catch (const std::exception& e)
-    {
+int main() {
+    try {
+        throw service::windows_error::make(ERROR_FILE_NOT_FOUND, __FILE__, __LINE__, __FUNCTION__);
+    } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;
     }

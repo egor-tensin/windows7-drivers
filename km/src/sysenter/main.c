@@ -8,10 +8,9 @@
 #include <ntddk.h>
 
 static __int64 old_msr_value = 0;
-static void *old_ki_fast_call_entry = NULL;
+static void* old_ki_fast_call_entry = NULL;
 
-static void __stdcall log_system_call()
-{
+static void __stdcall log_system_call() {
     static LONG count = 0;
     static const LONG throttle = 10000;
 
@@ -21,8 +20,7 @@ static void __stdcall log_system_call()
         DbgPrint("Another %ld of `sysenter`s (eax=)!\n", throttle);
 }
 
-static void __declspec(naked) new_ki_fast_call_entry()
-{
+static void __declspec(naked) new_ki_fast_call_entry() {
     __asm
     {
         pushad
@@ -41,8 +39,7 @@ static void __declspec(naked) new_ki_fast_call_entry()
 
 #define IA32_SYSENTER_EIP 0x176
 
-static void hook_sysenter()
-{
+static void hook_sysenter() {
     /*
     __asm
     {
@@ -57,14 +54,13 @@ static void hook_sysenter()
 
     old_msr_value = __readmsr(IA32_SYSENTER_EIP);
 #pragma warning(push)
-#pragma warning(disable: 4305)
-    old_ki_fast_call_entry = (void *) old_msr_value;
+#pragma warning(disable : 4305)
+    old_ki_fast_call_entry = (void*)old_msr_value;
 #pragma warning(pop)
     __writemsr(IA32_SYSENTER_EIP, new_ki_fast_call_entry);
 }
 
-static void unhook_sysenter()
-{
+static void unhook_sysenter() {
     /*
     __asm
     {
@@ -78,8 +74,7 @@ static void unhook_sysenter()
     __writemsr(IA32_SYSENTER_EIP, old_msr_value);
 }
 
-static void on_driver_unload(DRIVER_OBJECT *driver_object)
-{
+static void on_driver_unload(DRIVER_OBJECT* driver_object) {
     KTIMER timer;
     LARGE_INTEGER time_out;
 
@@ -94,10 +89,7 @@ static void on_driver_unload(DRIVER_OBJECT *driver_object)
     KeWaitForSingleObject(&timer, Executive, KernelMode, FALSE, NULL);
 }
 
-NTSTATUS DriverEntry(
-    DRIVER_OBJECT *driver_object,
-    UNICODE_STRING *registry_path)
-{
+NTSTATUS DriverEntry(DRIVER_OBJECT* driver_object, UNICODE_STRING* registry_path) {
     UNREFERENCED_PARAMETER(registry_path);
 
     driver_object->DriverUnload = on_driver_unload;

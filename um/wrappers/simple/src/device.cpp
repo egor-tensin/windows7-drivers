@@ -3,37 +3,38 @@
 // For details, see https://github.com/egor-tensin/windows7-drivers.
 // Distributed under the MIT License.
 
-#include "simple/all.hpp"
-
 #include "service/all.hpp"
+#include "simple/all.hpp"
 
 #include <Windows.h>
 
-namespace simple
-{
-    namespace
-    {
-        const auto device_path = "\\\\.\\simple_device1";
-        const auto exchange_ints_ctl_code = CTL_CODE(0x8001, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS);
-    }
+namespace simple {
+namespace {
 
-    Device::Device()
-        : service::Device(service::Device::open(device_path))
-    { }
+const auto device_path = "\\\\.\\simple_device1";
+const auto exchange_ints_ctl_code = CTL_CODE(0x8001, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS);
 
-    unsigned int Device::exchange_ints(unsigned int src) const
-    {
-        static_assert(sizeof(exchange_ints_ctl_code) == sizeof(service::Device::Code), "CTL_CODE() must produce DWORDs");
+} // namespace
 
-        unsigned int dest;
+Device::Device() : service::Device(service::Device::open(device_path)) {}
 
-        send_control_code(
-            static_cast<service::Device::Code>(exchange_ints_ctl_code),
-            &src,
-            sizeof(src),
-            &dest,
-            sizeof(dest));
+unsigned int Device::exchange_ints(unsigned int src) const {
+    static_assert(
+        sizeof(exchange_ints_ctl_code) == sizeof(service::Device::Code),
+        "CTL_CODE() must produce DWORDs"
+    );
 
-        return dest;
-    }
+    unsigned int dest;
+
+    send_control_code(
+        static_cast<service::Device::Code>(exchange_ints_ctl_code),
+        &src,
+        sizeof(src),
+        &dest,
+        sizeof(dest)
+    );
+
+    return dest;
 }
+
+} // namespace simple

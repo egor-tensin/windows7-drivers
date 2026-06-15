@@ -12,39 +12,35 @@
 #include <string>
 #include <vector>
 
-namespace nt_namespace
-{
-    namespace
-    {
-        const auto device_path = "\\\\.\\nt_namespace";
-        const auto control_code = CTL_CODE(0x8000, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS);
-    }
+namespace nt_namespace {
+namespace {
 
-    Device::Device()
-        : service::Device(service::Device::open(device_path))
-    { }
+const auto device_path = "\\\\.\\nt_namespace";
+const auto control_code = CTL_CODE(0x8000, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS);
 
-    std::wstring Device::convert_nt_path(const std::wstring& src)
-    {
-        const auto in_buf = src.c_str();
-        const auto in_buf_size = (src.size() + 1) * sizeof(wchar_t);
+} // namespace
 
-        static_assert(sizeof(control_code) == sizeof(service::Device::Code), "CTL_CODE() must return DWORDs");
+Device::Device() : service::Device(service::Device::open(device_path)) {}
 
-        const auto nbreq = get_required_output_size(
-            static_cast<service::Device::Code>(control_code),
-            in_buf,
-            in_buf_size);
+std::wstring Device::convert_nt_path(const std::wstring& src) {
+    const auto in_buf = src.c_str();
+    const auto in_buf_size = (src.size() + 1) * sizeof(wchar_t);
 
-        std::vector<unsigned char> output(nbreq);
+    static_assert(
+        sizeof(control_code) == sizeof(service::Device::Code), "CTL_CODE() must return DWORDs"
+    );
 
-        send_control_code(
-            static_cast<service::Device::Code>(control_code),
-            in_buf,
-            in_buf_size,
-            output.data(),
-            nbreq);
+    const auto nbreq = get_required_output_size(
+        static_cast<service::Device::Code>(control_code), in_buf, in_buf_size
+    );
 
-        return reinterpret_cast<wchar_t*>(output.data());
-    }
+    std::vector<unsigned char> output(nbreq);
+
+    send_control_code(
+        static_cast<service::Device::Code>(control_code), in_buf, in_buf_size, output.data(), nbreq
+    );
+
+    return reinterpret_cast<wchar_t*>(output.data());
 }
+
+} // namespace nt_namespace

@@ -9,13 +9,13 @@
 
 #include <string>
 
-namespace nt_namespace
-{
-    class Device : service::Device
-    {
-    public:
-        Device();
+namespace nt_namespace {
 
-        std::wstring convert_nt_path(const std::wstring&);
-    };
-}
+class Device : service::Device {
+public:
+    Device();
+
+    std::wstring convert_nt_path(const std::wstring&);
+};
+
+} // namespace nt_namespace
