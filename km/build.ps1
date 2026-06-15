@@ -41,7 +41,7 @@ function Get-DriverBuildDir {
         [string] $DriverName
     )
 
-    return "$script:PSScriptRoot\..\km\build\$script:WDK\$DriverName"
+    return "$script:PSScriptRoot\build\$script:WDK\$DriverName"
 }
 
 function Get-DriverSolutionPath {

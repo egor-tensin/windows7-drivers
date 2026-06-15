@@ -45,7 +45,7 @@ build_script:
       cmake --build . --target install --config $Env:CONFIGURATION
   - ps: |
       cd $Env:APPVEYOR_BUILD_FOLDER
-      .\scripts\build.ps1 `
+      .\km\build.ps1 `
           -InstallDir .\build\install `
           -Configuration "$Env:TARGET_OS $Env:CONFIGURATION" `
           -Platform $Env:PLATFORM `
@@ -77,4 +77,4 @@ for:
     - ps: Start-Sleep -s 10
     - appveyor.exe AddMessage "OK"
   test_script:
-    - ps: .\scripts\test.ps1 -InstallDir build\install
+    - ps: .\km\test.ps1 -InstallDir build\install

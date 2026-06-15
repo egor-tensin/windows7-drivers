@@ -57,14 +57,14 @@ jobs:
           cmake --build . --target install --config '${{ matrix.configuration }}'
       - name: Build kernel-mode code
         run: |
-          .\scripts\build.ps1 `
+          .\km\build.ps1 `
               -InstallDir build\install `
               -Configuration '${{ matrix.configuration }}' `
               -Platform '${{ matrix.platform }}' `
               -WDK wdk10
       - name: Run tests
         run: |
-          .\scripts\test.ps1 -InstallDir build\install
+          .\km\test.ps1 -InstallDir build\install
       - name: Publish artifact
         uses: actions/upload-artifact@v7
         with:
