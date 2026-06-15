@@ -1,6 +1,7 @@
 Windows 7 drivers
 =================
 
+[![GitHub Actions](https://github.com/egor-tensin/windows7-drivers/actions/workflows/ci.yml/badge.svg)](https://github.com/egor-tensin/windows7-drivers/actions/workflows/ci.yml)
 [![AppVeyor branch](https://img.shields.io/appveyor/ci/egor-tensin/windows7-drivers/master?label=AppVeyor)](https://ci.appveyor.com/project/egor-tensin/windows7-drivers/branch/master)
 
 Basic Windows 7 drivers.
