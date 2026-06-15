@@ -22,6 +22,8 @@ NTSTATUS DriverEntry(
 {
     UNREFERENCED_PARAMETER(registry_path);
 
+    ExInitializeDriverRuntime(DrvRtPoolNxOptIn);
+
     driver_object->DriverUnload = on_driver_unload;
     return set_up_devices(driver_object);
 }

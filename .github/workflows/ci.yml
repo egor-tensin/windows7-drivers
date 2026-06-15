@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        # As of June '26, WDK doesn't seem to be included in VS 2026 (windows-2026) images.
+        toolset: [vs2022]
+        platform: [x64]
+        configuration: [Debug, Release]
+        include:
+          - {toolset: vs2022, os: windows-2022}
+    runs-on: '${{ matrix.os }}'
+    name: 'Build: ${{ matrix.toolset }} / ${{ matrix.platform }} / ${{ matrix.configuration }}'
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - name: Set up msbuild
+        uses: microsoft/setup-msbuild@v3
+      - name: Build user-mode code
+        run: |
+          New-Item -Type Directory build\cmake | Out-Null
+          cd build\cmake
+
+          cmake -A '${{ matrix.platform }}' `
+              '-DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\build\install' `
+              '${{ github.workspace }}'
+
+          cmake --build . --target install --config '${{ matrix.configuration }}'
+      - name: Build kernel-mode code
+        run: |
+          .\scripts\build.ps1 `
+              -InstallDir build\install `
+              -Configuration '${{ matrix.configuration }}' `
+              -Platform '${{ matrix.platform }}' `
+              -WDK wdk10
+      - name: Run tests
+        run: |
+          .\scripts\test.ps1 -InstallDir build\install
+      - name: Publish artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: 'windows7-drivers-${{ matrix.platform }}-${{ matrix.configuration }}-Win10'
+          path: ./build/install/
+          if-no-files-found: error

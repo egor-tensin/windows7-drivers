@@ -43,7 +43,7 @@ static NTSTATUS handle_say_hello(
     return STATUS_SUCCESS;
 }
 
-static unsigned int i = 42;
+static unsigned int num = 42;
 
 static NTSTATUS handle_exchange_ints(
     void *in_buf,
@@ -52,20 +52,20 @@ static NTSTATUS handle_exchange_ints(
     unsigned long out_buf_size,
     ULONG_PTR *nbwritten)
 {
-    unsigned int temp_i;
+    unsigned int temp_num;
 
-    if (in_buf_size != sizeof(temp_i))
+    if (in_buf_size != sizeof(temp_num))
         return STATUS_INVALID_BUFFER_SIZE;
 
-    RtlCopyMemory(&temp_i, in_buf, in_buf_size);
-    DbgPrint("%08x\n", temp_i);
+    RtlCopyMemory(&temp_num, in_buf, in_buf_size);
+    DbgPrint("%08x\n", temp_num);
 
-    if (out_buf_size < sizeof(i))
+    if (out_buf_size < sizeof(num))
         return STATUS_BUFFER_TOO_SMALL;
 
-    RtlCopyMemory(out_buf, &i, sizeof(i));
-    *nbwritten += sizeof(i);
-    i = temp_i;
+    RtlCopyMemory(out_buf, &num, sizeof(num));
+    *nbwritten += sizeof(num);
+    num = temp_num;
     return STATUS_SUCCESS;
 }
 

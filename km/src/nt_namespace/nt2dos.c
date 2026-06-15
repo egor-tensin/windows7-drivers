@@ -9,6 +9,15 @@
 
 #include "nt2dos.h"
 
+static PVOID allocate(SIZE_T nb)
+{
+#if !defined(NTDDI_WIN10) || NTDDI_VERSION < NTDDI_WIN10
+    return ExAllocatePoolWithTag(PagedPool, nb, '1l');
+#else
+    return ExAllocatePoolQuotaZero(PagedPool, nb, '1l');
+#endif
+}
+
 static NTSTATUS get_object_name_info(
     void *object,
     OBJECT_NAME_INFORMATION **object_name_info)
@@ -21,7 +30,7 @@ static NTSTATUS get_object_name_info(
     if (status != STATUS_INFO_LENGTH_MISMATCH)
         return status;
 
-    *object_name_info = ExAllocatePoolWithTag(PagedPool, nbneeded, '1l');
+    *object_name_info = allocate(nbneeded);
 
     if (*object_name_info == NULL)
         return STATUS_INSUFFICIENT_RESOURCES;
@@ -92,8 +101,7 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
 
     if (file_object->Vpb == NULL)
     {
-        u_resolved->Buffer = ExAllocatePoolWithTag(
-            PagedPool, file_name_info->Name.Length, '1l');
+        u_resolved->Buffer = allocate(file_name_info->Name.Length);
 
         if (u_resolved->Buffer == NULL)
         {
@@ -120,7 +128,7 @@ NTSTATUS nt2dos(UNICODE_STRING *u_resolved, UNICODE_STRING *u_unresolved)
 
     u_resolved_size = file_name_info->Name.Length - volume_name_info->Name.Length + u_dos_name.Length;
 
-    u_resolved->Buffer = ExAllocatePoolWithTag(PagedPool, u_resolved_size, '1l');
+    u_resolved->Buffer = allocate(u_resolved_size);
 
     if (u_resolved->Buffer == NULL)
     {
