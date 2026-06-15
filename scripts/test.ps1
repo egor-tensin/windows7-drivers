@@ -71,12 +71,37 @@ function Verify-ExchangeInts {
         [int] $OldInt
     )
 
-    $old_int = Invoke-Exe { exchange_ints.exe $NewInt }
-    if ($old_int -ne $OldInt) {
-        throw "Expected $OldInt, got: $old_int"
+    $actual = Exchange-Ints $NewInt
+    if ($actual -ne $OldInt) {
+        throw "Expected $OldInt, got: $actual"
     } else {
-        Write-Host "Previous integer: $old_int, new integer: $NewInt"
+        Write-Host "Previous integer: $actual, new integer: $NewInt"
     }
+}
+
+function Convert-NTPath {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string] $NTPath
+    )
+
+    return Invoke-Exe { convert_nt_path.exe $NTPath }
+}
+
+function Verify-ConvertNTPath {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string] $NTPath,
+        [Parameter(Mandatory=$true)]
+        [string] $Expected
+    )
+
+    $actual = Convert-NTPath $NTPath
+    if ($actual -ne $expected) {
+        throw "Expected $expected, got: $actual"
+    }
+    Write-Host "NT path: $NTPath"
+    Write-Host "DOS path: $actual"
 }
 
 function Run-ProjectTests {
@@ -97,6 +122,7 @@ function Run-ProjectTests {
 
     Verify-ExchangeInts -NewInt 69 -OldInt 42
     Verify-ExchangeInts -NewInt 100500 -OldInt 69
+    Verify-ConvertNTPath \DosDevices\C:\Windows C:\Windows
 
     foreach ($driver in $drivers) {
         Stop-Driver -DriverName $driver
