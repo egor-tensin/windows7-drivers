@@ -124,6 +124,7 @@
     <ClCompile Include="..\..\..\src\nt_namespace\nt2dos.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="DriverPackageTarget" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>
