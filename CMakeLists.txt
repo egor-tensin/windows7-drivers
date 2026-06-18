@@ -10,9 +10,9 @@ endif()
 project(win7drv CXX)
 
 if(MSVC)
-    add_compile_options(/MP /W4)
+    add_compile_options(/MP /W4 /WX)
 else()
-    add_compile_options(-Wall -Wextra)
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
 add_compile_definitions(NOMINMAX)
