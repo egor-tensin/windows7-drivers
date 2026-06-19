@@ -8,8 +8,7 @@ function(add_util action src)
 
     install(TARGETS "${target}" RUNTIME DESTINATION bin)
     if(MSVC)
-        install(FILES $<TARGET_PDB_FILE:${target}>
-                DESTINATION bin OPTIONAL)
+        install(FILES $<TARGET_PDB_FILE:${target}> DESTINATION bin OPTIONAL)
     endif()
 endfunction()
 
