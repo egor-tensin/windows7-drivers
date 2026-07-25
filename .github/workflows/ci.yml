@@ -79,6 +79,6 @@ jobs:
       - name: Publish artifact
         uses: actions/upload-artifact@v7
         with:
-          name: 'windows7-drivers-${{ matrix.platform }}-${{ matrix.configuration }}-Win10'
+          name: 'windows7-drivers-${{ matrix.platform }}-${{ matrix.configuration }}-Win10-${{ matrix.toolset }}'
           path: ./build/install/
           if-no-files-found: error
